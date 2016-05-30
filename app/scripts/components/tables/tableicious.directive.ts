@@ -58,6 +58,11 @@ module ngApp.components.tables.directives.tableicious {
                   _.cloneDeep($scope.headings);
 
                 refresh(loadedHeadings);
+
+                angular.element($window).bind('scroll', () => {
+
+                  $scope.$apply();
+               });
             }
         }
     }
