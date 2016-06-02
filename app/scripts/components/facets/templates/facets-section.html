@@ -8,6 +8,15 @@
                   data-remove-function="removeFacet(f.name)"
                   data-template="components/facets/templates/typeahead-{{doctype}}.html"></facets-free-text>
 
+  <facets-free-text data-ng-if="f.facetType === 'id'"
+                  data-title="{{ f.title | facetTitlefy }}"
+                  placeholder="{{ f.name | humanify }}"
+                  data-field="{{doctype}}.{{f.name}}"
+                  data-entity="{{doctype}}"
+                  data-removable="{{ f.removable }}"
+                  data-autocomplete="{{false}}"
+                  data-remove-function="removeFacet(f.name)"></facets-free-text>
+
   <facets-prefix data-ng-if="f.facetType === 'prefix'"
                  data-title="{{ f.title | facetTitlefy }}"
                  placeholder="{{ f.name | facetTitlefy }}"
