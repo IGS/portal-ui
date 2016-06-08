@@ -284,7 +284,7 @@
 
 * **app:**
   * loading spinners main views ([5efd8893](https://github.com/NCI-GDC/portal-ui/commit/5efd8893))
-  * tooltips where class=truncated-cell ([5c9512e0](https://github.com/NCI-GDC/portal-ui/commit/5c9512e0), closes [PGDC-808](https://jira.opensciencedatacloud.org/browse/PGDC-808))
+  * tooltips where class=id-cell ([5c9512e0](https://github.com/NCI-GDC/portal-ui/commit/5c9512e0), closes [PGDC-808](https://jira.opensciencedatacloud.org/browse/PGDC-808))
 * **components:** transition to tab from table ([cd8e5e61](https://github.com/NCI-GDC/portal-ui/commit/cd8e5e61), closes [PGDC-1839](https://jira.opensciencedatacloud.org/browse/PGDC-1839))
 * **facets:** submitter_id facet free search ([7c05815d](https://github.com/NCI-GDC/portal-ui/commit/7c05815d), closes [PGDC-1869](https://jira.opensciencedatacloud.org/browse/PGDC-1869), [PGDC-1908](https://jira.opensciencedatacloud.org/browse/PGDC-1908))
 * **gql:** add date support to gql ([e306bfbf](https://github.com/NCI-GDC/portal-ui/commit/e306bfbf), closes [PGDC-719](https://jira.opensciencedatacloud.org/browse/PGDC-719))

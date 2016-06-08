@@ -119,7 +119,7 @@ module ngApp.projects.table.service {
           }, {
             name: "Disease Type",
             id: "disease_type",
-            tdClassName: 'truncated-cell',
+            tdClassName: 'id-cell',
             td: row => row.disease_type,
             toolTipText: row => row.disease_type,
             sortable: true,
@@ -128,7 +128,7 @@ module ngApp.projects.table.service {
           }, {
             name: "Primary Site",
             id: "primary_site",
-            tdClassName: 'truncated-cell',
+            tdClassName: 'id-cell',
             td: row => row.primary_site,
             sortable: true,
             hidden: false,

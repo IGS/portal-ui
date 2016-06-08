@@ -35,7 +35,7 @@
       </thead>
       <tbody>
         <tr data-ng-repeat="item in tableData track by $index">
-          <td class="truncated-cell">
+          <td class="id-cell">
             <div class="item-color" data-ng-style="{ 'background-color': item.color }"></div>
             <span>{{ item[config.displayKey] | humanify }}</span>
           </td>
