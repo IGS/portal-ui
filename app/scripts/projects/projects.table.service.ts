@@ -94,7 +94,7 @@ module ngApp.projects.table.service {
         : [];
 
       var totalCount = data.reduce((acc, val) => acc + val.summary[countKey], 0);
-      
+
       return wFilterFn(totalCount, fs, $filter);
     }
 
@@ -119,7 +119,7 @@ module ngApp.projects.table.service {
           }, {
             name: "Disease Type",
             id: "disease_type",
-            tdClassName: 'id-cell',
+            tdClassName: 'truncated-cell',
             td: row => row.disease_type,
             toolTipText: row => row.disease_type,
             sortable: true,
@@ -128,7 +128,7 @@ module ngApp.projects.table.service {
           }, {
             name: "Primary Site",
             id: "primary_site",
-            tdClassName: 'id-cell',
+            tdClassName: 'truncated-cell',
             td: row => row.primary_site,
             sortable: true,
             hidden: false,

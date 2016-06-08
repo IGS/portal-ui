@@ -84,7 +84,7 @@
               </thead>
               <tbody>
               <tr data-ng-repeat="project in rsc.byDisease  | orderBy:'values.file_count':true">
-                <td class="id-cell">
+                <td class="truncated-cell">
                   {{ project.key || '(none specified)'}}
                 </td>
                 <td class="text-right">
