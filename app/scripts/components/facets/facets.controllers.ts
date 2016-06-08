@@ -289,6 +289,10 @@ module ngApp.components.facets.controllers {
       this.actives = this.FacetService.getActiveIDs(this.$scope.field);
     }
 
+    clear() {
+      this.actives.forEach(term => this.FacetService.removeTerm(this.$scope.field, term));
+    }
+
   }
 
   class RangeFacetController extends Toggleable {
@@ -444,6 +448,12 @@ module ngApp.components.facets.controllers {
       }
 
       this.FacetService.addTerm(this.name, this.$window.moment(this.$scope.date).format('YYYY-MM-DD'), '>=');
+      this.facetAdded = true;
+    }
+
+    clear() {
+      this.FacetService.removeTerm(this.name, this.$window.moment(this.$scope.date).format('YYYY-MM-DD'));
+      this.facetAdded = false;
     }
 
   }
