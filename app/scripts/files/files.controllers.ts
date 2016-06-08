@@ -79,7 +79,7 @@ module ngApp.files.controllers {
       });
 
       //insert project into top level because it's in the properties table
-      file['projects'] = _.reject(_.unique(file.cases.map(c => (c.project || {}).project_id)),
+      file.projects = _.reject(_.unique(file.cases.map(c => (c.project || {}).project_id)),
                                   p => _.isUndefined(p) || _.isNull(p));
 
       //insert cases into related_files for checking isUserProject when downloading
