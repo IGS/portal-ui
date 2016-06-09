@@ -51,7 +51,7 @@
             <th data-translate scope="row">Case UUID</th>
             <td>
               <a data-ui-sref="case({ caseId: ac.annotation.case_id })">
-                {{ ::ac.annotation.case_id }}
+                {{ ::ac.annotation.case_id || "--" }}
               </a>
             </td>
           </tr>
@@ -59,7 +59,7 @@
             <th data-translate scope="row">Case Submitter ID</th>
             <td>
               <a data-ui-sref="case({ caseId: ac.annotation.case_id })">
-                {{ ::ac.annotation.case_submitter_id }}
+                {{ ::ac.annotation.case_submitter_id || "--" }}
               </a>
             </td>
           </tr>
