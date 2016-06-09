@@ -375,8 +375,8 @@ module ngApp.components.facets.controllers {
 
     refresh(): void {
       this.activesWithOperator = this.FacetService.getActivesWithOperator(this.$scope.field);
-      this.$scope.lowerBoundFinal = this.activesWithOperator['>='] || null;
-      this.$scope.upperBoundFinal = this.activesWithOperator['<='] || null;
+      this.$scope.lowerBoundFinal = this.lowerFacetAdded = this.activesWithOperator['>='] || null;
+      this.$scope.upperBoundFinal = this.upperFacetAdded = this.activesWithOperator['<='] || null;
       this.convertMaxMin();
       this.convertUserInputs();
     }
@@ -385,24 +385,18 @@ module ngApp.components.facets.controllers {
       if (this.lowerBound) {
         if (_.has(this.activesWithOperator, '>=')) {
           this.FacetService.removeTerm(this.$scope.field, null, ">=");
-          this.lowerFacetAdded = false;
         }
         this.FacetService.addTerm(this.$scope.field, this.$scope.lowerBoundFinal, ">=");
-        this.lowerFacetAdded = true;
       } else {
         this.FacetService.removeTerm(this.$scope.field, null, ">=");
-        this.lowerFacetAdded = false;
       }
       if (this.upperBound) {
         if (_.has(this.activesWithOperator, '<=')) {
           this.FacetService.removeTerm(this.$scope.field, null, "<=");
-          this.upperFacetAdded = false;
         }
         this.FacetService.addTerm(this.$scope.field, this.$scope.upperBoundFinal, "<=");
-        this.upperFacetAdded = true;
       } else {
         this.FacetService.removeTerm(this.$scope.field, null, "<=");
-        this.upperFacetAdded = false;
       }
     }
 
