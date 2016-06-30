@@ -33,7 +33,6 @@ module ngApp.components.downloader.directive {
         }
       });
     };
-    notify.config({ duration: 20000 });
 
     const progressChecker = (
       iFrame: ng.IAugmentedJQuery,
@@ -73,6 +72,21 @@ module ngApp.components.downloader.directive {
         finished();
       };
 
+      const shouldShowAltMessage = () => altMessage && attempts > timeoutInterval * 2;
+      const notifierDomHost = '#notification';
+      const noToastMessageInDisplay = () => _$(notifierDomHost).children().length == 0;
+      const alreadyShowingAltMessage = false;
+      const showWaitingForResponse = () => {
+        notify.config({ duration: 0 });
+        notify({
+          message: null,
+          messageTemplate: shouldShowAltMessage() ? detailedMessage : simpleMessage,
+          container: notifierDomHost,
+          classes: 'alert-warning',
+          scope: notifyScope
+        });
+      };
+
       const simpleMessage = '<span>Download preparation in progress. Please wait…</span><br /><br /> \
         <a data-ng-click="cancelDownload()"><i class="fa fa-times-circle-o"></i> Cancel Download</a>';
 
@@ -94,14 +108,15 @@ module ngApp.components.downloader.directive {
           }
         } else if (cookieStillThere()) {
           if (++attempts % timeoutInterval === 0) {
-            notify.closeAll();
-            notify({
-              message: null,
-              messageTemplate: (altMessage && attempts > timeoutInterval * 2) ? detailedMessage : simpleMessage,
-              container: '#notification',
-              classes: 'alert-warning',
-              scope: notifyScope
-            });
+            if (! alreadyShowingAltMessage && shouldShowAltMessage() && ! noToastMessageInDisplay()) {
+              notify.closeAll();
+              alreadyShowingAltMessage = true;
+              showWaitingForResponse();
+            } else {
+              if (noToastMessageInDisplay()) {
+                showWaitingForResponse();
+              }
+            }
           }
 
           timeoutPromise = $timeout(checker, waitTime);
