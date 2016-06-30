@@ -16,6 +16,7 @@ module ngApp.components.exportTable.services {
       private LocationService,
       private SearchCasesTableService,
       private SearchTableFilesModel,
+      private ProjectsTableService,
       private DATA_CATEGORIES,
       private UserService,
       private config
@@ -34,6 +35,8 @@ module ngApp.components.exportTable.services {
           return this.SearchCasesTableService.model();
         case 'files':
           return this.SearchTableFilesModel
+        case 'projects':
+          return this.ProjectsTableService.model();
         default:
           return [];
       }
@@ -107,6 +110,7 @@ angular
     "ngApp.core",
     "search.table.files.model",
     "search.cases.table.service",
+    "projects.table.service",
   ])
   .service("ExportTableService", ExportTableService);
 }
