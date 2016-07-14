@@ -147,6 +147,49 @@
   }
 }
 
+.expanding-search-wrapper {
+    position: relative;
+    color: #ccc;
+}
+
+.expanding-search-wrapper:before {
+    font-family: 'FontAwesome';
+    position: relative;
+    left: 30px;
+    content: '\f002';
+    z-index: 1;
+    pointer-events: none;
+}
+
+.expanding-search-input {
+
+    z-index: 3;
+    width: 15px;
+    height: 34px;
+    color: transparent;
+    background-color: transparent;
+    cursor: pointer;
+    border: solid 1px #ccc;
+    padding: 5px 10px 5px 32px;
+    font-size: 14px;
+
+    -webkit-border-radius: 10em;
+    -moz-border-radius: 10em;
+    border-radius: 10em;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+
+  &:focus {
+    width: 130px;
+    padding-left: 32px;
+    color: #000;
+    background-color: #fff;
+    cursor: auto;
+  }
+
+}
+
 .typeahead-row {
   cursor: pointer;
   padding: 5px;

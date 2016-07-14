@@ -3,14 +3,15 @@
                   remove-function="removeFunction()"
                   clear-function="clear(tc.name)"
   ></facets-heading>
-  <div style="padding-bottom: 10px" data-ng-show="tc.terms.length >= 20">
-    <label for="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search">Search for a value:</label>
-    <input type="text"
-       placeholder="search"
-       class="form-control"
-       id="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search"
-       data-ng-model="q" />
-  </div>
+  <div class="expanding-search-wrapper"
+           data-ng-show="tc.terms.length >= 20">
+          <input type="text"
+                 title="Search {{title | lowercase | spaceReplace:'-'}} values"
+                 placeholder="search"
+                 class="expanding-search-input"
+                 id="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search"
+                 data-ng-model="q" />
+      </div>
 
   <div data-ng-hide="collapsed">
     <p data-ng-show="(!tc.terms.length && !tc.error) || (tc.terms.length === 1 && tc.terms[0].key === '_missing')">
