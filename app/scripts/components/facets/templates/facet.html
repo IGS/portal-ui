@@ -9,8 +9,17 @@
                  title="Search {{title | lowercase | spaceReplace:'-'}} values"
                  placeholder="search"
                  class="expanding-search-input"
+                 data-ng-focus="tc.expandingSearchActive = true"
+                 data-ng-blur="tc.expandingSearchActive = !!q"
+                 data-ng-class="{ active: tc.expandingSearchActive }"
                  id="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search"
                  data-ng-model="q" />
+          <span
+            aria-hidden="true"
+            class="fa fa-close collapse-expanding-search-btn"
+            data-ng-class="{ active: tc.expandingSearchActive }"
+            data-ng-click="q = ''; tc.expandingSearchActive = false"
+          ></span>
       </div>
 
   <div data-ng-hide="collapsed">
