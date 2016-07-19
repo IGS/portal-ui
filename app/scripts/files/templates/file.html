@@ -37,7 +37,21 @@
               </tr>
               <tr>
                 <th scope="row" data-translate>UUID</th>
-                <td>{{ ::fc.file.file_id }}</td>
+                <td>
+                    {{ ::fc.file.file_id }}
+                    <span id="file-UUID" class="clipboard-target">{{::fc.file.file_id}}</span>
+                    <span
+                      style="float:right"
+                      class="clipboard-button"
+                      ngclipboard
+                      data-clipboard-target="#file-UUID"
+                      uib-tooltip="Copied!"
+                      tooltip-trigger="outsideClick"
+                      tooltip-placement="bottom"
+                    >
+                      <img src="/images/clippy.svg" />
+                    </span>
+                </td>
               </tr>
               <tr>
                 <th scope="row" data-translate>Submitter ID</th>
