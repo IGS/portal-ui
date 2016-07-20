@@ -23,8 +23,11 @@ module ngApp.participants.controllers {
       private $filter: ng.IFilterService,
       private ExperimentalStrategyNames: string[],
       private DATA_CATEGORIES,
-      private config: IGDCConfig
+      private config: IGDCConfig,
+      private $location,
+      private $anchorScroll,
     ) {
+      this.$anchorScroll.yOffset = 140;
       CoreService.setPageTitle("Case", participant.case_id);
 
       this.participant = participant;
@@ -142,6 +145,18 @@ module ngApp.participants.controllers {
       };
 
     }
+
+    gotoAnchor(hash) {
+      if (this.$location.hash() !== hash) {
+        // set the $location.hash to `newHash` and
+        // $anchorScroll will automatically scroll to it
+        this.$location.hash(hash);
+      } else {
+        // call $anchorScroll() explicitly,
+        // since $location.hash hasn't changed
+        this.$anchorScroll();
+      }
+    };
 
   }
 

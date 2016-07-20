@@ -7,22 +7,11 @@
         title="{{ config.tableTitle | translate }}">
       {{ config.tableTitle | translate }}
     </h4>
-    <div class="pull-right" data-ng-show="data.length">
-      <i class="fa fa-eraser" data-ng-show="activeFilters && config.filterKey"
-         data-ng-click="sc.clearFilters()" data-ng-keypress="sc.clearFilters()"></i>
-      <i class="fa fa-pie-chart" data-ng-show="mode === 'table'"
-         data-ng-click="mode = 'graph'"></i>
-      <i class="fa fa-table" data-ng-show="mode === 'graph'"
-         data-ng-click="mode = 'table'"></i>
-    </div>
   </div>
 
   <div data-ng-if="!data.length" class="no-results" data-translate>
     {{ config.noResultsText || 'No Results in Query' }}
   </div>
-
-  <pie-chart data="data" height="{{ height }}" config="config" data-title="{{ title }}"
-             data-ng-if="mode === 'graph' && data.length" legend-limit="6"></pie-chart>
 
   <div class="card-table table-responsive" data-ng-if="mode === 'table' && data.length">
     <table id="{{ tableId ? tableId : title | spaceReplace:'-' | lowercase }}{{tableId ? '' : '-summary-card-table'}}"
