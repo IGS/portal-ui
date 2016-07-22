@@ -770,8 +770,14 @@ module ngApp.components.charts {
             })
             .on("mouseover", function(d) {
 
-              var bar = d3.select(this),
-                  barColour = bar.attr("fill");
+              let bar = d3.select(this);
+              let barColour = bar.attr("fill");
+              //http://stackoverflow.com/a/21924155
+              let getComplementaryColour = (colourHexString: string): string => {
+                let colour = parseInt(barColour.replace(/^#/, ''), 16);
+                let complement = (000000 + ((0xffffff ^ colour).toString(16))).slice(-6);
+                return `#${complement}`;
+              }
 
               bar.interrupt()
                 .transition();
@@ -782,7 +788,7 @@ module ngApp.components.charts {
                 .attr('width', _xScale.rangeBand())
                 .attr('height', () => _yScale(d.y1) - _yScale(d.y0))
                 .attr('fill', 'none')
-                .attr('stroke', '#283e5d')
+                .attr('stroke', getComplementaryColour(barColour))
                 .attr('stroke-width', 2)
                 .attr('y', _yScale(d.y0))
                 .attr("transform", () => {
