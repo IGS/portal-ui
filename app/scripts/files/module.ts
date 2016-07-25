@@ -18,6 +18,10 @@ module ngApp.files {
           return FilesService.getFile($stateParams["fileId"], {
             expand: [
               "metadata_files",
+              "cases.samples",
+              "cases.samples.portions",
+              "cases.samples.portions.analytes",
+              "cases.samples.portions.analytes.aliquots"
             ],
             fields: [
               "state",
