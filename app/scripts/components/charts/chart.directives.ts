@@ -746,7 +746,7 @@ module ngApp.components.charts {
           let selectionColoursMap = {};
           //http://stackoverflow.com/questions/1664140/js-function-to-calculate-complementary-colour
           //convert to hsl, shift the hue 180, return hex string
-          let hueShift = (h,s) => { h+=s; while (h>=360.0) h-=360.0; while (h<0.0) h+=360.0; return h; }
+          let hueShift = (h,s) => { h += s; while (h >= 360.0) h -= 360.0; while (h < 0.0) h += 360.0; return h; }
           let getReadableComplementaryColour = (colour: string): string => {
             let c = d3.hsl(colour);
             c.h = hueShift(c.h ? c.h : 0, 180);
