@@ -3,24 +3,22 @@
                   remove-function="removeFunction()"
                   clear-function="clear(tc.name)"
   ></facets-heading>
-  <div class="expanding-search-wrapper"
-          data-ng-show="tc.terms.length >= 20">
-          <input type="text"
-                 title="Search {{title | lowercase | spaceReplace:'-'}} values"
-                 placeholder="search"
-                 class="expanding-search-input"
-                 data-ng-focus="tc.expandingSearchActive = true"
-                 data-ng-blur="tc.expandingSearchActive = !!q"
-                 data-ng-class="{ active: tc.expandingSearchActive }"
-                 id="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search"
-                 data-ng-model="q" />
-          <span
-            aria-hidden="true"
-            class="fa fa-close collapse-expanding-search-btn"
-            data-ng-class="{ active: tc.expandingSearchActive }"
-            data-ng-click="q = ''; tc.expandingSearchActive = false"
-          ></span>
-      </div>
+  <div data-ng-show="valueSearchActive">
+    <input type="text"
+           title="Search {{title | lowercase | spaceReplace:'-'}} values"
+           placeholder="search"
+           class="form-control"
+           style="margin-bottom: 10px"
+           data-ng-class="{ active: valueSearchActive}"
+           id="{{ title | lowercase | spaceReplace:'-' }}-facet-value-search"
+           data-ng-model="q" />
+    <span
+      aria-hidden="true"
+      class="fa fa-close collapse-expanding-search-btn"
+      data-ng-class="{ active: valueSearchActive && q}"
+      data-ng-click="q = ''"
+    ></span>
+  </div>
 
   <div data-ng-hide="collapsed">
     <p data-ng-show="(!tc.terms.length && !tc.error) || (tc.terms.length === 1 && tc.terms[0].key === '_missing')">
