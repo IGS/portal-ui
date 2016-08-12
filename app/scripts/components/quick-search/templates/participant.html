@@ -49,5 +49,9 @@
       <th scope="row" data-translate>Aliquot UUID</th>
       <td data-ng-bind-html="selectedItem.bioSpecimen.aliquot_id | highlight:searchQuery"></td>
     </tr>
+    <tr data-ng-if="selectedItem.bioSpecimen && selectedItem.bioSpecimen.submitter_id">
+      <th scope="row" data-translate>Biospecimen Submitter ID</th>
+      <td data-ng-bind-html="selectedItem.bioSpecimen.submitter_id | highlight:searchQuery"></td>
+    </tr>
   </tbody>
 </table>
