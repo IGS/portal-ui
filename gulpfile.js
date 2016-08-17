@@ -413,7 +413,7 @@ gulp.task('pegjs', function () {
 });
 
 gulp.task('serve', function (cb) {
-  runSequence('default', ['karma:watch',
+  runSequence('default', [
    'serve:web'], cb);
 });
 
