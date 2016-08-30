@@ -1,7 +1,7 @@
 {
   "name": "gdc-portal-ui",
   "version": false,
-  "globalDependencies": {
+  "ambientDependencies": {
     "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#2259de6588fb6627c3e511bcf40a0e85cadefbc5",
     "angular-ui-router": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-router/angular-ui-router.d.ts#2259de6588fb6627c3e511bcf40a0e85cadefbc5",
     "ngprogress-lite": "github:DefinitelyTyped/DefinitelyTyped/ngprogress-lite/ngprogress-lite.d.ts#2259de6588fb6627c3e511bcf40a0e85cadefbc5",
