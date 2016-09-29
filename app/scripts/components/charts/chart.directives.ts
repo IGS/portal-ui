@@ -303,7 +303,7 @@ module ngApp.components.charts {
   }
 
   interface IBarChartScope extends ng.IScope {
-    data: Array<{ key: number; doc_count: number }>;
+    data: Array<{ key: number; docCount: number }>;
     height: number;
     maxNumBars: number;
   }
@@ -346,7 +346,7 @@ module ngApp.components.charts {
                 var chunked = _.chunk(sortedData, sortedData.length/$scope.maxNumBars);
                 sortedData = _.map(chunked, (chunk) => {
                                     var keys = _.pluck(chunk, "key");
-                                    return { "doc_count": _.sum(chunk, "doc_count"),
+                                    return { "docCount": _.sum(chunk, "docCount"),
                                              "key": keys.length > 1 ? _.min(keys) + "-" + _.max(keys) : _.first(keys)
                                             };
                                   });
@@ -392,7 +392,7 @@ module ngApp.components.charts {
                   .rangeRoundBands([0, width], 0);
 
           var y = d3.scale.linear()
-                  .domain([0, _.max(_.pluck(sortedData, "doc_count"))])
+                  .domain([0, _.max(_.pluck(sortedData, "docCount"))])
                   .range([$scope.height, 0]);
 
           var chart = d3.select(element.find(".chart-container > svg")[0]);
@@ -405,7 +405,7 @@ module ngApp.components.charts {
                     .attr("class", "tooltip")
                     .offset([-5, 0])
                     .html(function(d) {
-                            return d.key + ": " + d.doc_count;
+                            return d.key + ": " + d.docCount;
                           });
 
           var g = elements
@@ -424,8 +424,8 @@ module ngApp.components.charts {
               .on("mouseout", tip.hide);
 
               g.append("rect")
-              .attr("y", (d) => { return y(d.doc_count); })
-              .attr("height", (d) => { return $scope.height - y(d.doc_count); })
+              .attr("y", (d) => { return y(d.docCount); })
+              .attr("height", (d) => { return $scope.height - y(d.docCount); })
               .attr("width", x.rangeBand())
               .attr("class", "bar")
               .on("mouseover", tip.show)
@@ -437,7 +437,7 @@ module ngApp.components.charts {
   }
 
   interface IMarkFunction {
-    (data: { key: number; doc_count: number }): boolean;
+    (data: { key: number; docCount: number }): boolean;
   }
 
   interface ID3ToolTipFunction {
@@ -448,7 +448,7 @@ module ngApp.components.charts {
     title?: string;
     markedLegendLabel?: string;
     chartClasses?: string;
-    data: Array<{ key: number; doc_count: number }>;
+    data: Array<{ key: number; docCount: number }>;
     margins?: { top: number; bottom: number; left: number; right: number; };
     height?: number;
     width?: number;

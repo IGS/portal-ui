@@ -26,7 +26,7 @@
           {{ ::term.key | translate }}
         </label>
       </span>
-      <span class="label label-primary pull-right">{{ term.doc_count | number:0 }}</span>
+      <span class="label label-primary pull-right">{{ term.docCount | number:0 }}</span>
     </p>
 
     <p data-ng-repeat="term in tc.inactives | limitTo: tc.displayCount track by term.key"

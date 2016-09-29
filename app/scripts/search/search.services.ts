@@ -91,7 +91,7 @@ module ngApp.search.services {
     constructor($filter: ng.IFilterService) {
       this.projectIdChartConfig = {
         filterKey: "cases.project.project_id",
-        sortKey: "doc_count",
+        sortKey: "docCount",
         displayKey: "key",
         defaultText: "project",
         pluralDefaultText: "projects",
@@ -115,7 +115,7 @@ module ngApp.search.services {
       };
       this.primarySiteChartConfig = {
         filterKey: "cases.project.primary_site",
-        sortKey: "doc_count",
+        sortKey: "docCount",
         displayKey: "key",
         defaultText: "primary site",
         pluralDefaultText: "primary sites",
