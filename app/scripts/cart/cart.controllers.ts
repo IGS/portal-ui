@@ -84,7 +84,7 @@ module ngApp.cart.controllers {
         textFilter: "size",
         filterKey: "file_size",
         label: "file",
-        sortKey: "docCount",
+        sortKey: "doc_count",
         displayKey: "key",
         sortData: true,
         defaultText: "project",
@@ -95,7 +95,7 @@ module ngApp.cart.controllers {
         textValue: "file_size",
         textFilter: "size",
         label: "file",
-        sortKey: "docCount",
+        sortKey: "doc_count",
         displayKey: "key",
         sortData: true,
         defaultText: "authorization level",
@@ -145,15 +145,15 @@ module ngApp.cart.controllers {
       this.fileCountChartData = _.filter([
         {
           key: 'authorized',
-          docCount: authCountAndFileSizes.authorized.count || 0,
+          doc_count: authCountAndFileSizes.authorized.count || 0,
           file_size: authCountAndFileSizes.authorized.file_size
         },
         {
           key: 'unauthorized',
-          docCount: authCountAndFileSizes.unauthorized.count || 0,
+          doc_count: authCountAndFileSizes.unauthorized.count || 0,
           file_size: authCountAndFileSizes.unauthorized.file_size
         }
-      ], (i) => i.docCount);
+      ], (i) => i.doc_count);
     }
 
     refresh(): void {
