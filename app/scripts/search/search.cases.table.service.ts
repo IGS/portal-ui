@@ -194,14 +194,14 @@ module ngApp.search.cases.table.service {
           }],
           fields: [
             "ProjectName",
-            "sample.fma_body_site",
+            "SampleFmabodysite",
           ],
           expand: [
             "summary.data_categories",
           ],
           facets: [
             {name: "ProjectName", title: "OSDF Projects", collapsed: false, facetType: "terms", removable: false},
-            {name: "sample.fma_body_site", title: "Sample FMA Body Site", collapsed: false, facetType: "terms", removable: false},
+            {name: "SampleFmabodysite", title: "Sample FMA Body Site", collapsed: false, facetType: "terms", removable: false},
           ]
         };
       }
