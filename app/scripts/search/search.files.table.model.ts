@@ -31,33 +31,6 @@ module ngApp.search.models {
         hidden: true,
         tdClassName: 'id-cell'
       }, {
-        name: "File Submitter ID",
-        id: "submitter_id",
-        toolTipText: row => row.submitter_id,
-        td: row => row.submitter_id || '--',
-        sortable: true,
-        hidden: true,
-        tdClassName: 'id-cell'
-      }, {
-        name: "My Projects",
-        id: "my_projects",
-        td: (row, $scope) => {
-            var isUserProject = $scope.UserService.isUserProject(row);
-            var icon = isUserProject ? 'check' : 'remove';
-            return '<i class="fa fa-' + icon + '"></i>';
-        },
-        inactive: $scope => !$scope.UserService.currentUser || $scope.UserService.currentUser.isFiltered,
-        hidden: false,
-        tdClassName: "text-center"
-      }, {
-        name: "Access",
-        id: "access",
-        td: (row, $scope) => {
-          var val = $scope.$filter("humanify")(row.access);
-          return '<i class="fa fa-'+ (row.access === 'controlled' ? 'lock' : 'unlock-alt') +'"></i> ' + val;
-        },
-        sortable: true
-      }, {
         name: "File Name",
         id: "file_name",
         toolTipText: row => row.file_name,
@@ -104,23 +77,6 @@ module ngApp.search.models {
         id: "file_size",
         td: (row, $scope) => $scope.$filter("size")(row.file_size),
         sortable: true,
-        thClassName: 'text-right',
-        tdClassName: 'text-right'
-      }, {
-        name: "Annotations",
-        id: "annotations.annotation_id",
-        td: (row, $scope) => {
-          function getAnnotations(row, $scope) {
-            return row.annotations.length == 1 ?
-                     '<a href="annotations/' + row.annotations[0].annotation_id + '">' + 1 + '</a>' :
-                     withAnnotationFilter(
-                       row.annotations.length,
-                       [{field: "annotation_id", value: _.pluck(row.annotations, 'annotation_id')}],
-                       $scope.$filter);
-          }
-
-          return row.annotations && row.annotations.length ? getAnnotations(row, $scope) : 0;
-        },
         thClassName: 'text-right',
         tdClassName: 'text-right'
       }, {
