@@ -34,14 +34,6 @@ module ngApp.cart.models {
         hidden: false,
         tdClassName: "text-center"
       }, {
-        name: "Access",
-        id: "access",
-        td: (row, $scope) => {
-          var val = $scope.$filter("humanify")(row.access);
-          return '<i class="fa fa-'+ (row.access === 'controlled' ? 'lock' : 'unlock-alt') +'"></i> ' + val;
-        },
-        sortable: true
-      }, {
         name: "File Name",
         id: "file_name",
         toolTipText: row => row.file_name,
@@ -87,22 +79,6 @@ module ngApp.cart.models {
         id: "file_size",
         td: (row, $scope) => $scope.$filter("size")(row.file_size),
         sortable: true,
-        thClassName: 'text-right',
-        tdClassName: 'text-right'
-      }, {
-        name: "Annotations",
-        id: "annotations",
-        td: (row, $scope) => {
-          function getAnnotations(row, $scope) {
-            return row.annotations.length === 1 ?
-                     '<a href="annotations/' + row.annotations[0].annotation_id + '">' + 1 + '</a>' :
-                     withAnnotationFilter(
-                       row.annotations.length,
-                       [{field: "annotation_id", value: row.annotations.map(a => a.annotation_id)}],
-                       $scope.$filter);
-          }
-          return row.annotations ? getAnnotations(row, $scope) : 0;
-        },
         thClassName: 'text-right',
         tdClassName: 'text-right'
       }
