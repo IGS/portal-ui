@@ -41,7 +41,7 @@ module ngApp.components.header.controllers {
     ) {
       this.addedLanguages = !!_.keys(gettextCatalog.strings).length;
       this.cookieEnabled = navigator.cookieEnabled;
-      this.bannerDismissed = false;
+      this.bannerDismissed = true;
     }
 
     getToken(): void {

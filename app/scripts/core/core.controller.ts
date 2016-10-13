@@ -29,7 +29,7 @@ module ngApp.core.controllers {
       private $uibModalStack,
       private $timeout
     ) {
-      this.loweredBody = true;
+      this.loweredBody = false;
       this.$rootScope.$on('hideBanner', () => this.loweredBody = false);
 
       this.loadingTimers = [];
