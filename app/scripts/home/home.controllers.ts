@@ -55,85 +55,70 @@ module ngApp.home.controllers {
       const yearsToDays = year => year * 365.25;
 
       this.exampleSearchQueries = [
-        {
-          description: "Cases of kidney cancer diagnosed at the age of 20 and below",
+
+// This syntax doesn't work (problem with spaces in value?)
+//{
+//          description: "Human Microbiome Project samples from buccal mucosa.",
+//          filters: {
+//            op: "and",
+//            content: [
+//              {
+//                op: "in",
+//                content: {
+//                  field: "cases.SampleFmabodysite",
+//                  value: [ "buccal_mucosa" ]
+//                }
+//              },
+//              {
+//                op: "in",
+//                content: {
+//                  field: "cases.ProjectName",
+//                  value: [ "Human Microbiome Project (HMP)" ]
+//                }
+//              }
+//            ]
+//          },
+//          caseCount: null,
+//          fileCount: null
+//        },
+
+{
+          description: "Human Microbiome Project samples from buccal mucosa.",
           filters: {
-            op: "and",
-            content: [
-              {
-                op: "<=",
-                content: {
-                  field: "cases.diagnoses.age_at_diagnosis",
-                  value: [ yearsToDays(20) ]
-                }
-              },
-              {
                 op: "in",
                 content: {
-                  field: "cases.project.primary_site",
-                  value: [ "Kidney" ]
+                  field: "cases.SampleFmabodysite",
+                  value: [ "buccal_mucosa" ]
                 }
-              }
-            ]
-          },
+              },
           caseCount: null,
           fileCount: null
-        },
-        {
-          description: "CNV data of female brain cancer cases",
+	  },
+	  {
+          description: "Human Microbiome Project samples from anterior nares.",
           filters: {
-            op: "and",
-            content: [
-              {
                 op: "in",
                 content: {
-                  field: "files.data_category",
-                  value: [ this.DATA_CATEGORIES.CNV.full ]
+                  field: "cases.SampleFmabodysite",
+                  value: [ "anterior_nares" ]
                 }
               },
-              {
-                op: "in",
-                content: {
-                  field: "cases.project.primary_site",
-                  value: [ "Brain" ]
-                }
-              },
-              {
-                op: "in",
-                content: {
-                  field: "cases.demographic.gender",
-                  value: [ "female" ]
-                }
-              }
-            ]
-          },
           caseCount: null,
           fileCount: null
-        },
-        {
-          description: "Gene expression quantification data in TCGA-GBM project",
+	  },
+	  {
+          description: "Human Microbiome Project samples from stool.",
           filters: {
-            op: "and",
-            content: [
-              {
                 op: "in",
                 content: {
-                  field: "files.data_type",
-                  value: [ this.DATA_TYPES.GEQ.full ]
+                  field: "cases.SampleFmabodysite",
+                  value: [ "stool" ]
                 }
               },
-              {
-                op: "in",
-                content: {
-                  field: "cases.project.project_id",
-                  value: [ "TCGA-GBM" ]
-                }
-              }
-            ]
-          },
           caseCount: null,
           fileCount: null
-        },
+	  }
+
       ];
 
       this.defaultParams =  {
