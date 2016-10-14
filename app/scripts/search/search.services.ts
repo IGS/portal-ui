@@ -168,11 +168,11 @@ module ngApp.search.services {
         }
       };
       this.dataTypeChartConfig = {
-        filterKey: "files.data_type",
+        filterKey: "cases.subject.gender",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "data type",
-        pluralDefaultText: "data types",
+        defaultText: "gender",
+        pluralDefaultText: "gender",
         sortData: true,
         filters: {
           "default": {
@@ -180,7 +180,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "files.data_type",
+                    field: "cases.subject.gender",
                     value: [
                       value
                     ]

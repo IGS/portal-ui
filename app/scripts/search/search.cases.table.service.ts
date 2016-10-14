@@ -64,6 +64,7 @@ module ngApp.search.cases.table.service {
           fields: [
             "ProjectName",
             "SampleFmabodysite",
+            "SubjectGender",
           ],
           expand: [
             "summary.data_categories",
@@ -71,6 +72,7 @@ module ngApp.search.cases.table.service {
           facets: [
             {name: "ProjectName", title: "OSDF Projects", collapsed: false, facetType: "terms", removable: false},
             {name: "SampleFmabodysite", title: "Sample FMA Body Site", collapsed: false, facetType: "terms", removable: false},
+            {name: "SubjectGender", title: "Gender", collapsed: false, facetType: "terms", removable: false},
           ]
         };
       }
