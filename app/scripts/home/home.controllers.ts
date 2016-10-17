@@ -160,6 +160,18 @@ module ngApp.home.controllers {
         return;
       }
 
+      // allow duplicate project ids, count the number of unique projects
+      project_ids = {};
+      n_unique_project_ids = 0;
+	
+      _.map(hits, function(hit) {
+      	  if !(hit.project_id in project_ids) {
+	      ++n_unique_project_ids;
+      	      project_ids[hit.project_id] = 1;
+	  }
+      });
+
+      data.pagination.unique_total = n_unique_project_ids;
 
       // reduce the array keyed on projectID
       var primarySites = _.reduce(hits, function(primarySiteData, project) {
