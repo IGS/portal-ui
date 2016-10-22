@@ -90,7 +90,7 @@ module ngApp.search.services {
     /* @ngInject */
     constructor($filter: ng.IFilterService) {
       this.projectIdChartConfig = {
-        filterKey: "cases.project.project_id",
+        filterKey: "cases.Project.name",
         sortKey: "doc_count",
         displayKey: "key",
         defaultText: "project",
@@ -102,7 +102,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.project.project_id",
+                    field: "cases.Project.name",
                     value: [
                       value
                     ]
