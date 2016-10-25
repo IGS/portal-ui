@@ -31,7 +31,7 @@ module ngApp.components.ui.search.controllers {
       if (this.query.length) {
         this.LocationService.setSearch({
             query: this.query,
-            filters: angular.toJson({"op":"and", "content": [this.gql.filters]})
+            filters: angular.toJson({"query": this.query})
         });
       } else {
           this.LocationService.setSearch({});
