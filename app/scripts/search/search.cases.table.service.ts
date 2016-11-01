@@ -46,9 +46,9 @@ module ngApp.search.cases.table.service {
               td: row => '<add-to-cart-filtered row="row"></add-to-cart-filtered>',
               tdClassName: 'text-center'
           }, {
-              name: "Project",
-              id: "project.project_id",
-              td: row => '<a href="projects/'+row.project.project_id + '">' + row.project.project_id + '</a>',
+              name: "Sample ID",
+              id: "case_id",
+              td: row => '<a href="cases/'+row.case_id + '">' + row.case_id + '</a>',
               sortable: true,
           }, {
               name: "Primary Site",
@@ -56,7 +56,7 @@ module ngApp.search.cases.table.service {
               td: row => row.project && row.project.primary_site,
               sortable: true
           }, {
-              name: 'Disease Type',
+              name: 'Study Topic',
               id: 'project.disease_type',
               td: (row, $scope) => row.project && $scope.$filter("humanify")(row.project.disease_type),
               sortable: false,
