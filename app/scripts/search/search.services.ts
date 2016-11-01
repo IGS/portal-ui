@@ -192,7 +192,7 @@ module ngApp.search.services {
         }
       };
       this.dataFormatChartConfig = {
-        filterKey: "files.data_format",
+        filterKey: "cases.file.format",
         sortKey: "doc_count",
         displayKey: "key",
         defaultText: "data format",
@@ -204,7 +204,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "files.data_format",
+                    field: "cases.file.format",
                     value: [
                       value
                     ]
