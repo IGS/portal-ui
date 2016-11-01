@@ -216,11 +216,11 @@ module ngApp.search.services {
         }
       };
       this.expStratChartConfig = {
-        filterKey: "files.experimental_strategy",
+        filterKey: "cases.file.category",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "experimental strategy",
-        pluralDefaultText: "experimental strategies",
+        defaultText: "data category",
+        pluralDefaultText: "data categories",
         sortData: true,
         filters: {
           "default": {
@@ -228,7 +228,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "files.experimental_strategy",
+                    field: "cases.file.category",
                     value: [
                       value
                     ]
