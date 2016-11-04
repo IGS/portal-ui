@@ -88,7 +88,7 @@ module ngApp.home.controllers {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "buccal_mucosa" ]
+                  value: [ "buccal mucosa [FMA:59785]" ]
                 }
               },
           caseCount: null,
@@ -100,7 +100,7 @@ module ngApp.home.controllers {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "anterior_nares" ]
+                  value: [ "external naris [FMA:59645]" ]
                 }
               },
           caseCount: null,
@@ -112,7 +112,7 @@ module ngApp.home.controllers {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "stool" ]
+                  value: [ "feces [FMA:64183]" ]
                 }
               },
           caseCount: null,
