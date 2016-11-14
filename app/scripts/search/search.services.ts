@@ -138,31 +138,25 @@ module ngApp.search.services {
         }
       };
       this.accessChartConfig = {
-        filterKey: "files.access",
+        filterKey: "cases.study.name",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "access level",
-        pluralDefaultText: "access levels",
+        defaultText: "study",
+        pluralDefaultText: "studies",
         sortData: true,
         filters: {
-          open: {
+          "default": {
             params: {
-              filters: $filter("makeFilter")([
-                {
-                  field: "files.access",
-                  value: "open"
-                }
-              ], true)
-            }
-          },
-          "controlled": {
-            params: {
-              filters: $filter("makeFilter")([
-                {
-                  field: "files.access",
-                  value: "controlled"
-                }
-              ], true)
+              filters: function(value) {
+                return $filter("makeFilter")([
+                  {
+                    field: "cases.study.name",
+                    value: [
+                      value
+                    ]
+                  }
+                ], true);
+              }
             }
           }
         }
