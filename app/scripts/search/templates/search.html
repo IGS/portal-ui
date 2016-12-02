@@ -2,14 +2,14 @@
   <div class="search-panel">
     <div class="facets-sidebar" ng-class="{ collapsed: sc.facetsCollapsed }">
       <uib-tabset active="sc.facetTab">
-        <uib-tab heading="{{ 'Cases' | translate }}" id="participants-facets-tab"
+        <uib-tab heading="{{ 'Samples' | translate }}" id="participants-facets-tab"
           index="0"
           select="sc.setFacetTab('cases')">
           <div class="facet-section panel-default">
             <div class="list-group">
               <add-custom-facets-panel
                  aggregations="sc.participants.aggregations"
-                 data-title="Add a Case/Biospecimen Filter"
+                 data-title="Add a filter"
                  data-doc-type="cases">
               </add-custom-facets-panel>
               <facets-section doctype="cases"
@@ -92,7 +92,7 @@
                   data-ng-href="{{
                   sc.$state.href('search.participants', sc.LocationService.search().filters
                   )}}">
-                    {{ 'Cases' | translate }} ({{ sc.participants.pagination.total | number:0 }})
+                    {{ 'Samples' | translate }} ({{ sc.participants.pagination.total | number:0 }})
                 </a>
             </li>
             <li role="presentation"
