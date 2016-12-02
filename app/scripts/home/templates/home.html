@@ -33,7 +33,7 @@
                 <a class="btn btn-primary" href="/search/c?filters={{query.filters}}">
                   <span data-ng-if="query.caseCount >= 0" data-ng-bind="query.caseCount | number"></span>
                   <span data-ng-if="query.caseCount === null"><i class="fa fa-spinner fa-spin"></i></span>
-                  Cases
+                  Samples
                 </a>
               </td>
               <td>
@@ -51,7 +51,7 @@
     <div class="col-lg-6 col-md-5 browser-vis component">
       <div class="filter-container">
         <div class="filter-bubble">
-          <a ui-sref="projects.table" title="Go to the GDC Projects Page">Cases by Primary Site</a>
+          <a ui-sref="projects.table" title="Go to the GDC Projects Page">Samples by Primary Site</a>
           <div class="arrow"></div>
         </div>
       </div>
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="data-stats-block">
-          <div class="stats-block-header">Cases</div>
+          <div class="stats-block-header">Samples</div>
           <div class="stats-block-body">
             <i class="icon-gdc-cases data-icon"></i>
             <span style="color: #333" data-ng-bind="hc.caseData.pagination.total|number"></span>
@@ -124,7 +124,7 @@
             <h3 class="panel-title table-heading">Infrastructure</h3>
             <p>
               <em>
-                Data is continuously being processed and harmonized by the GDC.<br />View GDC system statistics:
+                Data is continuously being processed and harmonized.<br />View GDC system statistics:
               </em>
             </p>
           </div>
@@ -157,7 +157,7 @@
             <h3 class="panel-title table-heading">Documentation</h3>
 
               <em>
-                Learn how to use the GDC Data Portal to its full potential with common
+                Learn how to use the iHMP Data Portal to its full potential with common
                 topics such as:
               </em>
 
@@ -166,28 +166,28 @@
             <tbody>
             <tr>
               <td>
-                <a href="https://gdc-docs.nci.nih.gov/Data_Portal/Users_Guide/Data/" target="_blank">Browse Data using Facet Search</a>
+                <a href="http://ihmpdcc.org/resources/osdf.php" target="_blank">Browse Data using Facet Search</a>
               </td>
             </tr>
             <tr>
               <td>
-                <a href="https://gdc-docs.nci.nih.gov/Data_Portal/Users_Guide/Advanced_Search/" target="_blank">Search Data with Advanced Search Technology</a>
+                <a href="http://ihmpdcc.org/resources/osdf.php" target="_blank">Search Data with Advanced Search Technology</a>
               </td>
             </tr>
             <tr>
               <td>
-                <a href="https://gdc-docs.nci.nih.gov/Data_Portal/Users_Guide/Projects/" target="_blank">Project Based Data Availability</a>
+                <a href="http://ihmpdcc.org/resources/osdf.php" target="_blank">Project Based Data Availability</a>
                 </li>
               </td>
             </tr>
             <tr>
               <td>
-                <a href="https://gdc-docs.nci.nih.gov/Commons/About_the_Data/#controlled-access-data" target="_blank">Controlled Access Data</a>
+                <a href="http://ihmpdcc.org/resources/osdf.php" target="_blank">Controlled Access Data</a>
               </td>
             </tr>
             <tr>
               <td>
-                <a href="https://gdc-docs.nci.nih.gov/" target="_blank"><strong>Visit the Documentation Website <i class="fa fa-angle-double-right"></i></strong></a>
+                <a href="http://ihmpdcc.org/resources/osdf.php" target="_blank"><strong>Visit the Documentation Website <i class="fa fa-angle-double-right"></i></strong></a>
               </td>
             </tr>
             </tbody>
@@ -199,10 +199,10 @@
       <div class="info-table col-lg-4 col-md-12 col-sm-12 gdc-apps">
         <div class="panel panel-default">
           <div class="panel-heading clearfix">
-            <h3 class="panel-title table-heading">GDC Applications</h3>
+            <h3 class="panel-title table-heading">Applications</h3>
 
               <em>
-                The GDC Data Portal is a robust data-driven platform that allows cancer researchers and
+                The iHMP Data Portal is a robust data-driven platform that allows cancer researchers and
                 bioinformaticians to search and download cancer data for analysis. The GDC applications include:
               </em>
 
@@ -285,7 +285,7 @@
                   <a href="https://gdc-cbioportal.nci.nih.gov/" title="GDC cBio Portal" target="_blank" class="menu-item">
                       <img width="35px"
                         src="images/icon-cBioPortal.svg" class="icon icon-gdc-cbio-portal home" alt="GDC cBio Portal" />
-                      <p>GDC cBio Portal</p>
+                      <p>cBio Portal</p>
                   </a>
                 </div>
               </td>
