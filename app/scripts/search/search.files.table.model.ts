@@ -38,7 +38,7 @@ module ngApp.search.models {
         sortable: true,
         tdClassName: 'id-cell'
       }, {
-        name: "Cases",
+        name: "Samples",
         id: "cases.case_id",
         td: (row, $scope) => {
           function getParticipants(row, $filter) {
@@ -99,10 +99,12 @@ module ngApp.search.models {
         hidden: true
       }],
     fields: [
-      "file_name",
+      "data_format",
+      "data_type",
     ],
     facets: [
       {name: "data_format", title: "Data Format", collapsed: false, facetType: "terms", removable: false },
+      {name: "data_type", title: "Data Type", collapsed: false, facetType: "terms", removable: false },
     ]
   };
   angular.module("search.table.files.model", [])
