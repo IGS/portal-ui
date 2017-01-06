@@ -70,7 +70,7 @@ module ngApp.search.cases.table.service {
             "summary.data_categories",
           ],
           facets: [
-            {name: "Project_name", title: "OSDF Projects", collapsed: false, facetType: "terms", removable: false},
+            {name: "Project_name", title: "Projects", collapsed: false, facetType: "terms", removable: false},
             {name: "Sample_fma_body_site", title: "Sample FMA Body Site", collapsed: false, facetType: "terms", removable: false},
             {name: "Subject_gender", title: "Gender", collapsed: false, facetType: "terms", removable: false},
           ]

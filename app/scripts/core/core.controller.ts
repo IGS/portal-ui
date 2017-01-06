@@ -104,30 +104,6 @@ module ngApp.core.controllers {
           this.$cookies.put("browser-checked", "true");
         }
       }
-      if (!$cookies.get("NCI-Warning")) {
-        this.$timeout(() => {
-          if (!this.$uibModalStack.getTop()) {
-            var modalInstance = this.$uibModal.open({
-              templateUrl: "core/templates/warning.html",
-              controller: "WarningController",
-              controllerAs: "wc",
-              backdrop: "static",
-              keyboard: false,
-              backdropClass: "warning-backdrop",
-              animation: false,
-              size: "lg",
-              resolve: {
-                warning: null,
-                header: null
-              }
-            });
-
-            modalInstance.result.then(() => {
-              this.$cookies.put("NCI-Warning", "true");
-            });
-          }
-        });
-      }
 
       $scope.$on("undo", (event, action) => {
         if (action === "added") {
