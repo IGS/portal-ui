@@ -56,39 +56,13 @@ module ngApp.home.controllers {
 
       this.exampleSearchQueries = [
 
-// This syntax doesn't work (problem with spaces in value?)
-//{
-//          description: "Human Microbiome Project samples from buccal mucosa.",
-//          filters: {
-//            op: "and",
-//            content: [
-//              {
-//                op: "in",
-//                content: {
-//                  field: "cases.SampleFmabodysite",
-//                  value: [ "buccal_mucosa" ]
-//                }
-//              },
-//              {
-//                op: "in",
-//                content: {
-//                  field: "cases.ProjectName",
-//                  value: [ "Human Microbiome Project (HMP)" ]
-//                }
-//              }
-//            ]
-//          },
-//          caseCount: null,
-//          fileCount: null
-//        },
-
 {
           description: "Human Microbiome Project samples from buccal mucosa.",
           filters: {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "buccal mucosa [FMA:59785]" ]
+                  value: [ "buccal mucosa" ]
                 }
               },
           caseCount: null,
@@ -100,7 +74,7 @@ module ngApp.home.controllers {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "external naris [FMA:59645]" ]
+                  value: [ "external naris" ]
                 }
               },
           caseCount: null,
@@ -112,7 +86,7 @@ module ngApp.home.controllers {
                 op: "in",
                 content: {
                   field: "cases.SampleFmabodysite",
-                  value: [ "feces [FMA:64183]" ]
+                  value: [ "feces" ]
                 }
               },
           caseCount: null,
