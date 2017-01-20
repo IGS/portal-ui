@@ -59,7 +59,7 @@ module ngApp.components.downloader.directive {
       const handleError = (): Object => {
         const error = _.flow(_.attempt,
           (e) => _.isError(e)
-            ? { message: 'GDC download service is currently experiencing issues.' }
+            ? { message: 'iHMP download service is currently experiencing issues.' }
             : e
         )(_.partial(getIframeResponse, iFrame));
 
@@ -97,8 +97,8 @@ module ngApp.components.downloader.directive {
           The download preparation can take time due to different factors
           (total file size, number of files, or number of concurrent users).
           We recommend that you use the
-          <a href="https://gdc.nci.nih.gov/access-data/gdc-data-transfer-tool" target="_blank">
-            GDC Data Transfer Tool
+          <a href="https://github/jmatsumura" target="_blank">
+            iHMP Data Transfer Tool
           </a>
           or cancel the download and try again later.
         </span>
