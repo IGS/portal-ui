@@ -87,8 +87,8 @@ module ngApp.cart.controllers {
         sortKey: "doc_count",
         displayKey: "key",
         sortData: true,
-        defaultText: "project",
-        pluralDefaultText: "projects",
+        defaultText: "gender",
+        pluralDefaultText: "genders",
       };
 
       this.fileCountChartConfig = {
@@ -98,8 +98,8 @@ module ngApp.cart.controllers {
         sortKey: "doc_count",
         displayKey: "key",
         sortData: true,
-        defaultText: "authorization level",
-        pluralDefaultText: "authorization levels"
+        defaultText: "study",
+        pluralDefaultText: "studies"
       };
 
       this.clinicalDataExportFilters = this.biospecimenDataExportFilters = {
