@@ -100,7 +100,7 @@ module ngApp.projects.table.service {
 
     model() {
       return {
-        title: 'Projects',
+        title: 'Studies',
         rowId: 'project_id',
         headings: [
           {
@@ -114,30 +114,19 @@ module ngApp.projects.table.service {
             sortable: true,
             hidden: false,
             draggable: true,
-            total: data => '<strong>Total</strong>',
             colSpan: 4
           }, {
             name: "Description",
             id: "disease_type",
-            tdClassName: 'truncated-cell',
             td: row => row.disease_type,
             toolTipText: row => row.disease_type,
             sortable: true,
             hidden: false,
             draggable: true
           }, {
-            name: "Primary Site",
-            id: "primary_site",
-            tdClassName: 'truncated-cell',
-            td: row => row.primary_site,
-            sortable: true,
-            hidden: false,
-            canReorder: true,
-            enabled: true
-          }, {
             name: "Project",
-            id: "program.name",
-            td: row => row.program && row.program.name,
+            id: "project_name",
+            td: row => row.project_name,
             sortable: true,
             hidden: false
           }, {
@@ -150,8 +139,7 @@ module ngApp.projects.table.service {
             sortable: true,
             hidden: false,
             thClassName: 'text-right',
-            tdClassName: 'text-right',
-            total: (data, $scope) => this.withProjectFilters(data, $scope.$filter, $scope.LocationService, this.withFilter)
+            tdClassName: 'text-right'
           }, {
             name: "Files",
             id: "summary.file_count",
@@ -161,8 +149,7 @@ module ngApp.projects.table.service {
             },
             sortable: true,
             thClassName: 'text-right',
-            tdClassName: 'text-right',
-            total: (data, $scope) =>  this.withProjectFilters(data, $scope.$filter, $scope.LocationService, this.withFilterF)
+            tdClassName: 'text-right'
           }
         ],
         fields: [
