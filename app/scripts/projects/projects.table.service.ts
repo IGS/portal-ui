@@ -117,7 +117,7 @@ module ngApp.projects.table.service {
             total: data => '<strong>Total</strong>',
             colSpan: 4
           }, {
-            name: "Disease Type",
+            name: "Description",
             id: "disease_type",
             tdClassName: 'truncated-cell',
             td: row => row.disease_type,
@@ -135,13 +135,13 @@ module ngApp.projects.table.service {
             canReorder: true,
             enabled: true
           }, {
-            name: "Program",
+            name: "Project",
             id: "program.name",
             td: row => row.program && row.program.name,
             sortable: true,
             hidden: false
           }, {
-            name: "Cases",
+            name: "Samples",
             id: "summary.case_count",
             td: (row, $scope) => {
               var fs = [{field: 'cases.project.project_id', value: row.project_id}]
@@ -153,22 +153,6 @@ module ngApp.projects.table.service {
             tdClassName: 'text-right',
             total: (data, $scope) => this.withProjectFilters(data, $scope.$filter, $scope.LocationService, this.withFilter)
           }, {
-            name: "Available Cases per Data Category",
-            id: "summary.data_categories",
-            thClassName: 'text-center',
-            hidden: false,
-            children: Object.keys(this.DATA_CATEGORIES).map(key => ({
-              name: this.DATA_CATEGORIES[key].abbr,
-              th:
-                '<abbr data-uib-tooltip="' + this.DATA_CATEGORIES[key].full + '">'
-              + this.DATA_CATEGORIES[key].abbr + '</abbr>',
-              id: this.DATA_CATEGORIES[key].abbr,
-              td: (row, $scope) => this.dataCategoryWithFilters(this.DATA_CATEGORIES[key].full, row, $scope.$filter),
-              thClassName: 'text-right',
-              tdClassName: 'text-right',
-              total: (data, $scope) => this.dataCategoryTotalWithFilters(this.DATA_CATEGORIES[key].full, data, $scope.$filter)
-            }))
-          }, {
             name: "Files",
             id: "summary.file_count",
             td: (row, $scope) => {
@@ -179,15 +163,6 @@ module ngApp.projects.table.service {
             thClassName: 'text-right',
             tdClassName: 'text-right',
             total: (data, $scope) =>  this.withProjectFilters(data, $scope.$filter, $scope.LocationService, this.withFilterF)
-          }, {
-            name: "File Size",
-            id: "file_size",
-            td: (row, $scope) => row.summary && $scope.$filter("size")(row.summary.file_size),
-            sortable: true,
-            thClassName: 'text-right',
-            tdClassName: 'text-right',
-            hidden: true,
-            total: (data, $scope) => $scope.$filter("size")(_.sum(_.pluck(data, "summary.file_size")))
           }
         ],
         fields: [

@@ -1,4 +1,5 @@
 <div class="container-fluid full-page projects">
+<!--
   <div class="search-panel">
     <div class="facets-sidebar" ng-class="{ collapsed: prsc.facetsCollapsed }">
       <uib-tabset>
@@ -16,7 +17,7 @@
         </div>
       </div>
     </div>
-
+-->
     <div
       class="expand-facets-button"
       ng-class="{ expanded: prsc.facetsCollapsed }"
@@ -31,7 +32,7 @@
           <current-filters></current-filters>
           <span data-ng-if="!cfc.currentFilters.length"  style="line-height: 3.4rem">
             <span data-translate>
-              Start searching by selecting a facet or try the Data Search
+              Try filtering using the Data Search
             </span>
           </span>
         </div>
@@ -46,7 +47,7 @@
 
 
       <h3 class="col-lg-9 col-md-8" data-ng-if="!prsc.projects.hits.length && !prsc.loading" data-translate>
-        No projects found using those filters.
+        <!--No projects found using those filters.-->
       </h3>
 
       <ul class="nav nav-tabs" data-ng-if="prsc.projects.hits.length">
