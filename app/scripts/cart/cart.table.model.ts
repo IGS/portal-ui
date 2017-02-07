@@ -41,7 +41,7 @@ module ngApp.cart.models {
         sortable: true,
         tdClassName: 'id-cell'
       }, {
-        name: "Cases",
+        name: "Samples",
         id: "cases",
         td: (row, $scope) => {
           function getParticipants(row, $filter) {
