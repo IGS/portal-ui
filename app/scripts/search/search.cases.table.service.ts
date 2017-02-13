@@ -56,9 +56,10 @@ module ngApp.search.cases.table.service {
               td: row => row.project && row.project.primary_site,
               sortable: true
           }, {
-              name: 'Study Topic',
-              id: 'project.disease_type',
-              td: (row, $scope) => row.project && $scope.$filter("humanify")(row.project.disease_type),
+              name: 'Study Name',
+              id: 'project.study_name',
+              toolTipText: row => row.project.study_full_name,
+              td: (row, $scope) => row.project && $scope.$filter("humanify")(row.project.study_name),
               sortable: false,
           }],
           fields: [
