@@ -365,6 +365,7 @@ gulp.task('serve:web', function (cb) {
   var bsOpts = {
     open: false,
     notify: false,
+    ghostMode: false,
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
