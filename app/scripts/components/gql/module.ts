@@ -128,11 +128,11 @@ module ngApp.components.gql {
     }
 
     splitField(s: string): IFieldParts {
-      var xs = s.split(this.GqlTokens.PERIOD);
+      //var xs = s.split(this.GqlTokens.PERIOD);
 
       return {
-        docType: xs.shift(),
-        facet: xs.join(this.GqlTokens.PERIOD)
+        docType: s,
+        facet: s
       };
     }
 
