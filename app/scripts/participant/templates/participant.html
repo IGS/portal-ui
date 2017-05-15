@@ -4,7 +4,7 @@
     {{ ::pc.participant.sample.sample_id }}
     <add-to-cart-all-button
       class="pull-right"
-      data-filter='{{ [{ field: "cases.case_id", value: pc.participant.case_id }] | makeFilter:true }}'
+      data-filter='{{ [{ field: "sample_id", value: pc.participant.sample.sample_id }] | makeFilter:true }}'
       data-size="pc.participant.summary.file_count"
       data-files="pc.participant.files"
     />
@@ -73,7 +73,8 @@
 -->
       </div>
     </section>
-
+    
+<!--
     <section class="row" id="graphs">
       <div class="col-md-6">
         <case-summary-card
@@ -97,7 +98,7 @@
         </case-summary-card>
       </div>
     </section>
-<!--
+
     <section class="row" id="clinical">
       <div class="col-lg-12 col-md-12"
         ng-if="! pc.hasNoClinical">

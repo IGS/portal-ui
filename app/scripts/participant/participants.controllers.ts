@@ -42,7 +42,7 @@ module ngApp.participants.controllers {
       this.clinicalFile = _.find(this.participant.files, (file) => {
         return (file.data_subtype || '').toLowerCase() === "clinical data";
       });
-
+/*
       this.experimentalStrategies = _.reduce(ExperimentalStrategyNames.slice(), function(result, name) {
         var strat = _.find(participant.summary.experimental_strategies, (item) => {
           return item.experimental_strategy.toLowerCase() === name.toLowerCase();
@@ -54,6 +54,7 @@ module ngApp.participants.controllers {
 
         return result;
       }, []);
+*/
 
       this.clinicalDataExportFilters = {
         'cases.case_id': participant.case_id
@@ -62,6 +63,7 @@ module ngApp.participants.controllers {
       this.hasNoClinical = ! this.clinicalDataExportExpands.some((field) => (participant[field] || []).length > 0);
       this.clinicalDataExportFileName = 'clinical.case-' + participant.case_id;
 
+/*
       this.dataCategories = Object.keys(this.DATA_CATEGORIES).reduce((acc, key) => {
         var type = _.find(participant.summary.data_categories, (item) =>
           item.data_category === this.DATA_CATEGORIES[key].full
@@ -72,6 +74,7 @@ module ngApp.participants.controllers {
           file_count: 0
         });
       }, []);
+*/
 
       this.expStratConfig = {
         sortKey: "file_count",
@@ -141,10 +144,12 @@ module ngApp.participants.controllers {
         }
       };
 
+/*
       // add project information to files for checking cart access
       this.participant.files = this.participant.files.map(x =>
         _.extend(x, { cases: [{ project: this.participant.project }] })
       )
+*/
 
     }
 
