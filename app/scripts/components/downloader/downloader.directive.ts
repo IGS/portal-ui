@@ -122,6 +122,8 @@ module ngApp.components.downloader.directive {
         } else if (cookieStillThere()) {
           if (++attempts % timeoutInterval === 0) {
             notify.closeAll();
+            finished();
+            /*
             notify({
               message: null,
               messageTemplate: (altMessage && attempts > timeoutInterval * 2) ? detailedMessage : simpleMessage,
@@ -129,6 +131,7 @@ module ngApp.components.downloader.directive {
               classes: 'alert-warning',
               scope: notifyScope
             });
+            */
           }
 
           timeoutPromise = $timeout(checker, waitTime);
