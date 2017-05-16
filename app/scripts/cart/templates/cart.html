@@ -14,7 +14,7 @@
         <count-card title="File Size" icon="fa-save" data="cc.summary.fs.value | size"></count-card>
       </div>
       <div class="col-lg-3 col-sm-6">
-        <summary-card data-data="cc.summary['SubjectGender'].buckets"
+        <summary-card data-data="cc.summary['subject_gender'].buckets"
                       height="177"
                       data-mode="graph"
                       data-show-cases="true"
@@ -23,7 +23,7 @@
                       data-title="File Counts by Gender"></summary-card>
       </div>
       <div class="col-lg-3 col-sm-6">
-         <summary-card data-data="cc.summary['StudyName'].buckets"
+         <summary-card data-data="cc.summary['study_name'].buckets"
                 height="177"
                 data-mode="graph"
                 data-grouping-title="Level"
@@ -62,7 +62,7 @@
           <split-control data-control-label-text="Download" data-no-split="true" data-icon-classes="fa fa-download">
               <split-control-option data-option-label-text="Download Manifest File">
                 <button data-download-manifest-cart data-downloader id="manifest-button">
-                  <i class="fa" ng-class="{'fa-download': !active, 'fa-spinner fa-pulse': active}"></i>
+                  <!--<i class="fa" ng-class="{'fa-download': !active, 'fa-spinner fa-pulse': active}"></i>-->
                   <span data-translate>Manifest</span>
                 </button>
               </split-control-option>
@@ -85,7 +85,7 @@
                   data-size="cc.participantCount"
                   data-text-normal="Clinical"
                   data-text-in-progress="Processing"
-                  data-style-class="true"> <!-- this overrides the bootstrap button style -->
+                  data-style-class="true"> 
                 </export-cases-button>
               </split-control-option>
 
@@ -97,7 +97,7 @@
                   data-size="cc.participantCount"
                   data-text-normal="Biospecimen"
                   data-text-in-progress="Processing"
-                  data-style-class="true"> <!-- this overrides the bootstrap button style -->
+                  data-style-class="true">
                 </export-cases-button>
               </split-control-option>
 
