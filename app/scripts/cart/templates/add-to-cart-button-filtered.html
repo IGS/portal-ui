@@ -17,11 +17,11 @@
             data-ng-class="{ disabled: !ctrl.files.length }">
             <a data-ng-click="ctrl.addRelatedFiles()" data-ng-if="ctrl.files.length">
                 <i class="fa fa-shopping-cart fa-stack"></i>
-                <span data-translate>Add all Case files to the Cart</span> ({{ ctrl.files.length }})
+                <span data-translate>Add all Sample files to the Cart</span> ({{ ctrl.files.length }})
             </a>
             <a data-ng-click="ctrl.removeRelatedFiles()" data-ng-if="ctrl.inBoth.length">
                 <i class="fa fa-trash-o fa-stack"></i>
-                <span data-translate>Remove all Case files from the Cart</span> ({{ ctrl.inBoth.length }})
+                <span data-translate>Remove all Sample files from the Cart</span> ({{ ctrl.inBoth.length }})
             </a>
             <a data-ng-if="!ctrl.files.length">
                 <span class="fa-stack">
@@ -37,7 +37,7 @@
             role="button" data-ng-class="{ disabled: !ctrl.filteredRelatedFiles.pagination.total }">
             <a data-ng-click="ctrl.addFilteredRelatedFiles(p)" data-ng-if="ctrl.filteredRelatedFiles.pagination.total">
                 <i class="fa fa-shopping-cart fa-stack"></i>
-                <span data-translate>Add filtered Case files to the Cart</span> ({{ ctrl.filteredRelatedFiles.pagination.total }})
+                <span data-translate>Add filtered Sample files to the Cart</span> ({{ ctrl.filteredRelatedFiles.pagination.total }})
             </a>
             <a data-ng-if="!ctrl.filteredRelatedFiles.pagination.total">
                 <span class="fa-stack">
