@@ -99,12 +99,12 @@ module ngApp.search.models {
         hidden: true
       }],
     fields: [
-      "data_format",
-      "data_type",
+      "file_format",
+      "file_type",
     ],
     facets: [
-      {name: "data_format", title: "Data Format", collapsed: false, facetType: "terms", removable: false },
-      {name: "data_type", title: "Data Type", collapsed: false, facetType: "terms", removable: false },
+      {name: "file_format", title: "Format", collapsed: false, facetType: "terms", removable: false },
+      {name: "file_type", title: "Type", collapsed: false, facetType: "terms", removable: false },
     ]
   };
   angular.module("search.table.files.model", [])

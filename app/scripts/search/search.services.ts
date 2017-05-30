@@ -102,7 +102,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.Project.name",
+                    field: "cases.project_name",
                     value: [
                       value
                     ]
@@ -117,8 +117,8 @@ module ngApp.search.services {
         filterKey: "cases.project.primary_site",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "primary site",
-        pluralDefaultText: "primary sites",
+        defaultText: "body site",
+        pluralDefaultText: "body sites",
         sortData: true,
         filters: {
           "default": {
@@ -126,7 +126,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.project.primary_site",
+                    field: "cases.sample_body_site",
                     value: [
                       value
                     ]
@@ -150,7 +150,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.study.name",
+                    field: "cases.study_name",
                     value: [
                       value
                     ]
@@ -174,7 +174,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.subject.gender",
+                    field: "cases.subject_gender",
                     value: [
                       value
                     ]
@@ -189,8 +189,8 @@ module ngApp.search.services {
         filterKey: "cases.file.format",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "data format",
-        pluralDefaultText: "data formats",
+        defaultText: "file format",
+        pluralDefaultText: "file formats",
         sortData: true,
         filters: {
           "default": {
@@ -198,7 +198,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.file.format",
+                    field: "files.file_format",
                     value: [
                       value
                     ]
@@ -213,8 +213,8 @@ module ngApp.search.services {
         filterKey: "cases.file.category",
         sortKey: "doc_count",
         displayKey: "key",
-        defaultText: "data category",
-        pluralDefaultText: "data categories",
+        defaultText: "file type",
+        pluralDefaultText: "file types",
         sortData: true,
         filters: {
           "default": {
@@ -222,7 +222,7 @@ module ngApp.search.services {
               filters: function(value) {
                 return $filter("makeFilter")([
                   {
-                    field: "cases.file.category",
+                    field: "files.file_type",
                     value: [
                       value
                     ]

@@ -38,7 +38,7 @@ module ngApp.search.cases.table.service {
 
       model() {
         return {
-          title: 'Cases',
+          title: 'Samples',
           rowId: 'case_id',
           headings: [{
               name: "Cart",
@@ -51,7 +51,7 @@ module ngApp.search.cases.table.service {
               td: row => '<a href="cases/'+row.case_id + '">' + row.case_id + '</a>',
               sortable: true,
           }, {
-              name: "Primary Site",
+              name: "Body Site",
               id: "project.primary_site",
               td: row => row.project && row.project.primary_site,
               sortable: true
@@ -64,7 +64,7 @@ module ngApp.search.cases.table.service {
           }],
           fields: [
             "project_name",
-            "sample_fma_body_site",
+            "sample_body_site",
             "subject_gender",
           ],
           expand: [
@@ -72,7 +72,7 @@ module ngApp.search.cases.table.service {
           ],
           facets: [
             {name: "project_name", title: "Projects", collapsed: false, facetType: "terms", removable: false},
-            {name: "sample_fma_body_site", title: "Sample Body Site", collapsed: false, facetType: "terms", removable: false},
+            {name: "sample_body_site", title: "Body Site", collapsed: false, facetType: "terms", removable: false},
             {name: "subject_gender", title: "Gender", collapsed: false, facetType: "terms", removable: false},
           ]
         };
