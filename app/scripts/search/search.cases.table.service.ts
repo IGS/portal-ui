@@ -65,6 +65,7 @@ module ngApp.search.cases.table.service {
           fields: [
             "project_name",
             "sample_body_site",
+            "study_name",
             "subject_gender",
           ],
           expand: [
@@ -73,6 +74,7 @@ module ngApp.search.cases.table.service {
           facets: [
             {name: "project_name", title: "Projects", collapsed: false, facetType: "terms", removable: false},
             {name: "sample_body_site", title: "Body Site", collapsed: false, facetType: "terms", removable: false},
+            {name: "study_name", title: "Studies", collapsed: false, facetType: "terms", removable: false},
             {name: "subject_gender", title: "Gender", collapsed: false, facetType: "terms", removable: false},
           ]
         };
