@@ -61,7 +61,7 @@ module ngApp.home.controllers {
           filters: {
                 op: "in",
                 content: {
-                  field: "sample.fma_body_site",
+                  field: "cases.sample_body_site",
                   value: [ "buccal mucosa" ]
                 }
               },
@@ -73,7 +73,7 @@ module ngApp.home.controllers {
           filters: {
                 op: "in",
                 content: {
-                  field: "sample.fma_body_site",
+                  field: "cases.sample_body_site",
                   value: [ "external naris" ]
                 }
               },
@@ -85,7 +85,7 @@ module ngApp.home.controllers {
           filters: {
                 op: "in",
                 content: {
-                  field: "sample.fma_body_site",
+                  field: "cases.sample_body_site",
                   value: [ "feces" ]
                 }
               },

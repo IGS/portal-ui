@@ -106,11 +106,8 @@ module ngApp.projects.table.service {
           {
             name: "ID",
             id: "project_id",
-            td: row => '<a href="projects/'+row.project_id +
-                         '" data-uib-tooltip="' + row.name +
-                         '" data-tooltip-append-to-body="true" data-tooltip-placement="right">' +
-                         row.project_id +
-                       '</a>',
+            td: row => row.project_id,
+            toolTipText: row => row.study_full_name,
             sortable: true,
             hidden: false,
             draggable: true,
@@ -119,7 +116,6 @@ module ngApp.projects.table.service {
             name: "Description",
             id: "disease_type",
             td: row => row.disease_type,
-            toolTipText: row => row.disease_type,
             sortable: true,
             hidden: false,
             draggable: true
@@ -133,7 +129,7 @@ module ngApp.projects.table.service {
             name: "Samples",
             id: "summary.case_count",
             td: (row, $scope) => {
-              var fs = [{field: 'cases.project.project_id', value: row.project_id}]
+              var fs = [{field: 'cases.study_name', value: row.project_id}]
               return this.withFilter(row.summary.case_count, fs, $scope.$filter);
             },
             sortable: true,
@@ -144,7 +140,7 @@ module ngApp.projects.table.service {
             name: "Files",
             id: "summary.file_count",
             td: (row, $scope) => {
-              var fs = [{field: 'cases.project.project_id', value: row.project_id}]
+              var fs = [{field: 'cases.study_name', value: row.project_id}]
               return this.withFilterF(row.summary.file_count, fs, $scope.$filter);
             },
             sortable: true,
