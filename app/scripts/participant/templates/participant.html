@@ -20,7 +20,11 @@
                  class="table table-striped table-hover table-condensed table-bordered table-vertical">
             <tbody>
               <tr>
-                <th scope="row" data-translate>Subject ID</th>
+                <th scope="row" data-translate>Per-study Subject ID</th>
+                <td>{{ ::pc.participant.sample.rand_subject_id }}</td>
+              </tr>
+              <tr>
+                <th scope="row" data-translate>Subject UUID</th>
                 <td>{{ ::pc.participant.sample.subject_id }}</td>
               </tr>
               <tr>
