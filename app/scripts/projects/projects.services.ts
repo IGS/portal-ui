@@ -35,7 +35,7 @@ module ngApp.projects.services {
     }
 
     getTableHeading() {
-      return "Case count per Data Category";
+      return "Sample count per Data Category";
     }
 
     getProjects(params: Object = {}): ng.IPromise<IProjects> {

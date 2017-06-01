@@ -91,7 +91,7 @@ angular.module('projects.githut.config', ['ngApp.core'])
 .service("ProjectsGithutColumns", function($state, $filter, DATA_CATEGORIES){
   function projectSref(d) {
     var filter = $filter("makeFilter")([{
-      field: 'cases.project.project_id',
+      field: 'cases.study_name',
       value: d.lang
     }]);
 
@@ -100,9 +100,9 @@ angular.module('projects.githut.config', ['ngApp.core'])
 
   function dataTypeSref(d) {
     var filter = $filter("makeFilter")([{
-      field: 'cases.project.project_id',
+      field: 'cases.study_name',
       value: d.lang
-    }, {field: 'files.data_category', value: d.column}]);
+    }, {field: 'files.file_type', value: d.column}]);
 
     $state.go("search.participants", { filters:JSON.parse(filter) });
   }
@@ -145,7 +145,7 @@ angular.module('projects.githut.config', ['ngApp.core'])
       dimensional:true,
       colorgroup:'file_count',
       href:function(d) {
-          var filter = $filter("makeFilter")([{field: 'cases.project.project_id', value: d.lang}], true);
+          var filter = $filter("makeFilter")([{field: 'cases.study_name', value: d.lang}], true);
           $state.go("search.files", { filters:filter });
       }
     },
@@ -228,14 +228,16 @@ angular.module('projects.githut.config', ['ngApp.core'])
       /**
        * The order each column will appear in.
        * Don't know how well this is implemented.
+       * Does sort by primary site, column headers
+       * are sorted depending on ~core/module.ts dict order
        */
       sorting:{
         "project_id": d3.ascending,
         "primary_site": d3.ascending
       },
       superhead:{
-        start:'Clinical',
-        end:'Biospecimen',
+        start:'16s_raw_seq_set',
+        end:'16s_trimmed_seq_set',
         text: ProjectsService.getTableHeading() //Case count per data type
       },
 
