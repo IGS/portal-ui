@@ -41,30 +41,6 @@ module ngApp.cart.models {
         sortable: true,
         tdClassName: 'id-cell'
       }, {
-        name: "Samples",
-        id: "cases",
-        td: (row, $scope) => {
-          function getParticipants(row, $filter) {
-            return row.cases.length == 1 ?
-                     '<a href="cases/' + row.cases[0].case_id + '">1</a>' :
-                     withFilter(row.cases.length, [{field: "files.file_id", value: row.file_id}], $filter);
-          }
-          return (row.cases || []).length ? getParticipants(row, $scope.$filter) : 0;
-        },
-        thClassName: 'text-right',
-        tdClassName: 'text-right'
-      }, {
-        name: "Project",
-        id: "cases.project.project_id",
-        td: row => {
-          return _.unique(row.cases, c => c.project.project_id).map(c => {
-            return ('<a href="projects/' + c.project.project_id +
-                    '" data-tooltip="' + c.project.name +
-                    '" data-tooltip-append-to-body="true" data-tooltip-placement="right">'+ c.project.project_id + '</a>');
-          }).join('<br>');
-        },
-        sortable: true
-      }, {
         name: "Data Type",
         id: "data_type",
         td: row => row.data_type,
