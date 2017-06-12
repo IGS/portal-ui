@@ -51,6 +51,16 @@ module ngApp.search.cases.table.service {
               td: row => '<a href="cases/'+row.case_id + '">' + row.case_id + '</a>',
               sortable: true,
           }, {
+              name: "Subject ID",
+              id: "subject_id",
+              td: row => row.subject_id,
+              sortable: false,
+          }, {
+              name: "Visit Number",
+              id: "visit_number",
+              td: row => row.visit_number,
+              sortable: false,
+          }, {
               name: "Body Site",
               id: "project.primary_site",
               td: row => row.project && row.project.primary_site,

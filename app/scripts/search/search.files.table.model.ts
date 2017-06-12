@@ -38,31 +38,6 @@ module ngApp.search.models {
         sortable: false,
         tdClassName: 'id-cell'
       }, {
-        name: "Samples",
-        id: "cases.case_id",
-        td: (row, $scope) => {
-          function getParticipants(row, $filter) {
-            return row.cases.length == 1 ?
-                     '<a href="cases/' + row.cases[0].case_id + '">1</a>' :
-                     withFilter(row.cases.length, [{field: "files.file_id", value: row.file_id}], $filter);
-          }
-
-          return row.cases && row.cases.length ? getParticipants(row, $scope.$filter) : 0;
-        },
-        thClassName: 'text-right',
-        tdClassName: 'text-right'
-      }, {
-        name: "Project",
-        id: "cases.project.project_id",
-        toolTipText: row => _.unique(_.map(row.cases, p => p.project.name)).join(', '),
-        td: row => {
-          return _.unique(_.map(row.cases, p => {
-            return '<a href="projects/' + p.project.project_id +
-                    '">'+ p.project.project_id + '</a>';
-          })).join('<br>');
-        },
-        sortable: true
-      }, {
         name: "Data Category",
         id: "data_category",
         td: row => row.data_category || '--',
