@@ -59,23 +59,15 @@ module ngApp.home.controllers {
 {
           description: "Human Microbiome Project samples from buccal mucosa.",
           filters: {
-                op: "in",
-                content: {
-                  field: "cases.sample_body_site",
-                  value: [ "buccal mucosa" ]
-                }
+                content:[{op:"in",content:{field:"cases.project_name",value:["Human Microbiome Project (HMP)"]}},{op:"in",content:{field:"cases.sample_body_site",value:["buccal mucosa"]}}],op:"and"
               },
           caseCount: null,
           fileCount: null
 	  },
 	  {
-          description: "Human Microbiome Project samples from anterior nares.",
+          description: "FASTQ data from female subjects.",
           filters: {
-                op: "in",
-                content: {
-                  field: "cases.sample_body_site",
-                  value: [ "external naris" ]
-                }
+                content:[{op:"in",content:{field:"files.file_format",value:["FASTQ"]}},{op:"in",content:{field:"cases.subject.gender",value:["female"]}}],op:"and"
               },
           caseCount: null,
           fileCount: null
@@ -83,14 +75,7 @@ module ngApp.home.controllers {
 	  {
           description: "Human Microbiome Project samples from stool.",
           filters: {
-                op: "in",
-                content: {
-                  field: "cases.sample_body_site",
-                  value: [ "feces" ]
-                }
-              },
-          caseCount: null,
-          fileCount: null
+                content:[{op:"in",content:{field:"cases.project_name",value:["Human Microbiome Project (HMP)"]}},{op:"in",content:{field:"cases.sample_body_site",value:["feces"]}}],op:"and"
 	  }
 
       ];
