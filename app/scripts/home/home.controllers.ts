@@ -76,8 +76,10 @@ module ngApp.home.controllers {
           description: "Human Microbiome Project samples from stool.",
           filters: {
                 content:[{op:"in",content:{field:"cases.project_name",value:["Human Microbiome Project (HMP)"]}},{op:"in",content:{field:"cases.sample_body_site",value:["feces"]}}],op:"and"
-	  }
-
+              },     
+          caseCount: null,
+          fileCount: null
+	  },   
       ];
 
       this.defaultParams =  {
