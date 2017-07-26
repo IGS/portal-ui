@@ -37,7 +37,7 @@ module ngApp.components.user.services {
                 private notify: INotifyService,
                 private config: IGDCConfig,
                 private $log: ng.ILogService) {
-      if (config.fake_auth) {
+      if (!config.fake_auth) {
         this.setUser({
           username: "DEV_USER",
           projects: {
