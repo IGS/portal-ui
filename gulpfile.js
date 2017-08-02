@@ -377,7 +377,7 @@ gulp.task('serve:web', function (cb) {
       baseDir: 'dist'
     },
     port: env.port,
-    host: "gdc-portal.nci.nih.gov"
+    host: "localhost"
 //    open: "external"
   };
 //    bsOpts.tunnel = production ? 'oicrgdcdev' : false;
@@ -425,14 +425,14 @@ gulp.task('default', ['clean'], function (cb) {
 
 // Run PageSpeed Insights
 // Update `url` below to the public URL for your site
-gulp.task('pagespeed', pagespeed.bind(null, {
+//gulp.task('pagespeed', pagespeed.bind(null, {
   // By default, we use the PageSpeed Insights
   // free (no API key) tier. You can use a Google
   // Developer API key if you have one. See
   // http://goo.gl/RkN0vE for info key: 'YOUR_API_KEY'
-  url: 'https://oicrgdcdev.localtunnel.me',
-  strategy: 'mobile'
-}));
+//  url: 'https://oicrgdcdev.localtunnel.me',
+//  strategy: 'mobile'
+//}));
 
 // Load custom tasks from the `tasks` directory
 try {
