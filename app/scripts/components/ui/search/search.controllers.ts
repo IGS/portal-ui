@@ -6,6 +6,7 @@ module ngApp.components.ui.search.controllers {
     query: string;
     setQuery(): void;
     sendQuery(): void;
+    saveQuery(): void;
     resetQuery(): void;
   }
 
@@ -32,6 +33,18 @@ module ngApp.components.ui.search.controllers {
         this.LocationService.setSearch({
             query: this.query,
             filters: angular.toJson({"query": this.query})
+        });
+      } else {
+          this.LocationService.setSearch({});
+      }
+    }
+
+    saveQuery() {
+      if (this.query.length) {
+        this.LocationService.setSearch({
+            query: this.query,
+            filters: angular.toJson({"query": this.query}),
+            save: 'yes'
         });
       } else {
           this.LocationService.setSearch({});
