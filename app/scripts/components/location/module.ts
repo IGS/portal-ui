@@ -2,6 +2,7 @@ module ngApp.components.location {
   export interface ISearch {
     filters?: string;
     query?: string;
+    save?: string;
     pagination?: any;
   }
 
@@ -27,6 +28,7 @@ module ngApp.components.location {
     setSearch(search: any): ng.ILocationService;
     filters(): IFilters;
     setFilters(filters: IFilters): ng.ILocationService;
+    save(): string;
     query(): string;
     setQuery(query?: string): ng.ILocationService;
     pagination(): any;

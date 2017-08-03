@@ -51,6 +51,12 @@ module ngApp.components.location.services {
       return this.setSearch(search);
     }
 
+    save(): string {
+      // TODO error handling
+      var s = this.search().save;
+      return s ? s : "";
+    }
+
     query(): string {
       // TODO error handling
       var q = this.search().query;

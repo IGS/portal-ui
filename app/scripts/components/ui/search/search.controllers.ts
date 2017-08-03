@@ -44,7 +44,7 @@ module ngApp.components.ui.search.controllers {
         this.LocationService.setSearch({
             query: this.query,
             filters: angular.toJson({"query": this.query}),
-            save: 'yes'
+            save: "yes"
         });
       } else {
           this.LocationService.setSearch({});

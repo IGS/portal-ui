@@ -145,7 +145,8 @@ module ngApp.files.services {
         size: paging.size,
         from: paging.from,
         sort: paging.sort || "file_name:asc",
-        filters: this.LocationService.filters()
+        filters: this.LocationService.filters(),
+        save: this.LocationService.save()
       };
 
       if (!params.raw) {

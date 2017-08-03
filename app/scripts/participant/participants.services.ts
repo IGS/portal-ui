@@ -60,7 +60,8 @@ module ngApp.participants.services {
         size: paging.size,
         from: paging.from,
         sort: paging.sort || 'case_id:asc',
-        filters: this.LocationService.filters()
+        filters: this.LocationService.filters(),
+        save: this.LocationService.save()
       };
 
       if (!params.hasOwnProperty("raw")) {
