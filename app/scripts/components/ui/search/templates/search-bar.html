@@ -35,6 +35,12 @@
           data-ng-click="sb.saveQuery()">
           <i class="fa fa-sticky-note-o"></i> Save Query
         </button>
+        <a style="margin-top: 5px; margin-left: 15px; float: left;"
+                data-ng-click="sb.resetQuery()"
+                data-ng-if="hc.UserService.currentUser"
+                aria-label="{{ 'Clear Query' | translate }}">
+          View Saved History
+        </a>
         <a style="margin-right: 15px"
                 data-ng-click="sb.resetQuery()"
                 aria-label="{{ 'Clear Query' | translate }}">
