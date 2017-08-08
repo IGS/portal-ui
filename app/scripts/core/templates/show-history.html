@@ -24,20 +24,20 @@
             </th>
           </tr>
           <tbody>
-            <tr>
+            <tr data-ng-repeat="x in wc.queries">
               <td class="id-cell">
                 <a 
-                  href="http://localhost:3000"
+                  href="{{wc.hrefs[$index]}}"
                   data-ng-click="wc.acceptWarning()"
                 >
-                  Test Query this is a long query that is so long is not real its a test
+                  {{x}}
                 </a>
               </td>
               <td class="text-right">
-                1234
+                {{wc.scounts[$index]}}
               </td>
               <td class="text-right">
-                5678
+                {{wc.fcounts[$index]}}
               </td>
             </tr>
           </tbody>

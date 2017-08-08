@@ -1,5 +1,6 @@
 module ngApp.components.ui.search.controllers {
   import ILocationService = ngApp.components.location.services.ILocationService;
+  import IUserService = ngApp.components.user.services.IUserService;
 
   interface ISearchBarController {
     gql: any;
@@ -20,6 +21,7 @@ module ngApp.components.ui.search.controllers {
     constructor(private $scope: ng.IScope,
                 private LocationService: ILocationService,
                 private $uibModal: any,
+                private UserService: IUserService,
                 private $state: ng.ui.IStateService) {
 
       $scope.$watch("query", () => {
@@ -64,8 +66,10 @@ module ngApp.components.ui.search.controllers {
         animation: false,
         size: "lg",
         resolve: {
-          warning: null,
-          header: null
+          queries: () => this.UserService.currentUser.queries,
+          hrefs: () => this.UserService.currentUser.hrefs,
+          scounts: () => this.UserService.currentUser.scounts,
+          fcounts: () => this.UserService.currentUser.fcounts
         }
       });
     }
@@ -88,7 +92,7 @@ module ngApp.components.ui.search.controllers {
 
   class HistoryController {
     /* @ngInject */
-    constructor(private $uibModalInstance, private warning, private header) {}
+    constructor(private $uibModalInstance, private queries, private hrefs, private scounts, private fcounts) {}
 
     acceptWarning(): void {
       this.$uibModalInstance.close();

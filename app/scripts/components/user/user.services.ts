@@ -135,6 +135,10 @@ module ngApp.components.user.services {
       this.currentUser = {
         username: user.username,
         isFiltered: _.get(this, 'currentUser.isFiltered', false),
+        queries: user.queries,
+        hrefs: user.hrefs,
+        scounts: user.scounts,
+        fcounts: user.fcounts,
         projects: {
           gdc_ids: _.reduce(user.projects.gdc_ids || {}, (acc, p, key) => {
             if (p.indexOf("_member_") !== -1) {

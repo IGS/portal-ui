@@ -4,5 +4,9 @@ module ngApp.components.user.models {
     projects: {gdc_ids: Object};
     token: string;
     isFiltered: boolean;
+    queries: string[];
+    hrefs: string[];
+    scounts: string[];
+    fcounts: string[];
   }
 }
