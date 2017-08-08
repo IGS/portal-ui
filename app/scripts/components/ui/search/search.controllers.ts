@@ -55,7 +55,7 @@ module ngApp.components.ui.search.controllers {
 
     showHistory() {
       var showHistoryModal = this.$uibModal.open({
-        templateUrl: "core/templates/login-failed-warning.html",
+        templateUrl: "core/templates/show-history.html",
         controller: "HistoryController",
         controllerAs: "wc",
         backdrop: "static",
