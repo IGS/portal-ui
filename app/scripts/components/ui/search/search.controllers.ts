@@ -8,6 +8,7 @@ module ngApp.components.ui.search.controllers {
     sendQuery(): void;
     saveQuery(): void;
     resetQuery(): void;
+    showHistory(): void;
   }
 
   class SearchBarController implements ISearchBarController {
@@ -18,6 +19,7 @@ module ngApp.components.ui.search.controllers {
     /* @ngInject */
     constructor(private $scope: ng.IScope,
                 private LocationService: ILocationService,
+                private $uibModal: any,
                 private $state: ng.ui.IStateService) {
 
       $scope.$watch("query", () => {
@@ -51,6 +53,23 @@ module ngApp.components.ui.search.controllers {
       }
     }
 
+    showHistory() {
+      var showHistoryModal = this.$uibModal.open({
+        templateUrl: "core/templates/login-failed-warning.html",
+        controller: "HistoryController",
+        controllerAs: "wc",
+        backdrop: "static",
+        keyboard: false,
+        backdropClass: "warning-backdrop",
+        animation: false,
+        size: "lg",
+        resolve: {
+          warning: null,
+          header: null
+        }
+      });
+    }
+
     setQuery() {
       var currentQuery = this.LocationService.query();
 
@@ -67,6 +86,16 @@ module ngApp.components.ui.search.controllers {
     }
   }
 
+  class HistoryController {
+    /* @ngInject */
+    constructor(private $uibModalInstance, private warning, private header) {}
+
+    acceptWarning(): void {
+      this.$uibModalInstance.close();
+    }
+  }
+
   angular.module("ui.search.controllers", [])
+      .controller("HistoryController", HistoryController)
       .controller("SearchBarController", SearchBarController);
 }
