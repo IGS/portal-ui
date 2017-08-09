@@ -92,7 +92,12 @@ module ngApp.components.ui.search.controllers {
 
   class HistoryController {
     /* @ngInject */
-    constructor(private $uibModalInstance, private queries, private hrefs, private scounts, private fcounts) {}
+    constructor(private $uibModalInstance, private $uibModalStack, private $window, private queries, private hrefs, private scounts, private fcounts) {}
+
+    redoHistory(path: string): void {
+      this.$uibModalStack.dismissAll();
+      this.$window.location.href = path;
+    }
 
     acceptWarning(): void {
       this.$uibModalInstance.close();

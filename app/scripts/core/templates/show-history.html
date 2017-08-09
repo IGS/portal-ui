@@ -2,7 +2,7 @@
   <h4 data-translate>Saved Query History</h4>
 </div>
 <div class="modal-body">
-  <div class="long-scrollable-table">
+  <div data-ng-if="wc.queries.length > 0" class="long-scrollable-table">
     <div class="long-scrollable-table-container">
       <table
         class="table table-striped table-hover table-condensed table-bordered"
@@ -27,8 +27,8 @@
             <tr data-ng-repeat="x in wc.queries">
               <td class="id-cell">
                 <a 
-                  href="{{wc.hrefs[$index]}}"
-                  data-ng-click="wc.acceptWarning()"
+                  href="#"
+                  data-ng-click="$event.preventDefault();wc.redoHistory(wc.hrefs[$index])"
                 >
                   {{x}}
                 </a>
@@ -44,6 +44,11 @@
         </thead>
       </table>
     </div>
+  </div>
+  <div data-ng-if="wc.queries.length < 1">
+  <p>
+    No saved queries found. If you recently saved queries and have no results here, try <a href="javascript:window.location.reload(true)">refresh</a>. 
+  </p>
   </div>
 </div>
 <div class="modal-footer">
