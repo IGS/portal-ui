@@ -45,9 +45,16 @@
       </table>
     </div>
   </div>
+  <div data ng-if="wc.queries.length > 0" style="text-align: center; margin-top: 2vh;"> 
+    <a class="btn btn-default" 
+        href="#" data-ng-click="$event.preventDefault();wc.refresh()">
+      <i class="fa fa-refresh"></i>
+      <span class="icon-btn-label">Refresh</span>
+    </a>
+  </div>
   <div data-ng-if="wc.queries.length < 1">
   <p>
-    No saved queries found. If you recently saved queries and have no results here, try <a href="javascript:window.location.reload(true)">refresh</a>. 
+    No saved queries found. If you recently saved queries and have no results here, try <a href="#" data-ng-click="$event.preventDefault();wc.refresh()">refresh</a>. 
   </p>
   </div>
 </div>

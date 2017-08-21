@@ -92,7 +92,14 @@ module ngApp.components.ui.search.controllers {
 
   class HistoryController {
     /* @ngInject */
-    constructor(private $uibModalInstance, private $uibModalStack, private $window, private queries, private hrefs, private scounts, private fcounts) {}
+    constructor(private $uibModalInstance, 
+                private $uibModalStack, 
+                private $window, 
+                private queries, 
+                private hrefs, 
+                private scounts,
+                private UserService: IUserService, 
+                private fcounts) {}
 
     redoHistory(path: string): void {
       this.$uibModalStack.dismissAll();
@@ -101,6 +108,14 @@ module ngApp.components.ui.search.controllers {
 
     acceptWarning(): void {
       this.$uibModalInstance.close();
+    }
+
+    refresh(): void {
+      this.UserService.login();
+      this.queries = this.UserService.currentUser.queries;
+      this.hrefs = this.UserService.currentUser.hrefs;
+      this.scounts = this.UserService.currentUser.scounts;
+      this.fcounts = this.UserService.currentUser.fcounts;
     }
   }
 
