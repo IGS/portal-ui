@@ -8,5 +8,6 @@ module ngApp.components.user.models {
     hrefs: string[];
     scounts: string[];
     fcounts: string[];
+    comments: string[];
   }
 }

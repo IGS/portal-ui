@@ -69,7 +69,8 @@ module ngApp.components.ui.search.controllers {
           queries: () => this.UserService.currentUser.queries,
           hrefs: () => this.UserService.currentUser.hrefs,
           scounts: () => this.UserService.currentUser.scounts,
-          fcounts: () => this.UserService.currentUser.fcounts
+          fcounts: () => this.UserService.currentUser.fcounts,
+          comments: () => "test"
         }
       });
     }
@@ -93,11 +94,13 @@ module ngApp.components.ui.search.controllers {
   class HistoryController {
     /* @ngInject */
     constructor(private $uibModalInstance, 
+                private LocationService: ILocationService,
                 private $uibModalStack, 
                 private $window, 
                 private queries, 
                 private hrefs, 
                 private scounts,
+                private comments,
                 private UserService: IUserService, 
                 private fcounts) {}
 
@@ -116,7 +119,21 @@ module ngApp.components.ui.search.controllers {
       this.hrefs = this.UserService.currentUser.hrefs;
       this.scounts = this.UserService.currentUser.scounts;
       this.fcounts = this.UserService.currentUser.fcounts;
+      this.comments = this.UserService.currentUser.comments;
     }
+
+    addComment(query: string, comment: string): void {
+      if (comment.length) {
+        this.LocationService.setSearch({
+            query: query,
+            filters: angular.toJson({"query": query}),
+            comment: comment
+        });
+      } else {
+          this.LocationService.setSearch({});
+      }
+    }
+
   }
 
   angular.module("ui.search.controllers", [])

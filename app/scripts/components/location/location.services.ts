@@ -57,6 +57,12 @@ module ngApp.components.location.services {
       return s ? s : "";
     }
 
+    comment(): string {
+      // TODO error handling
+      var c = this.search().comment;
+      return c ? c : "";
+    }
+
     query(): string {
       // TODO error handling
       var q = this.search().query;

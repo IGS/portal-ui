@@ -139,6 +139,7 @@ module ngApp.components.user.services {
         hrefs: user.hrefs,
         scounts: user.scounts,
         fcounts: user.fcounts,
+        comments: user.comments,
         projects: {
           gdc_ids: _.reduce(user.projects.gdc_ids || {}, (acc, p, key) => {
             if (p.indexOf("_member_") !== -1) {

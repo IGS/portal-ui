@@ -61,6 +61,7 @@ module ngApp.participants.services {
         from: paging.from,
         sort: paging.sort || 'case_id:asc',
         filters: this.LocationService.filters(),
+        comment: this.LocationService.comment(),
         save: this.LocationService.save()
       };
 

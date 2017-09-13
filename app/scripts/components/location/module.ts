@@ -3,6 +3,7 @@ module ngApp.components.location {
     filters?: string;
     query?: string;
     save?: string;
+    comment?: string;
     pagination?: any;
   }
 
@@ -29,6 +30,7 @@ module ngApp.components.location {
     filters(): IFilters;
     setFilters(filters: IFilters): ng.ILocationService;
     save(): string;
+    comment(): string;
     query(): string;
     setQuery(query?: string): ng.ILocationService;
     pagination(): any;
