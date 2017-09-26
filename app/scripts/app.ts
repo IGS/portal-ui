@@ -165,7 +165,7 @@ function appRun(gettextCatalog: any,
       message: "",
       messageTemplate:
         `<span>
-          Unable to connect to the iHMP API. 
+          Unable to connect to the HMP API. 
         </span>`,
       container: "#notification",
       classes: "alert-danger"
