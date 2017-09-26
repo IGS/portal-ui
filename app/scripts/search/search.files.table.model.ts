@@ -72,10 +72,14 @@ module ngApp.search.models {
     fields: [
       "file_format",
       "file_type",
+      "file_annotation_pipeline",
+      "file_matrix_type",
     ],
     facets: [
       {name: "file_format", title: "Format", collapsed: false, facetType: "terms", removable: false },
       {name: "file_type", title: "Type", collapsed: false, facetType: "terms", removable: false },
+      {name: "file_annotation_pipeline", title: "Annotation Pipeline", collapsed: false, facetType: "terms", removable: false },
+      {name: "file_matrix_type", title: "Matrix Type", collapsed: false, facetType: "terms", removable: false },
     ]
   };
   angular.module("search.table.files.model", [])
