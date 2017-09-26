@@ -9,5 +9,6 @@ module ngApp.components.user.models {
     scounts: string[];
     fcounts: string[];
     comments: string[];
+    timestamps: string[];
   }
 }

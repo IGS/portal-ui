@@ -70,7 +70,8 @@ module ngApp.components.ui.search.controllers {
           hrefs: () => this.UserService.currentUser.hrefs,
           scounts: () => this.UserService.currentUser.scounts,
           fcounts: () => this.UserService.currentUser.fcounts,
-          comments: () => "test"
+          comments: () => this.UserService.currentUser.comments,
+          timestamps: () => this.UserService.currentUser.timestamps
         }
       });
     }
@@ -101,6 +102,7 @@ module ngApp.components.ui.search.controllers {
                 private hrefs, 
                 private scounts,
                 private comments,
+                private timestamps,
                 private UserService: IUserService, 
                 private fcounts) {}
 
@@ -120,6 +122,7 @@ module ngApp.components.ui.search.controllers {
       this.scounts = this.UserService.currentUser.scounts;
       this.fcounts = this.UserService.currentUser.fcounts;
       this.comments = this.UserService.currentUser.comments;
+      this.timestamps = this.UserService.currentUser.timestamps;
     }
 
     addComment(query: string, comment: string): void {

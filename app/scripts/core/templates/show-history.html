@@ -30,6 +30,10 @@
               Save Comment
               <div>Save Comment</div>
             </th>
+            <th class="sticky" scope="col" data-translate>
+              Counts Calculated
+              <div>Counts Calculated</div>
+            </th>
           </tr>
           <tbody>
             <tr data-ng-repeat="x in wc.queries">
@@ -59,6 +63,9 @@
                   <i class="fa fa-sticky-note"></i>
                   <span class="icon-btn-label">Save Comment</span>
                 </a>
+              </td>
+              <td class="text-right">
+                {{wc.timestamps[$index]}}
               </td>
             </tr>
           </tbody>
