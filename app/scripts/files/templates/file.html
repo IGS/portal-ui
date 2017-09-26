@@ -59,6 +59,7 @@
                 <th scope="row" data-translate>State</th>
                 <td>{{ ::fc.file.state | humanify }}</td>
               </tr>
+              <!--
               <tr>
                 <th scope="row" data-translate>Archive</th>
                 <td data-ng-if="fc.file.archive">
@@ -74,13 +75,12 @@
                   --
                 </td>
               </tr>
+              -->
               <tr>
                 <th scope="row" data-translate>Project ID</th>
                 <td>
                   <span data-ng-repeat="p in fc.file.projects">
-                    <a data-ui-sref="project({ projectId: p })" >
-                      {{ p }}
-                    </a>{{$last ? '' : ', '}}
+                    {{ p }}
                   </span>
                   <span data-ng-if="fc.file.projects.length === 0">
                     --
@@ -111,11 +111,12 @@
                 <th scope="row" data-translate>Experimental Strategy</th>
                 <td>{{ ::fc.file.experimental_strategy || '--' }}</td>
               </tr>
+              <!--
               <tr>
                 <th scope="row" data-translate>Platform</th>
                 <td>{{ ::fc.file.platform || '--' }}</td>
               </tr>
-              <!--tr>
+              tr>
                 <th scope="row" data-translate>Data Submitter</th>
                 <td>{{ ::fc.file.center.short_name || '--' }}</td>
               </tr>
@@ -125,7 +126,8 @@
                   <span data-ng-if="!fc.file.tags">--</span>
                   <span data-ng-if="fc.file.tags">{{ fc.file.tags.join(", ") }}</span>
                 </td>
-              </tr -->
+              </tr 
+              -->
               </tbody>
             </table>
           </div>
@@ -136,13 +138,14 @@
         <div class="col-lg-12 col-md-12">
           <div class="panel panel-default">
             <div class="panel-heading panel-with-filter">
-              <span class="panel-title">Associated Cases / Biospecimen</span>
+              <span class="panel-title">Preparation</span>
 
               <span
                 class="input-group"
                 style="margin: 0 1.75rem 0 auto; width: 300px;"
                 data-ng-if="fc.file.associated_entities.length"
               >
+                <!--
                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
                 <input type="text"
                   class="form-control"
@@ -150,6 +153,7 @@
                   placeholder="Type to filter cases."
                   title="Search…"
                   data-ng-model="fc.tableFilters.assocEntity">
+                -->
               </span>
             </div>
 
@@ -167,13 +171,14 @@
                   <thead>
                   <tr>
                     <th class="sticky" scope="col" data-translate>
-                      Entity ID
-                      <div>Entity ID</div>
+                      ID
+                      <div>ID</div>
                     </th>
                     <th class="sticky" scope="col" data-translate>
-                      Entity Type
-                      <div>Entity Type</div>
+                      Type
+                      <div>Type</div>
                     </th>
+                    <!--
                     <th class="sticky" scope="col" data-translate>
                       Case UUID
                       <div>Case UUID</div>
@@ -182,25 +187,24 @@
                       Annotations
                       <div>Annotations</div>
                     </th>
+                    -->
                   </tr>
                   </thead>
                   <tbody>
                   <tr data-ng-repeat="e in fc.file.associated_entities | filter:fc.tableFilters.assocEntity track by e.entity_id">
                     <td class="id-cell">
-                      <a
-                        data-ng-if="e.entity_type === 'case'"
-                        data-ui-sref="case({ caseId: e.case_id })"
-                      >
                         {{ ::e.entity_id }}
-                      </a>
+                      <!--
                       <a
                         data-ng-if="e.entity_type !== 'case'"
                         data-ui-sref="case({ caseId: e.case_id, bioId: e.entity_id, '#': 'biospecimen' })"
                       >
                         {{ ::e.entity_id }}
                       </a>
+                      -->
                     </td>
                     <td>{{ ::e.entity_type | humanify }}</td>
+                    <!--
                     <td class="id-cell">
                       <a data-ui-sref="case({ caseId: e.case_id })">
                         {{ ::e.case_id }}
@@ -218,6 +222,7 @@
                       </a>
                       <span data-ng-if="!e.annotations.length">0</span>
                     </td>
+                    -->
                   </tr>
                   </tbody>
                 </table>
