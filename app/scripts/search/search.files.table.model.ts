@@ -23,6 +23,14 @@ module ngApp.search.models {
         id: "file_actions",
         td: row => '<add-to-cart-single-icon file="row" style="margin-right:5px"></add-to-cart-single-icon>'
       }, {
+        name: "Access",
+        id: "access",
+        td: (row, $scope) => {
+          var val = $scope.$filter("humanify")(row.access);
+          return '<i class="fa fa-'+ (row.access === 'controlled' ? 'lock' : 'unlock-alt') +'"></i> ' + val;
+        },
+        sortable: true
+      }, {
         name: "File UUID",
         id: "file_id",
         toolTipText: row => row.file_id,
@@ -58,18 +66,6 @@ module ngApp.search.models {
         name: "Data Type",
         id: "data_type",
         td: (row, $scope) => $scope.$filter("humanify")(row.data_type),
-        sortable: false,
-        hidden: true
-      }, {
-        name: "Experimental Strategy",
-        id: "experimental_strategy",
-        td: (row, $scope) => $scope.$filter("humanify")(row.experimental_strategy),
-        sortable: false,
-        hidden: true
-      }, {
-        name: "Platform",
-        id: "platform",
-        td: (row, $scope) => row.platform || '--',
         sortable: false,
         hidden: true
       }],
