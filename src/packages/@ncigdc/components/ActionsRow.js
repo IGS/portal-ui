@@ -145,9 +145,11 @@ export default compose(
             </RepositorySlideCount>
           )}
         </Row>
-        <AnnotationsLink>
-          <i className="fa fa-edit" /> Browse Annotations
-        </AnnotationsLink>
+          {features.browseAnnotations && (
+              <AnnotationsLink>
+                  <i className="fa fa-edit" /> Browse Annotations
+              </AnnotationsLink>
+          )}
       </Row>
     );
   },
