@@ -24,6 +24,7 @@ import ImageViewerLink from '@ncigdc/components/Links/ImageViewerLink';
 import { withTheme } from '@ncigdc/theme';
 import pluralize from '@ncigdc/utils/pluralize';
 import { AWG } from '@ncigdc/utils/constants';
+import features from '../../../features.json';
 
 const ImageViewerLinkAsButton = styled(ImageViewerLink, {
   marginLeft: '5px',
@@ -66,7 +67,9 @@ export default compose(
           >
             Add All Files to Cart
           </Button>
-          <DownloadManifestButton fileCount={totalFiles} filters={filters} />
+            {features.downloadManifest && (
+                <DownloadManifestButton fileCount={totalFiles} filters={filters} />
+            )}
           {!AWG ? (
             filters ? (
               <CreateRepositoryCaseSetButton
