@@ -15,5 +15,6 @@
   "login": false,
   "quickSearch": false,
   "manageSets": false,
-  "gdcApps": false
+  "gdcApps": false,
+  "fileFilter": false
 }
