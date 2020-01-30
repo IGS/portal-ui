@@ -45,7 +45,7 @@ const Routes = () => (
       {({ location: { pathname } }) => <Head title={pathname.split('/')[1]} />}
     </Route>
     <Switch>
-      <Route component={HomeRoute} exact path="/" />
+      <Route component={RepositoryRoute} exact path="/" />
       <Route component={CartRoute} exact path="/cart" />
       <Route component={RepositoryRoute} exact path="/repository" />
       <Route component={ExploreRoute} exact path="/exploration" />
