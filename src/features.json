@@ -1,0 +1,15 @@
+{
+  "navTabs": {
+    "active": false,
+    "tabs": {
+      "home": false,
+      "projects": false,
+      "exploration": false,
+      "analysis": false,
+      "repository": false
+    }
+  },
+  "advancedSearch": false,
+  "browseAnnotations": false,
+  "downloadManifest": false
+}
