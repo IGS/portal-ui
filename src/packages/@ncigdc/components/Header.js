@@ -177,20 +177,27 @@ const Header = ({
             </ul>
         )}
         <ul className="nav navbar-nav navbar-right">
-          <li>
-            <QuickSearch
-              isInSearchMode={isInSearchMode}
-              setIsInSearchMode={setIsInSearchMode}
-              tabIndex="0"
-              />
-          </li>
+          {features.quickSearch && (
+              <React.Fragment>
+                <li>
+                  <QuickSearch
+                    isInSearchMode={isInSearchMode}
+                    setIsInSearchMode={setIsInSearchMode}
+                    tabIndex="0"
+                    />
+                </li>
+              </React.Fragment>
+          )}
           {!isInSearchMode && (
             <React.Fragment>
-              <li>
-                <ManageSetsLink activeStyle={styles.activeNavLink(theme)} />
-              </li>
-
-              {user
+              {features.manageSets && (
+                  <React.Fragment>
+                    <li>
+                      <ManageSetsLink activeStyle={styles.activeNavLink(theme)} />
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.login && (user
                 ? (
                   <li className="header-hidden-xs">
                     <UserDropdown />
@@ -200,7 +207,7 @@ const Header = ({
                   <li>
                     <LoginButton />
                   </li>
-                )
+                ))
               }
               <li>
                 <CartLink>
@@ -223,10 +230,13 @@ const Header = ({
                   )}
                 </CartLink>
               </li>
-
+              {features.gdcApps && (
+                  <React.Fragment>
               <li>
                 <GDCAppsDropdown />
               </li>
+                  </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </ul>
