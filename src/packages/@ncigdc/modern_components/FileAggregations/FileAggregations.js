@@ -149,6 +149,7 @@ const FileAggregations = ({
   viewer: { repository: { files: { aggregations } } },
 }: TProps) => (
   <div className="test-file-aggregations">
+    {features.fileFilter && (
     <div
       className="text-right"
       style={{
@@ -172,6 +173,7 @@ const FileAggregations = ({
         Add a File Filter
       </a>
     </div>
+    )}
     <Modal
       isOpen={shouldShowFacetSelection}
       style={{

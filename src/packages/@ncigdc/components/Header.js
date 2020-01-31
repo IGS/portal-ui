@@ -39,6 +39,8 @@ import { Row } from '@ncigdc/uikit/Flex';
 
 import './Header.css';
 
+import features from '../../../features.json';
+
 const styles = {
   activeNavLink: theme => ({
     backgroundColor: theme.greyScale2,
@@ -106,67 +108,96 @@ const Header = ({
         style={{ outline: 'none' }}
         tabIndex="-1"
         >
-        <ul className="nav navbar-nav">
-          <li>
-            <HomeLink activeStyle={styles.activeNavLink(theme)} exact>
-              <i className="fa fa-home" style={styles.iconPadding} />
-              <span className="header-hidden-sm">Home</span>
-              <Hidden>Home</Hidden>
-            </HomeLink>
-          </li>
-          <li>
-            <ProjectsLink activeStyle={styles.activeNavLink(theme)} exact>
-              <i className="icon-gdc-projects" style={styles.iconPadding} />
-              <span className="header-hidden-sm">Projects</span>
-              <Hidden>Projects</Hidden>
-            </ProjectsLink>
-          </li>
-          <li>
-            <ExploreLink
-              activeStyle={styles.activeNavLink(theme)}
-              exact
-              query={defaultExploreQuery}
-              >
-              <i className="icon-gdc-data" style={styles.iconPadding} />
-              <span className="header-hidden-sm">Exploration</span>
-              <Hidden>Exploration</Hidden>
-            </ExploreLink>
-          </li>
-          <li>
-            <AnalysisLink activeStyle={styles.activeNavLink(theme)} exact>
-              <Row
-                  // needed for handling IE default svg style
-                style={{ alignItems: 'center' }}
-                >
-                <AnalysisIcon style={styles.iconPadding} />
-                <span className="header-hidden-sm">Analysis</span>
-                <Hidden>Analysis</Hidden>
-              </Row>
-            </AnalysisLink>
-          </li>
-          <li>
-            <RepositoryLink activeStyle={styles.activeNavLink(theme)} exact>
-              <DatabaseIcon style={styles.iconPadding} />
-              <span className="header-hidden-sm">Repository</span>
-              <Hidden>Repository</Hidden>
-            </RepositoryLink>
-          </li>
-        </ul>
+        {features.navTabs.active && (
+            <ul className="nav navbar-nav">
+              {features.navTabs.tabs.home && (
+                  <React.Fragment>
+                    <li>
+                      <HomeLink activeStyle={styles.activeNavLink(theme)} exact>
+                        <i className="fa fa-home" style={styles.iconPadding} />
+                        <span className="header-hidden-sm">Home</span>
+                        <Hidden>Home</Hidden>
+                      </HomeLink>
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.navTabs.tabs.projects && (
+                  <React.Fragment>
+                    <li>
+                      <ProjectsLink activeStyle={styles.activeNavLink(theme)} exact>
+                        <i className="icon-gdc-projects" style={styles.iconPadding} />
+                        <span className="header-hidden-sm">Projects</span>
+                        <Hidden>Projects</Hidden>
+                      </ProjectsLink>
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.navTabs.tabs.exploration && (
+                  <React.Fragment>
+                    <li>
+                      <ExploreLink
+                          activeStyle={styles.activeNavLink(theme)}
+                          exact
+                          query={defaultExploreQuery}
+                      >
+                        <i className="icon-gdc-data" style={styles.iconPadding} />
+                        <span className="header-hidden-sm">Exploration</span>
+                        <Hidden>Exploration</Hidden>
+                      </ExploreLink>
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.navTabs.tabs.analysis && (
+                  <React.Fragment>
+                    <li>
+                      <AnalysisLink activeStyle={styles.activeNavLink(theme)} exact>
+                        <Row
+                            // needed for handling IE default svg style
+                            style={{ alignItems: 'center' }}
+                        >
+                          <AnalysisIcon style={styles.iconPadding} />
+                          <span className="header-hidden-sm">Analysis</span>
+                          <Hidden>Analysis</Hidden>
+                        </Row>
+                      </AnalysisLink>
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.navTabs.tabs.repository && (
+                  <React.Fragment>
+                    <li>
+                      <RepositoryLink activeStyle={styles.activeNavLink(theme)} exact>
+                        <DatabaseIcon style={styles.iconPadding} />
+                        <span className="header-hidden-sm">Repository</span>
+                        <Hidden>Repository</Hidden>
+                      </RepositoryLink>
+                    </li>
+                  </React.Fragment>
+              )}
+            </ul>
+        )}
         <ul className="nav navbar-nav navbar-right">
-          <li>
-            <QuickSearch
-              isInSearchMode={isInSearchMode}
-              setIsInSearchMode={setIsInSearchMode}
-              tabIndex="0"
-              />
-          </li>
+          {features.quickSearch && (
+              <React.Fragment>
+                <li>
+                  <QuickSearch
+                    isInSearchMode={isInSearchMode}
+                    setIsInSearchMode={setIsInSearchMode}
+                    tabIndex="0"
+                    />
+                </li>
+              </React.Fragment>
+          )}
           {!isInSearchMode && (
             <React.Fragment>
-              <li>
-                <ManageSetsLink activeStyle={styles.activeNavLink(theme)} />
-              </li>
-
-              {user
+              {features.manageSets && (
+                  <React.Fragment>
+                    <li>
+                      <ManageSetsLink activeStyle={styles.activeNavLink(theme)} />
+                    </li>
+                  </React.Fragment>
+              )}
+              {features.login && (user
                 ? (
                   <li className="header-hidden-xs">
                     <UserDropdown />
@@ -176,7 +207,7 @@ const Header = ({
                   <li>
                     <LoginButton />
                   </li>
-                )
+                ))
               }
               <li>
                 <CartLink>
@@ -199,10 +230,13 @@ const Header = ({
                   )}
                 </CartLink>
               </li>
-
+              {features.gdcApps && (
+                  <React.Fragment>
               <li>
                 <GDCAppsDropdown />
               </li>
+                  </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </ul>
