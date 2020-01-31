@@ -26,6 +26,7 @@ import { IBucket } from '@ncigdc/components/Aggregations/types';
 import { withTheme } from '@ncigdc/theme';
 import FileIcon from '@ncigdc/theme/icons/File';
 import { Row } from '@ncigdc/uikit/Flex';
+import features from '../../../../features';
 
 const presetFacets = [
   {
