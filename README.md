@@ -8,7 +8,7 @@
 </p>
 <p align="center">
 	<a href="https://travis-ci.org/NCI-GDC/portal-ui">
-		<img src="https://travis-ci.org/NCI-GDC/portal-ui.svg?branch=next"
+		<img src="https://travis-ci.org/KPMP/portal-ui.svg?branch=develop"
 			 alt="Build Status">
 	</a>
 </p>
