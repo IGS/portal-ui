@@ -70,7 +70,7 @@ export default compose(
             {features.downloadManifest && (
                 <DownloadManifestButton fileCount={totalFiles} filters={filters} />
             )}
-          {!AWG ? (
+          {!AWG && features.navTabs.tabs.exploration ? (
             filters ? (
               <CreateRepositoryCaseSetButton
                 filters={filters}
