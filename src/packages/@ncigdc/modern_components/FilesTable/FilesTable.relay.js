@@ -62,31 +62,10 @@ export default (Component: ReactClass<*>) =>
                         file_name
                         file_size
                         access
-                        state
-                        acl
                         data_category
                         data_format
-                        platform
                         data_type
                         experimental_strategy
-                        cases {
-                          hits(first: 1) {
-                            total
-                            edges {
-                              node {
-                                case_id
-                                project {
-                                  project_id
-                                }
-                              }
-                            }
-                          }
-                        }
-                        annotations {
-                          hits(first: 0) {
-                            total
-                          }
-                        }
                       }
                     }
                   }
