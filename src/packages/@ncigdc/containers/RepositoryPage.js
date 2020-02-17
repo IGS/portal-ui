@@ -80,9 +80,15 @@ const enhance = compose(
 );
 
 export const RepositoryPageComponent = (props: TProps) => {
+	console.log(props);
   const fileCount = props.viewer.repository.files.hits.total;
-  const caseCount = props.viewer.repository.cases.hits.total;
-  const fileSize = props.viewer.cart_summary.aggregations.fs.value;
+//  const caseCount = props.viewer.repository.cases.hits.total;
+//  const fileSize = props.viewer.cart_summary.aggregations.fs.value;
+  
+  // hacking this in to get things to work
+  const caseCount = 0;
+  const fileSize = 0;
+  
   return (
     <div className="test-repository-page">
       <SearchPage
@@ -138,22 +144,22 @@ export const RepositoryPageComponent = (props: TProps) => {
                     </NoResultsMessage>
                   ),
                 },
-                {
-                  id: 'cases',
-                  text: `Cases (${caseCount.toLocaleString()})`,
-                  component: !!props.viewer.repository.cases.hits.total ? (
-                    <div>
-                      <RepoCasesPies
-                        aggregations={props.viewer.repository.cases.pies}
-                      />
-                      <RepoCasesTable />
-                    </div>
-                  ) : (
-                    <NoResultsMessage>
-                      No results found using those filters.
-                    </NoResultsMessage>
-                  ),
-                },
+//                {
+//                  id: 'cases',
+//                  text: `Cases (${caseCount.toLocaleString()})`,
+//                  component: !!props.viewer.repository.cases.hits.total ? (
+//                    <div>
+//                      <RepoCasesPies
+//                        aggregations={props.viewer.repository.cases.pies}
+//                      />
+//                      <RepoCasesTable />
+//                    </div>
+//                  ) : (
+//                    <NoResultsMessage>
+//                      No results found using those filters.
+//                    </NoResultsMessage>
+//                  ),
+//                },
               ]}
             />
           </span>
@@ -176,23 +182,8 @@ export const RepositoryPageQuery = {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Root {
-        cart_summary {
-          aggregations(filters: $filters) {
-            fs {
-              value
-            }
-          }
-        }
         repository {
 
-          cases {
-            pies: aggregations(filters: $filters aggregations_filter_themselves: true) {
-              ${RepoCasesPies.getFragment('aggregations')}
-            }
-            hits(score: "annotations.annotation_id" first: $cases_size offset: $cases_offset, filters: $filters, sort: $cases_sort) {
-              total
-            }
-          }
           files {
 
             pies: aggregations(filters: $filters aggregations_filter_themselves: true) {

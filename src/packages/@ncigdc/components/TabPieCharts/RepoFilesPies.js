@@ -203,18 +203,6 @@ export const RepoFilesPiesQuery = {
   fragments: {
     aggregations: () => Relay.QL`
       fragment on FileAggregations {
-        cases__project__project_id {
-          buckets {
-            doc_count
-            key
-          }
-        }
-        cases__primary_site {
-          buckets {
-            doc_count
-            key
-          }
-        }
         data_category {
           buckets {
             doc_count
