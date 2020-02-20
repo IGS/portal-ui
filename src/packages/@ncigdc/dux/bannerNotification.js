@@ -33,7 +33,7 @@ export function fetchNotifications() {
 //    });
 //    const res2 = (await fetchApi('login-notifications', {})) || { data: [] };
 	  
-	let res1 = {data:[{components:["SUBMISSION","PORTAL","LEGACY_PORTAL"],dismissible:true,"id":2,level:"INFO",message:"Join us for our next webinar on GDC Clinical Data Analysis on February 24 at 2pm EST. [Follow this link](https://gdc.cancer.gov/support/gdc-webinars/gdc-clinical-data-analysis) for more information."}]};
+	let res1 = {data:[]};
 	let res2 = { data: [] };
     dispatch({
       type: NOTIFICATION_SUCCESS,
