@@ -35,7 +35,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query GeneSymbol_relayQuery($filters: FiltersArgument) {
+          query GeneSymbol_relayQuery($filters: JSON) {
             viewer {
               explore {
                 genes {

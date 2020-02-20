@@ -43,11 +43,10 @@ export default (Component: ReactClass<*>) =>
             $files_size: Int
             $files_offset: Int
             $files_sort: [Sort]
-            $filters: FiltersArgument
+            $filters: JSON
           ) {
             viewer {
-              repository {
-                files {
+                File {
                   hits(
                     first: $files_size
                     offset: $files_offset
@@ -70,7 +69,6 @@ export default (Component: ReactClass<*>) =>
                     }
                   }
                 }
-              }
             }
           }
         `}

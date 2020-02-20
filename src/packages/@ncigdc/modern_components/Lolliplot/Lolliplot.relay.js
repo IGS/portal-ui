@@ -46,7 +46,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query Lolliplot_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
             $first: Int
             $score: String
           ) {

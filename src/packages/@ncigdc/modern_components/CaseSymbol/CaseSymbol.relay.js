@@ -36,7 +36,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query CaseSymbol_relayQuery($filters: FiltersArgument) {
+          query CaseSymbol_relayQuery($filters: JSON) {
             viewer {
               repository {
                 cases {

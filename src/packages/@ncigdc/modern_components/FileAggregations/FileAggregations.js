@@ -85,11 +85,11 @@ const enhance = compose(
     validFacetDocTypes: ['files'],
   }),
   withState('fileIdCollapsed', 'setFileIdCollapsed', false),
-  withPropsOnChange(['viewer'], ({ viewer }) => ({
-    parsedFacets: viewer.repository.files.facets
-      ? tryParseJSON(viewer.repository.files.facets, {})
-      : {},
-  })),
+//  withPropsOnChange(['viewer'], ({ viewer }) => ({
+//    parsedFacets: viewer.File.facets
+//      ? tryParseJSON(viewer.File.facets, {})
+//      : {},
+//  })),
 );
 
 const styles = {
@@ -147,7 +147,7 @@ const FileAggregations = ({
   shouldShowFacetSelection,
   theme,
   userSelectedFacets,
-  viewer: { repository: { files: { aggregations } } },
+  viewer: {  File: { aggregations  } },
 }: TProps) => (
   <div className="test-file-aggregations">
     {features.fileFilter && (

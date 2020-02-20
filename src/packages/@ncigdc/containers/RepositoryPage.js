@@ -81,7 +81,7 @@ const enhance = compose(
 
 export const RepositoryPageComponent = (props: TProps) => {
 	console.log(props);
-  const fileCount = props.viewer.repository.files.hits.total;
+  const fileCount = props.viewer.File.hits.total;
 //  const caseCount = props.viewer.repository.cases.hits.total;
 //  const fileSize = props.viewer.cart_summary.aggregations.fs.value;
   
@@ -131,10 +131,10 @@ export const RepositoryPageComponent = (props: TProps) => {
                 {
                   id: 'files',
                   text: `Files (${fileCount.toLocaleString()})`,
-                  component: !!props.viewer.repository.files.hits.total ? (
+                  component: !!props.viewer.File.hits.total ? (
                     <div>
                       <RepoFilesPies
-                        aggregations={props.viewer.repository.files.pies}
+                        aggregations={props.viewer.File.pies}
                       />
                       <FilesTable />
                     </div>
@@ -182,9 +182,8 @@ export const RepositoryPageQuery = {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Root {
-        repository {
 
-          files {
+          File {
 
             pies: aggregations(filters: $filters aggregations_filter_themselves: true) {
               ${RepoFilesPies.getFragment('aggregations')}
@@ -192,7 +191,6 @@ export const RepositoryPageQuery = {
             hits(first: $files_size offset: $files_offset, filters: $filters, sort: $files_sort) {
               total
             }
-          }
         }
       }
     `,

@@ -207,11 +207,11 @@ const Root = (rootProps: mixed) => (
                 />
             </Switch>
           ) : (
-            <Relay.Renderer
-              Container={Portal}
-              environment={Relay.Store}
-              queryConfig={new RelayRoute(rootProps)}
-              />
+        		  <Relay.Renderer
+        		  	Container={Portal}
+        		  	environment={Relay.Store}
+        		  	queryConfig={new RelayRoute(rootProps)}
+        		  />
           )}
         </React.Fragment>
       </Router>

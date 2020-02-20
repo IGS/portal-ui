@@ -31,9 +31,9 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query CancerDistributionSsmTable_relayQuery(
-            $ssmTested: FiltersArgument
-            $ssmCountsFilters: FiltersArgument
-            $caseAggsFilter: FiltersArgument
+            $ssmTested: JSON
+            $ssmCountsFilters: JSON
+            $caseAggsFilter: JSON
           ) {
             viewer {
               explore {

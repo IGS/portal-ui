@@ -36,7 +36,7 @@ export const FilePageComponent = (props: TProps) => (
 export const FilePageQuery = {
   fragments: {
     node: () => Relay.QL`
-      fragment on File {
+      fragment on FileNode {
         file_id
         file_id
         file_name
@@ -46,123 +46,6 @@ export const FilePageQuery = {
         data_format
         data_type
         experimental_strategy
-        md5sum
-        state
-        acl
-        analysis {
-          analysis_id
-          workflow_type
-          updated_datetime
-          input_files {
-            hits(first: 1) {
-              total
-              edges {
-                node {
-                  file_id
-                }
-              }
-            }
-          }
-          metadata {
-            read_groups {
-              hits(first: 99) {
-                edges {
-                  node {
-                    read_group_id
-                    is_paired_end
-                    read_length
-                    library_name
-                    sequencing_center
-                    sequencing_date
-                  }
-                }
-              }
-            }
-          }
-        }
-        downstream_analyses {
-          hits(first: 99) {
-            edges {
-              node {
-                workflow_type
-                output_files {
-                  hits(first: 99) {
-                    edges {
-                      node {
-                        file_id
-                        access
-                        file_name
-                        data_category
-                        data_type
-                        data_format
-                        file_size
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        annotations {
-          hits(first:99) {
-            edges {
-              node {
-                annotation_id
-                entity_id
-              }
-            }
-          }
-        }
-        cases {
-          hits(first:99) {
-            edges {
-              node {
-                project {
-                  project_id
-                }
-              }
-            }
-          }
-        }
-        associated_entities {
-          hits(first:99) {
-            edges {
-              node {
-                case_id
-                entity_id
-                entity_submitter_id
-                entity_type
-              }
-            }
-          }
-        }
-        metadata_files {
-          hits(first:99) {
-            edges {
-              node {
-                file_id
-                access
-                file_name
-                data_category
-                data_type
-                data_format
-                file_size
-              }
-            }
-          }
-        }
-        archive {
-          archive_id
-          submitter_id
-          revision
-        }
-        platform
-        index_files {
-          hits {
-            total
-          }
-        }
       }
     `,
   },

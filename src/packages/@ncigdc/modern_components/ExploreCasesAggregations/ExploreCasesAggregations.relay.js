@@ -29,7 +29,7 @@ export default (Component: ReactClass<*>) => compose(
       parentProps={props}
       query={graphql`
           query ExploreCasesAggregations_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
           ) {
             viewer {
               explore {

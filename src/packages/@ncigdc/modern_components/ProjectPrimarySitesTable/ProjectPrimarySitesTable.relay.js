@@ -38,7 +38,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query ProjectPrimarySitesTable_relayQuery($filters: FiltersArgument) {
+          query ProjectPrimarySitesTable_relayQuery($filters: JSON) {
             viewer {
               projects {
                 hits(first: 1, filters: $filters) {

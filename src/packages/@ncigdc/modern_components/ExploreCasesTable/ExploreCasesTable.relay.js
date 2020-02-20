@@ -43,7 +43,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query ExploreCasesTable_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
             $cases_size: Int
             $cases_offset: Int
             $cases_score: String

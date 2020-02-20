@@ -42,7 +42,7 @@ must be provided
     minHeight={278}
     parentProps={props}
     query={graphql`
-      query GeneExternalReferences_relayQuery($filters: FiltersArgument) {
+      query GeneExternalReferences_relayQuery($filters: JSON) {
         viewer {
           explore {
             genes {

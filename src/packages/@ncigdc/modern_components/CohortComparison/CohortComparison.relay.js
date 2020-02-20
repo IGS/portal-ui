@@ -76,8 +76,8 @@ export default (Component: React$Element<*>) =>
         Component={Component}
         query={graphql`
           query CohortComparison_relayQuery(
-            $filter1: FiltersArgument
-            $filter2: FiltersArgument
+            $filter1: JSON
+            $filter2: JSON
             $facets: [String]!
           ) {
             viewer {

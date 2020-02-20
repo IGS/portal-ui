@@ -35,14 +35,14 @@ export default compose(
   connect(state => ({ tableColumns: state.tableColumns.files })),
   branch(
     ({ viewer }) =>
-      !viewer.repository.files.hits ||
-      !viewer.repository.files.hits.edges.length,
+      !viewer.File.hits ||
+      !viewer.File.hits.edges.length,
     renderComponent(() => <div>No results found</div>)
   )
 )(
   ({
     downloadable,
-    viewer: { repository: { files: { hits } } },
+    viewer: {  File: { hits }  },
     entityType = 'files',
     tableColumns,
     canAddToCart = true,

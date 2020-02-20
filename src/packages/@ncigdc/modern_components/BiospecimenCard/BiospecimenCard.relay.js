@@ -44,8 +44,8 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query BiospecimenCard_relayQuery(
-            $filters: FiltersArgument
-            $fileFilters: FiltersArgument
+            $filters: JSON
+            $fileFilters: JSON
           ) {
             viewer {
               repository {

@@ -44,8 +44,8 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query AssociatedEntitiesTable_relayQuery(
-            $filters: FiltersArgument
-            $aeTable_filters: FiltersArgument
+            $filters: JSON
+            $aeTable_filters: JSON
             $aeTable_size: Int
             $aeTable_offset: Int
           ) {

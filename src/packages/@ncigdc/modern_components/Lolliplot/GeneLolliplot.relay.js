@@ -54,8 +54,8 @@ export default (Component: Object) =>
         Component={Component}
         query={graphql`
           query GeneLolliplot_relayQuery(
-            $filters: FiltersArgument
-            $ssmsFilters: FiltersArgument
+            $filters: JSON
+            $ssmsFilters: JSON
           ) {
             viewer {
               explore {

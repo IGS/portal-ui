@@ -36,7 +36,7 @@ export default (Component: ReactClass<*>) =>
           query TopCasesCountByGenes_relayQuery(
             $first: Int
             $geneIds: [String]
-            $filters: FiltersArgument
+            $filters: JSON
           ) {
             analysisViewer: viewer {
               analysis {

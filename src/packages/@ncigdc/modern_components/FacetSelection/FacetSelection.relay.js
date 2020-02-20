@@ -86,19 +86,16 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query FacetSelection_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
             $repoCustomFacetFields: [String]!
             $showCases: Boolean!
-            $showFiles: Boolean!
           ) {
             viewer {
               repository {
                 cases @include(if: $showCases) {
                   facets(facets: $repoCustomFacetFields, filters: $filters)
                 }
-                files @include(if: $showFiles) {
-                  facets(facets: $repoCustomFacetFields, filters: $filters)
-                }
+                
               }
             }
           }

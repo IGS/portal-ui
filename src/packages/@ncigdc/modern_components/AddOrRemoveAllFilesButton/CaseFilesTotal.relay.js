@@ -37,7 +37,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         Loader={() => null}
         query={graphql`
-          query CaseFilesTotal_relayQuery($filters: FiltersArgument) {
+          query CaseFilesTotal_relayQuery($filters: JSON) {
             viewer {
               repository {
                 cases {

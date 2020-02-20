@@ -43,7 +43,7 @@ export default (Component: ReactClass<*>) => compose(
             facetSearchHits: query(query: $query, types: $queryType) {
               files: hits @include(if: $showFiles) {
                 id
-                ... on File {
+                ... on FileNode {
                   file_id
                   submitter_id
                   file_name

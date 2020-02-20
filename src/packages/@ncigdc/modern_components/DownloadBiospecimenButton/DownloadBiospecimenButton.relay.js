@@ -59,7 +59,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query DownloadBiospecimenButton_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
           ) {
             viewer {
               repository {

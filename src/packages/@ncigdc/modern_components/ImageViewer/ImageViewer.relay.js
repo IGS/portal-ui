@@ -111,8 +111,8 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query ImageViewer_relayQuery(
-            $filters: FiltersArgument
-            $slideFilter: FiltersArgument
+            $filters: JSON
+            $slideFilter: JSON
             $cases_size: Int
             $cases_offset: Int
           ) {

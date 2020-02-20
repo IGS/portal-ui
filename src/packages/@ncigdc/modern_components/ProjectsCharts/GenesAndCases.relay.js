@@ -76,8 +76,8 @@ export default (Component: ReactClass<*>) =>
         query={graphql`
           query GenesAndCases_relayQuery(
             $score: String
-            $caseCount_filters: FiltersArgument
-            $gene_filters: FiltersArgument
+            $caseCount_filters: JSON
+            $gene_filters: JSON
           ) {
             viewer {
               explore {

@@ -37,7 +37,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query SampleType_relayQuery($filters: FiltersArgument) {
+          query SampleType_relayQuery($filters: JSON) {
             repository {
               cases {
                 hits(first: 1, filters: $filters) {

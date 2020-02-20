@@ -36,7 +36,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query SsmLolliplot_relayQuery($filters: FiltersArgument) {
+          query SsmLolliplot_relayQuery($filters: JSON) {
             ssmsViewer: viewer {
               explore {
                 ssms {

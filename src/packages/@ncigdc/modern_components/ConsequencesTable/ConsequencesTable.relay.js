@@ -36,7 +36,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query ConsequencesTable_relayQuery($filters: FiltersArgument) {
+          query ConsequencesTable_relayQuery($filters: JSON) {
             viewer {
               explore {
                 ssms {

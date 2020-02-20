@@ -32,7 +32,7 @@ export default (Component: ReactClass<*>) => compose(
       parentProps={props}
       query={graphql`
         query GeneAggregations_relayQuery(
-          $filters: FiltersArgument
+          $filters: JSON
         ) {
           viewer {
             explore {

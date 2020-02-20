@@ -48,7 +48,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query CaseAggregations_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
             $repoCaseCustomFacetFields: [String]!
           ) {
             viewer {
