@@ -113,16 +113,16 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query GenesTable_relayQuery(
-            $genesTable_filters: FiltersArgument
+            $genesTable_filters: JSON
             $genesTable_size: Int
             $genesTable_offset: Int
             $score: String
-            $ssmCase: FiltersArgument
-            $geneCaseFilter: FiltersArgument
-            $ssmTested: FiltersArgument
-            $cnvTested: FiltersArgument
-            $cnvGainFilters: FiltersArgument
-            $cnvLossFilters: FiltersArgument
+            $ssmCase: JSON
+            $geneCaseFilter: JSON
+            $ssmTested: JSON
+            $cnvTested: JSON
+            $cnvGainFilters: JSON
+            $cnvLossFilters: JSON
           ) {
             genesTableViewer: viewer {
               explore {

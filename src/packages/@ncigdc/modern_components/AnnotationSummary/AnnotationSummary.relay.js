@@ -37,7 +37,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query AnnotationSummary_relayQuery($filters: FiltersArgument) {
+          query AnnotationSummary_relayQuery($filters: JSON) {
             viewer {
               annotations {
                 hits(first: 1, filters: $filters) {

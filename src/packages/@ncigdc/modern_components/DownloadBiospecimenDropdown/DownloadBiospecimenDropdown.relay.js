@@ -42,7 +42,7 @@ export default (Component: ReactClass<*>) =>
       props.scope === 'explore'
         ? graphql`
             query DownloadBiospecimenDropdownExplore_relayQuery(
-              $filters: FiltersArgument
+              $filters: JSON
             ) {
               viewer {
                 explore {
@@ -57,7 +57,7 @@ export default (Component: ReactClass<*>) =>
           `
         : graphql`
             query DownloadBiospecimenDropdownRepository_relayQuery(
-              $filters: FiltersArgument
+              $filters: JSON
             ) {
               viewer {
                 repository {

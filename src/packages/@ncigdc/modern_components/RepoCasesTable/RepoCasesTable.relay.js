@@ -44,7 +44,7 @@ export default (Component: React.Class<*>) =>
             $cases_size: Int
             $cases_offset: Int
             $cases_sort: [Sort]
-            $filters: FiltersArgument
+            $filters: JSON
             $score: String
           ) {
             viewer {

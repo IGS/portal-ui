@@ -109,7 +109,7 @@ type AliquotEdge {
 }
 
 type Aliquots {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): AliquotConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): AliquotConnection
 }
 
 type Analysis {
@@ -197,7 +197,7 @@ type AnalyteEdge {
 }
 
 type Analytes {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): AnalyteConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): AnalyteConnection
 }
 
 type Annotation implements Node {
@@ -332,9 +332,9 @@ type AnnotationEdge {
 }
 
 type Annotations {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -342,7 +342,7 @@ type Annotations {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): AnnotationAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): AnnotationConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): AnnotationConnection
 }
 
 type AppendCaseSet {
@@ -386,7 +386,7 @@ type AppendSet {
 }
 
 input AppendSetInput {
-  filters: FiltersArgument
+  filters: JSON
   size: Int
   sort: [Sort]
   score: String
@@ -447,7 +447,7 @@ type Archive {
 }
 
 type AssociatedEntities {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): AssociatedEntityConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): AssociatedEntityConnection
 }
 
 type AssociatedEntity implements Node {
@@ -493,7 +493,7 @@ type Bucket {
 }
 
 type CartSummary {
-  aggregations(filters: FiltersArgument): CartSummaryAggs
+  aggregations(filters: JSON): CartSummaryAggs
 }
 
 type CartSummaryAggs {
@@ -2660,7 +2660,7 @@ type CaseAnnotationEdge {
 }
 
 type CaseAnnotations {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CaseAnnotationConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CaseAnnotationConnection
 }
 
 type CaseConnection {
@@ -2840,7 +2840,7 @@ type CaseFileEdge {
 }
 
 type CaseFiles {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CaseFileConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CaseFileConnection
 }
 
 type CivicAnnotation {
@@ -3073,7 +3073,7 @@ type CNVConsequenceEdge {
 }
 
 type CNVConsequences {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CNVConsequenceConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CNVConsequenceConnection
 }
 
 type CNVEdge {
@@ -3135,7 +3135,7 @@ type CNVObservationEdge {
 }
 
 type CNVObservations {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CNVObservationConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CNVObservationConnection
 }
 
 type CNVObservationSample {
@@ -3211,13 +3211,13 @@ type CNVOccurrenceEdge {
 }
 
 type CNVOccurrences {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CNVOccurrenceConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CNVOccurrenceConnection
 }
 
 type CNVs {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -3225,7 +3225,7 @@ type CNVs {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): CNVAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CNVConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CNVConnection
 }
 
 type CNVVariantCalling {
@@ -3302,7 +3302,7 @@ type CreateSet {
 }
 
 input CreateSetInput {
-  filters: FiltersArgument
+  filters: JSON
   size: Int
   sort: [Sort]
   score: String
@@ -3410,7 +3410,7 @@ type Demographic {
 }
 
 type Diagnoses {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): DiagnosisConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): DiagnosisConnection
 }
 
 type Diagnosis implements Node {
@@ -3889,7 +3889,7 @@ type Domains {
 }
 
 type DownstreamAnalyses {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): DownstreamAnalysisConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): DownstreamAnalysisConnection
 }
 
 type DownstreamAnalysis implements Node {
@@ -4537,7 +4537,7 @@ type EDemographic {
 }
 
 type EDiagnoses {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): EDiagnosisConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): EDiagnosisConnection
 }
 
 type EDiagnosis implements Node {
@@ -4842,11 +4842,11 @@ type EExposureEdge {
 }
 
 type EExposures {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): EExposureConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): EExposureConnection
 }
 
 type EFamilyHistories {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): EFamilyHistoryConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): EFamilyHistoryConnection
 }
 
 type EFamilyHistory implements Node {
@@ -4978,7 +4978,7 @@ type ETreatmentEdge {
 }
 
 type ETreatments {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ETreatmentConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ETreatmentConnection
 }
 
 type Exon {
@@ -5034,9 +5034,9 @@ type Explore {
 }
 
 type ExploreCases {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -5044,7 +5044,7 @@ type ExploreCases {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): ECaseAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ECaseConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ECaseConnection
 }
 
 type Exposure implements Node {
@@ -5165,7 +5165,7 @@ type ExposureEdge {
 }
 
 type Exposures {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ExposureConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ExposureConnection
 }
 
 type ExternalDbIds {
@@ -5177,7 +5177,7 @@ type ExternalDbIds {
 }
 
 type FamilyHistories {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): FamilyHistoryConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FamilyHistoryConnection
 }
 
 type FamilyHistory implements Node {
@@ -5240,7 +5240,7 @@ type FamilyHistoryEdge {
   node: FamilyHistory
 }
 
-type File implements Node {
+type FileNode implements Node {
   id: ID!
 
   # keyword
@@ -6469,7 +6469,7 @@ type FileAnnotationEdge {
 }
 
 type FileAnnotations {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): FileAnnotationConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FileAnnotationConnection
 }
 
 type FileCase implements Node {
@@ -6578,7 +6578,7 @@ type FileCaseEdge {
 }
 
 type FileCases {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): FileCaseConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FileCaseConnection
 }
 
 type FileCenter {
@@ -6614,17 +6614,14 @@ type FileConnection {
 }
 
 type FileEdge {
-  # A cursor for use in pagination
-  cursor: String!
 
   # The item at the end of the edge
-  node: File
+  node: FileNode
 }
 
-type Files {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+type File {
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -6632,14 +6629,14 @@ type Files {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): FileAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): FileConnection
+  hits(score: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FileConnection
 }
 
 type FileSize {
   value: Float
 }
 
-scalar FiltersArgument
+scalar JSON
 
 type FollowUp implements Node {
   id: ID!
@@ -6798,7 +6795,7 @@ type FollowUpEdge {
 }
 
 type FollowUps {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): FollowUpConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FollowUpConnection
 }
 
 type Gene implements Node {
@@ -7169,7 +7166,7 @@ type GeneCaseEdge {
 }
 
 type GeneCases {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): GeneCaseConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): GeneCaseConnection
 }
 
 type GeneConnection {
@@ -7192,9 +7189,9 @@ type GeneEdge {
 }
 
 type Genes {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -7202,7 +7199,7 @@ type Genes {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): GeneAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): GeneConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): GeneConnection
 }
 
 type IndexFile implements Node {
@@ -7353,7 +7350,7 @@ type IndexFileEdge {
 }
 
 type IndexFiles {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): IndexFileConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): IndexFileConnection
 }
 
 type InputBamFile {
@@ -7513,7 +7510,7 @@ type InputFileEdge {
 }
 
 type InputFiles {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): InputFileConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): InputFileConnection
 }
 
 # JSON String
@@ -7596,7 +7593,7 @@ type MetadataFileEdge {
 }
 
 type MetadataFiles {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): MetadataFileConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): MetadataFileConnection
 }
 
 enum Missing {
@@ -7781,7 +7778,7 @@ type MolecularTestEdge {
 }
 
 type MolecularTests {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): MolecularTestConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): MolecularTestConnection
 }
 
 type Mutation {
@@ -7829,7 +7826,7 @@ type NumericAggregations {
   #         }...}
   #
   #         
-  range(ranges: FiltersArgument): Aggregations
+  range(ranges: JSON): Aggregations
 }
 
 enum Order {
@@ -7985,7 +7982,7 @@ type OutputFileEdge {
 }
 
 type OutputFiles {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): OutputFileConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): OutputFileConnection
 }
 
 type PageInfo {
@@ -8067,7 +8064,7 @@ type PortionEdge {
 }
 
 type Portions {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): PortionConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): PortionConnection
 }
 
 type Program {
@@ -8164,9 +8161,9 @@ type ProjectEdge {
 }
 
 type Projects {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -8174,11 +8171,11 @@ type Projects {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): ProjectAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ProjectConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ProjectConnection
 }
 
 type ProteinMutations {
-  data(first: Int, offset: Int, fields: [String]!, score: String, filters: FiltersArgument): JSONString
+  data(first: Int, offset: Int, fields: [String]!, score: String, filters: JSON): JSONString
 }
 
 type QueryResults {
@@ -8464,15 +8461,15 @@ type ReadGroupQcEdge {
 }
 
 type ReadGroupQcs {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ReadGroupQcConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ReadGroupQcConnection
 }
 
 type ReadGroups {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): ReadGroupConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): ReadGroupConnection
 }
 
 input RelayIsDumb {
-  relay_is_dumb: FiltersArgument
+  relay_is_dumb: JSON
 }
 
 type RemoveFromCaseSet {
@@ -8516,7 +8513,7 @@ type RemoveFromSet {
 }
 
 input RemoveFromSetInput {
-  filters: FiltersArgument
+  filters: JSON
   set_id: String
 }
 
@@ -8528,13 +8525,13 @@ type RemoveFromSsmSet {
 
 type Repository {
   cases: RepositoryCases
-  files: Files
+  files: File
 }
 
 type RepositoryCases {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -8542,7 +8539,7 @@ type RepositoryCases {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): CaseAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): CaseConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): CaseConnection
 }
 
 type Root {
@@ -8553,6 +8550,7 @@ type Root {
   viewer: Root
   user: User
   query(query: String, types: [String]): QueryResults
+  File: File
   repository: Repository
   explore: Explore
   annotations: Annotations
@@ -8697,7 +8695,7 @@ type SampleEdge {
 }
 
 type Samples {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SampleConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SampleConnection
 }
 
 type Sets {
@@ -8793,7 +8791,7 @@ type SlideEdge {
 }
 
 type Slides {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SlideConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SlideConnection
 }
 
 input Sort {
@@ -9103,7 +9101,7 @@ type SSMConsequenceEdge {
 }
 
 type SSMConsequences {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SSMConsequenceConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SSMConsequenceConnection
 }
 
 type SsmEdge {
@@ -9212,7 +9210,7 @@ type SSMObservationEdge {
 }
 
 type SSMObservations {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SSMObservationConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SSMObservationConnection
 }
 
 type SSMObservationSample {
@@ -9294,13 +9292,13 @@ type SSMOccurrenceEdge {
 }
 
 type SSMOccurrences {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SSMOccurrenceConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SSMOccurrenceConnection
 }
 
 type Ssms {
-  facets(filters: FiltersArgument, facets: [String]!): JSONString
+  facets(filters: JSON, facets: [String]!): JSONString
   aggregations(
-    filters: FiltersArgument
+    filters: JSON
 
     # Should term aggregations be affected by queries that contain filters on
     # their field. For example if a query is filtering primary_site by Blood
@@ -9308,7 +9306,7 @@ type Ssms {
     # Set to False for UIs that allow users to select multiple values of an aggregation.
     aggregations_filter_themselves: Boolean = true
   ): SsmAggregations
-  hits(score: String, query: String, offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): SsmConnection
+  hits(score: String, query: String, offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): SsmConnection
 }
 
 type SSMVariantCalling {
@@ -9375,7 +9373,7 @@ type TissueSourceSite {
 }
 
 type TopCasesCountByGenes {
-  data(first: Int, gene_ids: [String], filters: FiltersArgument): JSONString
+  data(first: Int, gene_ids: [String], filters: JSON): JSONString
 }
 
 type Transcript implements Node {
@@ -9549,7 +9547,7 @@ type TranscriptEdge {
 }
 
 type Transcripts {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): TranscriptConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): TranscriptConnection
 }
 
 type Treatment implements Node {
@@ -9627,7 +9625,7 @@ type TreatmentEdge {
 }
 
 type Treatments {
-  hits(offset: Int, sort: [Sort], filters: FiltersArgument, before: String, after: String, first: Int, last: Int): TreatmentConnection
+  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): TreatmentConnection
 }
 
 type TumorGenotype {

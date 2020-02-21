@@ -10,7 +10,7 @@ export default (Component: ReactClass<*>) => (props: Object) => {
       variables={{ filters: props.filters }}
       Component={Component}
       query={graphql`
-        query repositoryCase_relayQuery($filters: FiltersArgument) {
+        query repositoryCase_relayQuery($filters: JSON) {
           viewer {
             repository {
               cases {

@@ -42,7 +42,7 @@ export default (Component: ReactClass<*>) =>
             $size: Int
             $offset: Int
             $projects_sort: [Sort]
-            $filters: FiltersArgument
+            $filters: JSON
           ) {
             projectsViewer: viewer {
               projects {

@@ -10,7 +10,7 @@ export default (Component: ReactClass<*>) => (props: Object) => {
       variables={{ filters: props.filters }}
       Component={Component}
       query={graphql`
-        query exploreSsm_relayQuery($filters: FiltersArgument) {
+        query exploreSsm_relayQuery($filters: JSON) {
           viewer {
             explore {
               ssms {

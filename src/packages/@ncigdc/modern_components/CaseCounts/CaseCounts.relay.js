@@ -34,7 +34,7 @@ export default (Component) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query CaseCounts_relayQuery($filters: FiltersArgument) {
+          query CaseCounts_relayQuery($filters: JSON) {
             viewer {
               repository {
                 cases {

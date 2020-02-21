@@ -40,7 +40,7 @@ export default (Component: ReactClass<*>) => compose(
     minHeight={278}
     parentProps={props}
     query={graphql`
-      query GeneSummary_relayQuery($filters: FiltersArgument) {
+      query GeneSummary_relayQuery($filters: JSON) {
         viewer {
           explore {
             genes {

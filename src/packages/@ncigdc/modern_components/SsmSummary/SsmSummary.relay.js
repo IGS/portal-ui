@@ -45,8 +45,8 @@ export default (Component: ReactClass<*>) => compose(
     parentProps={props}
     query={graphql`
       query SsmSummary_relayQuery(
-        $filters: FiltersArgument
-        $consequenceFilters: FiltersArgument
+        $filters: JSON
+        $consequenceFilters: JSON
       ) {
         viewer {
           explore {

@@ -97,7 +97,7 @@ const getContinuousAggs = ({
   };
   const componentName = 'ContinuousAggregationQuery';
   const body = JSON.stringify({
-    query: `query ${componentName}($filters: FiltersArgument, $filters2: FiltersArgument) {
+    query: `query ${componentName}($filters: JSON, $filters2: JSON) {
       viewer {
         explore {
           cases {

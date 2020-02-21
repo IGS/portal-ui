@@ -29,7 +29,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query FileAnnotations_relayQuery($filters: FiltersArgument) {
+          query FileAnnotations_relayQuery($filters: JSON) {
             repository {
               files {
                 hits(filters: $filters, first: 1) {

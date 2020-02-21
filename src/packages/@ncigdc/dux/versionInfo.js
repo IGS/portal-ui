@@ -62,26 +62,29 @@ export const VERSION_INFO_SUCCESS = 'gdc/VERSION_INFO_SUCCESS';
 // Action Creator
 export function fetchApiVersionInfo(): Function {
   return async (dispatch, getState) => {
-    const { tag, commit, data_release } = await fetchApi('status', {
-      credentials: 'same-origin',
-    });
-    const apiVersionInfo = {
-      apiVersion: tag,
-      apiCommitHash: commit,
-      dataRelease: data_release,
-    };
-
-    const versionInfo = {
-      ...getState().versionInfo,
-      ...apiVersionInfo,
-    };
-
-    logVersionInfo(versionInfo);
-
+//    const { tag, commit, data_release } = await fetchApi('status', {
+//      credentials: 'same-origin',
+//    });
+//    const apiVersionInfo = {
+//      apiVersion: tag,
+//      apiCommitHash: commit,
+//      dataRelease: data_release,
+//    };
+//
+//    const versionInfo = {
+//      ...getState().versionInfo,
+//      ...apiVersionInfo,
+//    };
+//
+//    logVersionInfo(versionInfo);
+//
+	  
+	let apiVersionInfo = {apiCommitHash:"585cd1079835b7d5bec5c4dfd154fd9adde5f18e",dataRelease:"Data Release 22.0 - January 16, 2020",apiVersion:"2.0.0"};  
     dispatch({
       type: VERSION_INFO_SUCCESS,
       payload: apiVersionInfo,
     });
+	 
   };
 }
 

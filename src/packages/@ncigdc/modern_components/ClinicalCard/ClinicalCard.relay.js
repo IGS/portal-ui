@@ -54,8 +54,8 @@ must be provided
         parentProps={props}
         query={graphql`
           query ClinicalCard_relayQuery(
-            $filters: FiltersArgument
-            $fileFilters: FiltersArgument
+            $filters: JSON
+            $fileFilters: JSON
           ) {
             viewer {
               repository {

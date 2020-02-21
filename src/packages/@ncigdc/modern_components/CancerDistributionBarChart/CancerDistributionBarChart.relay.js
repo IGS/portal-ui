@@ -110,14 +110,14 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query CancerDistributionBarChart_relayQuery(
-            $caseAggsFilters: FiltersArgument
-            $ssmTested: FiltersArgument
-            $cnvGain: FiltersArgument
-            $cnvLoss: FiltersArgument
-            $cnvTested: FiltersArgument
-            $cnvTestedByGene: FiltersArgument
-            $cnvAll: FiltersArgument
-            $ssmFilters: FiltersArgument
+            $caseAggsFilters: JSON
+            $ssmTested: JSON
+            $cnvGain: JSON
+            $cnvLoss: JSON
+            $cnvTested: JSON
+            $cnvTestedByGene: JSON
+            $cnvAll: JSON
+            $ssmFilters: JSON
           ) {
             viewer {
               explore {

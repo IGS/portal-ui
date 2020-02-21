@@ -41,7 +41,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query ExploreCasesSsmsAggregations_relayQuery(
-            $ssmCountsfilters: FiltersArgument
+            $ssmCountsfilters: JSON
           ) {
             ssmsAggregationsViewer: viewer {
               explore {

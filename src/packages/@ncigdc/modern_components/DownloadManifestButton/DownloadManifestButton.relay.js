@@ -36,7 +36,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query DownloadManifestButton_relayQuery($filters: FiltersArgument) {
+          query DownloadManifestButton_relayQuery($filters: JSON) {
             viewer {
               projects {
                 hits(first: 1, filters: $filters) {

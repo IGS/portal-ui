@@ -75,12 +75,12 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query SsmsTable_relayQuery(
-            $ssmTested: FiltersArgument
-            $ssmCaseFilter: FiltersArgument
+            $ssmTested: JSON
+            $ssmCaseFilter: JSON
             $ssmsTable_size: Int
-            $consequenceFilters: FiltersArgument
+            $consequenceFilters: JSON
             $ssmsTable_offset: Int
-            $ssmsTable_filters: FiltersArgument
+            $ssmsTable_filters: JSON
             $score: String
             $sort: [Sort]
           ) {

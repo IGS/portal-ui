@@ -40,8 +40,8 @@ export default (Component) => (props) => {
       Component={Component}
       query={graphql`
         query repositoryCaseSlides_relayQuery(
-          $filters: FiltersArgument
-          $slideFilter: FiltersArgument
+          $filters: JSON
+          $slideFilter: JSON
         ) {
           viewer {
             repository {

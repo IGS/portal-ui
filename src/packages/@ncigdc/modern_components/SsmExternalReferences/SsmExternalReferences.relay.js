@@ -51,8 +51,8 @@ export default (Component: ReactClass<*>) => compose(
     parentProps={props}
     query={graphql`
       query SsmExternalReferences_relayQuery(
-        $filters: FiltersArgument
-        $withDbsnp_rs: FiltersArgument
+        $filters: JSON
+        $withDbsnp_rs: JSON
       ) {
         viewer {
           explore {

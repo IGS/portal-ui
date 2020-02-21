@@ -30,8 +30,8 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query CancerDistributionSsmBarChart_relayQuery(
-            $caseAggsFilters: FiltersArgument
-            $ssmTested: FiltersArgument
+            $caseAggsFilters: JSON
+            $ssmTested: JSON
           ) {
             viewer {
               explore {

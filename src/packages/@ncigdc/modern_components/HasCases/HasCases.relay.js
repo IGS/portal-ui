@@ -29,7 +29,7 @@ export default (Component: ReactClass<*>) =>
         variables={props.variables}
         Component={Component}
         query={graphql`
-          query HasCases_relayQuery($filters: FiltersArgument) {
+          query HasCases_relayQuery($filters: JSON) {
             viewer {
               explore {
                 cases {

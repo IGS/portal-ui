@@ -37,7 +37,7 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query AddOrRemoveAllFilesButton_relayQuery(
-            $filters: FiltersArgument
+            $filters: JSON
             $first: Int
           ) {
             filesViewer: viewer {

@@ -43,8 +43,8 @@ export default (Component: ReactClass<*>) =>
         Component={Component}
         query={graphql`
           query ProjectSummary_relayQuery(
-            $filters: FiltersArgument
-            $annotationsFilters: FiltersArgument
+            $filters: JSON
+            $annotationsFilters: JSON
           ) {
             viewer {
               projects {

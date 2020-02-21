@@ -43,7 +43,7 @@ const ClinicalAggregationsQuery = (Component: ReactClass<*>) => compose(
     parentProps={props}
     query={graphql`
         query ClinicalAggregations_relayQuery(
-          $filters: FiltersArgument
+          $filters: JSON
           $facetFields: [String]!
         ) {
           viewer {
