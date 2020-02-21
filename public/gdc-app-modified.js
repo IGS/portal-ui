@@ -3046,12 +3046,12 @@ var ngApp;
                                         "annotations.annotation_id",
                                         "project.project_id",
                                         "project.name",
-                                        'files.access',
+                                        'access',
                                         'files.file_name',
                                         'files.file_id',
                                         'files.file_size',
-                                        'files.data_type',
-                                        'files.data_format'
+                                        'data_type',
+                                        'data_format'
                                     ]
                                 }).then(function (data) {
                                     if (_this.areFiltersApplied) {
@@ -5325,7 +5325,7 @@ var ngApp;
                                     {
                                         op: "in",
                                         content: {
-                                            field: "files.data_category",
+                                            field: "data_category",
                                             value: [this.DATA_CATEGORIES.CNV.full]
                                         }
                                     },
@@ -5356,7 +5356,7 @@ var ngApp;
                                     {
                                         op: "in",
                                         content: {
-                                            field: "files.data_type",
+                                            field: "data_type",
                                             value: [this.DATA_TYPES.GEQ.full]
                                         }
                                     },
@@ -5609,7 +5609,7 @@ var ngApp;
                                                 ]
                                             },
                                             {
-                                                field: "files.data_category",
+                                                field: "data_category",
                                                 value: [
                                                     value
                                                 ]
@@ -5947,7 +5947,7 @@ var ngApp;
                                                 ]
                                             },
                                             {
-                                                field: "files.data_category",
+                                                field: "data_category",
                                                 value: [
                                                     value
                                                 ]
@@ -6153,7 +6153,7 @@ angular.module('projects.githut.config', ['ngApp.core'])
         var filter = $filter("makeFilter")([{
                 field: 'cases.project.project_id',
                 value: d.lang
-            }, { field: 'files.data_category', value: d.column }]);
+            }, { field: 'data_category', value: d.column }]);
         $state.go("search.participants", { filters: JSON.parse(filter) });
     }
     var results = [
@@ -6443,12 +6443,12 @@ var ngApp;
                     };
                     ProjectsTableService.prototype.dataCategoryWithFilters = function (dataCategory, row, $filter) {
                         var fs = [{ field: 'cases.project.project_id', value: row.project_id },
-                            { field: 'files.data_category', value: dataCategory }];
+                            { field: 'data_category', value: dataCategory }];
                         return this.withFilter(this.getdataCategory(row.summary.data_categories, dataCategory), fs, $filter);
                     };
                     ProjectsTableService.prototype.dataCategoryTotalWithFilters = function (dataCategory, data, $filter) {
                         var _this = this;
-                        var fs = [{ field: 'files.data_category', value: [dataCategory] },
+                        var fs = [{ field: 'data_category', value: [dataCategory] },
                             { field: 'cases.project.project_id', value: data.map(function (d) { return d.project_id; }) }];
                         return this.withFilter(_.sum(_.map(data, function (row) { return _this.getdataCategory(row.summary.data_categories, dataCategory); })), fs, $filter);
                     };
@@ -7143,7 +7143,7 @@ var ngApp;
                         SearchCasesTableService.prototype.dataCategoryWithFilters = function (dataCategory, row, $filter) {
                             var fs = [
                                 { field: 'cases.case_id', value: row.case_id },
-                                { field: 'files.data_category', value: dataCategory }
+                                { field: 'data_category', value: dataCategory }
                             ];
                             return this.withFilter(this.getDataCategory(row.summary ? row.summary.data_categories : [], dataCategory), fs, $filter);
                         };
@@ -7834,7 +7834,7 @@ var ngApp;
                         }
                     };
                     this.accessChartConfig = {
-                        filterKey: "files.access",
+                        filterKey: "access",
                         sortKey: "doc_count",
                         displayKey: "key",
                         defaultText: "access level",
@@ -7845,7 +7845,7 @@ var ngApp;
                                 params: {
                                     filters: $filter("makeFilter")([
                                         {
-                                            field: "files.access",
+                                            field: "access",
                                             value: "open"
                                         }
                                     ], true)
@@ -7855,7 +7855,7 @@ var ngApp;
                                 params: {
                                     filters: $filter("makeFilter")([
                                         {
-                                            field: "files.access",
+                                            field: "access",
                                             value: "controlled"
                                         }
                                     ], true)
@@ -7864,7 +7864,7 @@ var ngApp;
                         }
                     };
                     this.dataTypeChartConfig = {
-                        filterKey: "files.data_type",
+                        filterKey: "data_type",
                         sortKey: "doc_count",
                         displayKey: "key",
                         defaultText: "data type",
@@ -7876,7 +7876,7 @@ var ngApp;
                                     filters: function (value) {
                                         return $filter("makeFilter")([
                                             {
-                                                field: "files.data_type",
+                                                field: "data_type",
                                                 value: [
                                                     value
                                                 ]
@@ -7888,7 +7888,7 @@ var ngApp;
                         }
                     };
                     this.dataFormatChartConfig = {
-                        filterKey: "files.data_format",
+                        filterKey: "data_format",
                         sortKey: "doc_count",
                         displayKey: "key",
                         defaultText: "data format",
@@ -7900,7 +7900,7 @@ var ngApp;
                                     filters: function (value) {
                                         return $filter("makeFilter")([
                                             {
-                                                field: "files.data_format",
+                                                field: "data_format",
                                                 value: [
                                                     value
                                                 ]
@@ -7912,7 +7912,7 @@ var ngApp;
                         }
                     };
                     this.expStratChartConfig = {
-                        filterKey: "files.experimental_strategy",
+                        filterKey: "experimental_strategy",
                         sortKey: "doc_count",
                         displayKey: "key",
                         defaultText: "experimental strategy",
@@ -7924,7 +7924,7 @@ var ngApp;
                                     filters: function (value) {
                                         return $filter("makeFilter")([
                                             {
-                                                field: "files.experimental_strategy",
+                                                field: "experimental_strategy",
                                                 value: [
                                                     value
                                                 ]

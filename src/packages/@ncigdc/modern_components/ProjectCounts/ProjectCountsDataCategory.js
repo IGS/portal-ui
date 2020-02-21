@@ -69,7 +69,7 @@ export default compose(
             field: 'cases.project.project_id',
             value: [project.project_id],
           },
-          { field: 'files.data_category', value: [item.data_category] },
+          { field: 'data_category', value: [item.data_category] },
         ]);
 
         return {

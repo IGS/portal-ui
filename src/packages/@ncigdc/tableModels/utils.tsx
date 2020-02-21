@@ -147,7 +147,7 @@ export const createDataCategoryColumns = ({
                 query={{
                   filters: makeFilter([
                     ...getCellLinkFilters(node),
-                    { field: 'files.data_category', value: full },
+                    { field: 'data_category', value: full },
                   ]),
                 }}
               >
@@ -165,7 +165,7 @@ export const createDataCategoryColumns = ({
               query={{
                 filters: makeFilter([
                   ...getTotalLinkFilters(hits),
-                  { field: 'files.data_category', value: full },
+                  { field: 'data_category', value: full },
                 ]),
               }}
             >

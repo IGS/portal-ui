@@ -46,7 +46,7 @@ export default (Component: ReactClass<*>) =>
         const parsedFilters = parseFilterParam(filters, null);
         let slideFilters = [
           {
-            field: 'files.data_type',
+            field: 'data_type',
             value: ['Slide Image'],
           },
           {
@@ -75,7 +75,7 @@ export default (Component: ReactClass<*>) =>
               {
                 op: 'in',
                 content: {
-                  field: 'files.file_id',
+                  field: 'file_id',
                   value: fileId,
                 },
               },
@@ -84,7 +84,7 @@ export default (Component: ReactClass<*>) =>
           slideFilters = [
             ...slideFilters,
             {
-              field: 'files.file_id',
+              field: 'file_id',
               value: fileId,
             },
           ];

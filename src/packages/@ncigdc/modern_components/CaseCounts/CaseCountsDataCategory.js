@@ -34,7 +34,7 @@ export default compose(
     const linkQuery = {
       filters: makeFilter([
         { field: 'cases.case_id', value: p.case_id },
-        { field: 'files.data_category', value: [type.data_category] },
+        { field: 'data_category', value: [type.data_category] },
       ]),
     };
 

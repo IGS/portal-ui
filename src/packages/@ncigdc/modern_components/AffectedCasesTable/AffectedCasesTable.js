@@ -393,7 +393,7 @@ const Component = compose(
                                   value: c.case_id,
                                 },
                                 {
-                                  field: 'files.data_category',
+                                  field: 'data_category',
                                   value: DATA_CATEGORIES[k].full,
                                 },
                               ]),

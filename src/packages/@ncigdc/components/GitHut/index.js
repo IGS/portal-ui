@@ -84,7 +84,7 @@ class GitHutWrapper extends React.Component {
                 {
                   op: 'IN',
                   content: {
-                    field: 'files.data_category',
+                    field: 'data_category',
                     value: [columnId],
                   },
                 },
