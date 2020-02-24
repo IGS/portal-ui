@@ -32,43 +32,43 @@ const presetFacets = [
   {
     title: 'File',
     field: 'file_id',
-    full: 'files.file_id',
+    full: 'file_id',
     type: 'keyword',
   },
   {
     field: 'data_category',
-    full: 'files.data_category',
+    full: 'data_category',
     type: 'keyword',
   },
   {
     field: 'data_type',
-    full: 'files.data_type',
+    full: 'data_type',
     type: 'keyword',
   },
   {
     field: 'experimental_strategy',
-    full: 'files.experimental_strategy',
+    full: 'experimental_strategy',
     type: 'keyword',
   },
   {
     title: 'Workflow Type',
     field: 'analysis.workflow_type',
-    full: 'files.analysis.workflow_type',
+    full: 'analysis.workflow_type',
     type: 'keyword',
   },
   {
     field: 'data_format',
-    full: 'files.data_format',
+    full: 'data_format',
     type: 'keyword',
   },
   {
     field: 'platform',
-    full: 'files.platform',
+    full: 'platform',
     type: 'keyword',
   },
   {
     field: 'access',
-    full: 'files.access',
+    full: 'access',
     type: 'keyword',
   },
 ];
@@ -212,7 +212,7 @@ const FileAggregations = ({
     <FacetHeader
       collapsed={fileIdCollapsed}
       description="Enter File UUID or name"
-      field="files.file_id"
+      field="file_id"
       setCollapsed={setFileIdCollapsed}
       title="File"
       />
@@ -239,7 +239,7 @@ const FileAggregations = ({
       style={{ borderBottom: `1px solid ${theme.greyScale5}` }}
       title="File"
       />
-    {_.reject(presetFacets, { full: 'files.file_id' }).map(facet => (
+    {_.reject(presetFacets, { full: 'file_id' }).map(facet => (
       <FacetWrapper
         additionalProps={facet.additionalProps}
         aggregation={

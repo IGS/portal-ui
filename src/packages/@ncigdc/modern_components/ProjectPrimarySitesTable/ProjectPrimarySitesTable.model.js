@@ -24,7 +24,7 @@ let DataCategoryColumns = withData(props => {
           value: props.projectId,
         },
         { 
-          field: 'files.data_category', 
+          field: 'data_category', 
           value: DATA_CATEGORIES[dataCategory].full,
         },
         {

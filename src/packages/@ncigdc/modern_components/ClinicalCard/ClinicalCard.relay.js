@@ -33,7 +33,7 @@ must be provided
             value: [caseId],
           },
           {
-            field: 'files.data_type',
+            field: 'data_type',
             value: ['Clinical Supplement'],
           },
         ]),

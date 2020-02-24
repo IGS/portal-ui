@@ -32,7 +32,7 @@ export default (Component) => (props) => {
         }),
         slideFilter: makeFilter([
           {
-            field: 'files.data_type',
+            field: 'data_type',
             value: ['Slide Image'],
           },
         ]),

@@ -80,7 +80,6 @@ const enhance = compose(
 );
 
 export const RepositoryPageComponent = (props: TProps) => {
-	console.log(props);
   const fileCount = props.viewer.File.hits.total;
 //  const caseCount = props.viewer.repository.cases.hits.total;
 //  const fileSize = props.viewer.cart_summary.aggregations.fs.value;

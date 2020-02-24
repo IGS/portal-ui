@@ -101,7 +101,7 @@ const RepoFilesPiesComponent = ({
             <PieTitle>Data Category</PieTitle>
             <SelfFilteringPie
               buckets={_.get(aggregations, 'data_category.buckets')}
-              fieldName="files.data_category"
+              fieldName="data_category"
               docTypeSingular="file"
               currentFieldNames={currentFieldNames}
               currentFilters={currentFilters}
@@ -119,7 +119,7 @@ const RepoFilesPiesComponent = ({
             <PieTitle>Data Type</PieTitle>
             <SelfFilteringPie
               buckets={_.get(aggregations, 'data_type.buckets')}
-              fieldName="files.data_type"
+              fieldName="data_type"
               docTypeSingular="file"
               currentFieldNames={currentFieldNames}
               currentFilters={currentFilters}
@@ -137,7 +137,7 @@ const RepoFilesPiesComponent = ({
             <PieTitle>Data Format</PieTitle>
             <SelfFilteringPie
               buckets={_.get(aggregations, 'data_format.buckets')}
-              fieldName="files.data_format"
+              fieldName="data_format"
               docTypeSingular="file"
               currentFieldNames={currentFieldNames}
               currentFilters={currentFilters}
@@ -157,7 +157,7 @@ const RepoFilesPiesComponent = ({
               <PieTitle>Experimental Strategy</PieTitle>
               <SelfFilteringPie
                 buckets={_.get(aggregations, 'experimental_strategy.buckets')}
-                fieldName="files.experimental_strategy"
+                fieldName="experimental_strategy"
                 docTypeSingular="file"
                 currentFieldNames={currentFieldNames}
                 currentFilters={currentFilters}
@@ -176,7 +176,7 @@ const RepoFilesPiesComponent = ({
               <PieTitle>Access Level</PieTitle>
               <SelfFilteringPie
                 buckets={_.get(aggregations, 'access.buckets')}
-                fieldName="files.access"
+                fieldName="access"
                 docTypeSingular="file"
                 currentFieldNames={currentFieldNames}
                 currentFilters={currentFilters}
