@@ -24,7 +24,6 @@ import withRouter from '@ncigdc/utils/withRouter';
 import { GlobalTooltip } from '@ncigdc/uikit/Tooltip';
 import styled from '@ncigdc/theme/styled';
 import { setModal } from '@ncigdc/dux/modal';
-import FirstTimeModal from '@ncigdc/components/Modals/FirstTimeModal';
 import {
   AWG,
   FIRST_TIME_KEY,
@@ -84,14 +83,6 @@ export default compose(
   connect(store => ({ notifications: store.bannerNotification })),
   lifecycle({
     componentDidMount(): void {
-      Cookies.get(FIRST_TIME_KEY) || this.props.dispatch(setModal(
-        <FirstTimeModal
-          onClose={() => {
-            Cookies.set(FIRST_TIME_KEY, true);
-          }}
-          />,
-        false,
-      ));
 
       let lastPathname = this.props.location.pathname;
       this.removeListen = this.props.history.listen(location => {
