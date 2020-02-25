@@ -44,7 +44,7 @@ const DownloadButtonSingle = ({
 	    style={{
 	      ...styles.button(theme)
 	    }}
-	    onClick={() => dispatch(toggleFilesInCart(file))}
+	    onClick={() => downloadFile(file)}
 	    aria-label="Download file"
 	  >
 	    <DownloadIcon
@@ -56,6 +56,24 @@ const DownloadButtonSingle = ({
 	  </Button>
 	);
 
+const downloadFile = (file) => {
+	console.log(file.file_name);
+	fetch('data/knowledgeEnvironment/' + file.file_name)
+		.then(resp => resp.blob())
+		.then(blob => {
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+		    a.style.display = 'none';
+		    a.href = url;
+		    // the filename you want
+		    a.download = file.file_name;
+		    document.body.appendChild(a);
+		    a.click();
+		    window.URL.revokeObjectURL(url);
+		})
+		.catch(() => console.log("FAIL"));
+}
+	
 export default compose(connect(state => state.cart), withTheme)(
   DownloadButtonSingle,
 );
