@@ -12,7 +12,7 @@ import tableModels from '@ncigdc/tableModels';
 import Table, { Th, Tr, Td } from '@ncigdc/uikit/Table';
 import styled from '@ncigdc/theme/styled';
 import Button from '@ncigdc/uikit/Button';
-import AddToCartButtonSingle from '@ncigdc/components/AddToCartButtonSingle';
+import DownloadButtonSingle from '@ncigdc/components/DownloadButtonSingle';
 import { toggleFilesInCart } from '@ncigdc/dux/cart';
 import { Tooltip } from '@ncigdc/uikit/Tooltip';
 import timestamp from '@ncigdc/utils/timestamp';
@@ -96,15 +96,10 @@ export default compose(
           <Table
             id="repository-files-table"
             headings={[
-              canAddToCart ? (
-                <Th key="add_to_cart">
-                  <AddToCartButtonAll
-                    edges={hits.edges.map(e => e.node)}
-                    total={hits.total}
-                  />
+              (
+                <Th key="download_column">
+                  
                 </Th>
-              ) : (
-                <Th key="remove_from_cart" />
               ),
               ...tableInfo.map(x => (
                 <x.th key={x.id} hits={hits} canAddToCart={canAddToCart} />
@@ -115,20 +110,8 @@ export default compose(
                 {hits.edges.map((e, i) => (
                   <Tr key={e.node.id} index={i}>
                     {[
-                      <Td key="add_to_cart">
-                        {canAddToCart && (
-                          <AddToCartButtonSingle file={e.node} />
-                        )}
-                        {!canAddToCart && (
-                          <RemoveButton
-                            onClick={() => dispatch(toggleFilesInCart(e.node))}
-                            aria-label="Remove"
-                          >
-                            <Tooltip Component={'Remove'}>
-                              <i className="fa fa-trash-o" />
-                            </Tooltip>
-                          </RemoveButton>
-                        )}
+                      <Td key="download">
+                          <DownloadButtonSingle file={e.node} />
                       </Td>,
                       ...tableInfo
                         .filter(x => x.td)
