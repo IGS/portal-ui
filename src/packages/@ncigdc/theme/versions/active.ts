@@ -52,7 +52,7 @@ const theme: IThemeProps = {
    *  Colors
    */
 
-  primary: 'rgb(0, 80, 131)',
+  primary: 'rgb(40, 60, 94)',
   primaryLight1: 'rgb(187,14,61)',
   primaryHighContrast: 'rgb(2, 61, 99)',
 

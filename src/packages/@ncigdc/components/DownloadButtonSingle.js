@@ -57,7 +57,6 @@ const DownloadButtonSingle = ({
 	);
 
 const downloadFile = (file) => {
-	console.log(file.file_name);
 	fetch('data/knowledgeEnvironment/' + file.file_name)
 		.then(resp => resp.blob())
 		.then(blob => {
