@@ -5,8 +5,6 @@ import Color from 'color';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withTheme } from '@ncigdc/theme';
-import { ExternalLink as ELink } from '@ncigdc/uikit/Links';
-import HomeLink from './Links/HomeLink';
 
 const styles = {
   footer: theme => ({
@@ -20,38 +18,24 @@ const styles = {
     borderTop: "6px solid #283C5E",
     borderBottom: 'none',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'left',
+    alignItems: 'left',
   }),
   outerContainer: {
     fontSize: '85.714%',
-    padding: '15px 0',
+    padding: '15px 0px 15px 15px',
     color: '#97abb6',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   innerContainer: {
     margin: '5px auto 0',
-    textAlign: 'center',
+    textAlign: 'left',
   },
   link: {
     color: '#c2cfd5',
   },
 };
 
-const ExternalLink = ({
-  children,
-  hasExternalIcon = false,
-  style,
-  ...props
-}) => (
-  <ELink
-    hasExternalIcon={hasExternalIcon}
-    style={{ ...styles.link, ...style }}
-    {...props}
-  >
-    {children}
-  </ELink>
-);
 
 export default compose(
   connect(state => state.versionInfo),
