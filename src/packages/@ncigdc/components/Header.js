@@ -93,10 +93,7 @@ const Header = ({
           style={{ padding: 0 }}
           tabIndex="0"
           >
-          <img alt="gdc-logo" src={nciGdcLogo} />
-          <Hidden>
-            <h1>GDC Home</h1>
-          </Hidden>
+          <img alt="Kidney Precision Medicine Project Atlas" src="img/logo.svg" className="logo"/>
         </HomeLink>
       </div>
 

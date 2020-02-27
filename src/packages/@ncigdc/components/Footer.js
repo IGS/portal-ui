@@ -16,10 +16,8 @@ const styles = {
     width: '100%',
     zIndex: 100,
     height: 'auto',
-    backgroundColor: theme.greyScale1,
-    borderTop: `6px solid ${Color(theme.greyScale1)
-      .lighten(2)
-      .rgbString()}`,
+    backgroundColor: "#283C5E",
+    borderTop: "6px solid #283C5E",
     borderBottom: 'none',
     display: 'flex',
     justifyContent: 'center',
@@ -74,55 +72,10 @@ export default compose(
     >
       <div style={styles.outerContainer}>
         <div style={styles.innerContainer}>
-          <HomeLink style={styles.link}>Site Home</HomeLink>
-          <span> | </span>
-          <ExternalLink href="https://www.cancer.gov/policies">
-            Policies
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://www.cancer.gov/policies/accessibility">
-            Accessibility
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://www.cancer.gov/policies/foia">
-            FOIA
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://gdc.cancer.gov/support">
-            Support
-          </ExternalLink>
+        	<div>The Kidney Precision Medicine Project is an initiative of the National Institute of Diabetes and Digestive and Kidney Disease (NIDDK).</div>
+        	<div>© Kidney Precision Medicine Project</div>
         </div>
-        <div style={styles.innerContainer}>
-          <ExternalLink href="https://www.hhs.gov/">
-            U.S. Department of Health and Human Services
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://www.nih.gov/">
-            National Institutes of Health
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://www.cancer.gov/">
-            National Cancer Institute
-          </ExternalLink>
-          <span> | </span>
-          <ExternalLink href="https://www.usa.gov/">USA.gov</ExternalLink>
-        </div>
-        <div style={styles.innerContainer}>
-          NIH... Turning Discovery Into Health ®
-        </div>
-        <div style={styles.innerContainer}>
-          <span> UI @ {uiVersion || (uiCommitHash || '').slice(0, 7)}</span>
-
-          <span>, API {apiVersion}</span>
-          {apiCommitHash && <span> @ {apiCommitHash.slice(0, 7)}</span>}
-
-          <span>
-            ,{' '}
-            <ExternalLink href="https://docs.gdc.cancer.gov/Data/Release_Notes/Data_Release_Notes/">
-              {dataRelease}
-            </ExternalLink>
-          </span>
-        </div>
+        
       </div>
     </footer>
   ),

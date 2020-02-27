@@ -3,13 +3,18 @@
   top: 0;
   width: 100%;
   z-index: 100;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #e7e7e7;
   min-height: 51px;
   background-color: white;
   -webkit-transform: translateY(0%);
           transform: translateY(0%);
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
+}
+
+.navbar-brand .logo {
+	width: 200px;
+	min-width: 200px;
 }
 
 @media (max-width: 859px) {
