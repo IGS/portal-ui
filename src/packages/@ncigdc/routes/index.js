@@ -14,6 +14,7 @@ import SSMRoute from '@ncigdc/routes/SSMRoute';
 import ManageSetsRoute from '@ncigdc/routes/ManageSetsRoute';
 import SmartSearchRoute from '@ncigdc/routes/SmartSearchRoute';
 import ImageViewerRoute from '@ncigdc/routes/ImageViewerRoute';
+import RedirectRoute from '@ncigdc/routes/RedirectRoute';
 
 const HomeRoute = LoadableWithLoading({
   loader: () => import('@ncigdc/routes/HomeRoute'),
@@ -45,9 +46,9 @@ const Routes = () => (
       {({ location: { pathname } }) => <Head title={pathname.split('/')[1]} />}
     </Route>
     <Switch>
-      <Route component={RepositoryRoute} exact path="/" />
+      <Route component={RedirectRoute} exact path="/" />
       <Route component={CartRoute} exact path="/cart" />
-      <Route component={RepositoryRoute} exact path="/repository" />
+      <Route component={RepositoryRoute} exasct path="/repository" />
       <Route component={ExploreRoute} exact path="/exploration" />
       <Route component={ProjectsRoute} exact path="/projects" />
       <Route component={AnnotationsRoute} exact path="/annotations" />
