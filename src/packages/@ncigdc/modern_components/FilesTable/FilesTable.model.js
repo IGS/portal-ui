@@ -173,6 +173,15 @@ const filesTableModel = [
     downloadable: true,
     hidden: true,
   },
+  {
+	  name: 'Sample ID',
+	  id: 'sample_id',
+	  th: () => <Th>Sample ID</Th>,
+	  td: ({ node }) => <Td>{node.sample_id || '--'}</Td>,
+	  sortable: false,
+	  downloadable: true,
+	  hidden: false,
+  },
 //  {
 //    name: 'Platform',
 //    id: 'platform',
