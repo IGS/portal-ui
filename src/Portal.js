@@ -1,6 +1,7 @@
 /* @flow */
 
 import '@ncigdc/theme/global.css';
+import '@ncigdc/theme/kpmp-override.css';
 import React from 'react';
 import Relay from 'react-relay/classic';
 import PortalContainer from '@ncigdc/components/PortalContainer';
