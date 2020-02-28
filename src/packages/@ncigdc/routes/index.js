@@ -48,7 +48,7 @@ const Routes = () => (
     <Switch>
       <Route component={RedirectRoute} exact path="/" />
       <Route component={CartRoute} exact path="/cart" />
-      <Route component={RepositoryRoute} exasct path="/repository" />
+      <Route component={RepositoryRoute} exact path="/repository" />
       <Route component={ExploreRoute} exact path="/exploration" />
       <Route component={ProjectsRoute} exact path="/projects" />
       <Route component={AnnotationsRoute} exact path="/annotations" />
