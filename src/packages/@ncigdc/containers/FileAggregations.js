@@ -48,6 +48,7 @@ const presetFacets = [
   { field: 'data_format', full: 'data_format', type: 'keyword' },
   { field: 'platform', full: 'platform', type: 'keyword' },
   { field: 'access', full: 'access', type: 'keyword' },
+  { field: 'sample_id', full: 'sample_id', type: 'keyword'}
 ];
 
 const presetFacetFields = presetFacets.map(x => x.field);
@@ -111,6 +112,7 @@ export type TProps = {
     experimental_strategy: { buckets: [IBucket] },
     platform: { buckets: [IBucket] },
     analysis__workflow_type: { buckets: [IBucket] },
+    sample_id: { buckets: [IBucket] },
   },
   theme: Object,
   filters: Object,
@@ -268,6 +270,13 @@ export const FileAggregationsQuery = {
             doc_count
             key
           }
+        }
+        
+        sample_id {
+        	buckets {
+        		doc_count
+        		key
+        	}
         }
       }
     `,

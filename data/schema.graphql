@@ -5324,6 +5324,8 @@ type FileNode implements Node {
   # keyword
   file_id: String
 
+  sample_id: String
+
   # long
   contamination: Float
 
@@ -6350,6 +6352,7 @@ type FileAggregations {
   revision: NumericAggregations
   file_autocomplete: Aggregations
   average_insert_size: NumericAggregations
+  sample_id: Aggregations
 }
 
 type FileAnalysis {
