@@ -20,6 +20,7 @@ import RepoCasesPies from '@ncigdc/components/TabPieCharts/RepoCasesPies';
 import RepoFilesPies from '@ncigdc/components/TabPieCharts/RepoFilesPies';
 import withRouter from '@ncigdc/utils/withRouter';
 import ActionsRow from '@ncigdc/components/ActionsRow';
+import features from '../../../features'
 
 export type TProps = {
   push: Function,
@@ -87,7 +88,20 @@ export const RepositoryPageComponent = (props: TProps) => {
   // hacking this in to get things to work
   const caseCount = 0;
   const fileSize = 0;
-  
+  const facetTabs=[
+        {
+          id: 'files',
+          text: 'Files',
+          component: <FileAggregations relay={props.relay} />,
+        }];
+  if (features.caseAggregations) {
+    facetTabs.push({
+      id: 'cases',
+      text: 'Cases',
+      component: <CaseAggregations relay={props.relay} />,
+    })
+  }
+
   return (
     <div className="test-repository-page">
       <SearchPage
@@ -96,18 +110,7 @@ export const RepositoryPageComponent = (props: TProps) => {
           linkPathname: '/query',
           linkText: 'Advanced Search',
         }}
-        facetTabs={[
-          {
-            id: 'files',
-            text: 'Files',
-            component: <FileAggregations relay={props.relay} />,
-          },
-          {
-            id: 'cases',
-            text: 'Cases',
-            component: <CaseAggregations relay={props.relay} />,
-          },
-        ]}
+        facetTabs={facetTabs}
         results={
           <span>
             <ActionsRow
@@ -135,7 +138,7 @@ export const RepositoryPageComponent = (props: TProps) => {
                       <RepoFilesPies
                         aggregations={props.viewer.File.pies}
                       />
-                      <FilesTable />
+                      <FilesTable downloadable={false} />
                     </div>
                   ) : (
                     <NoResultsMessage>
