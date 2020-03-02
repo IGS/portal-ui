@@ -206,6 +206,8 @@ const Header = ({
                   </li>
                 ))
               }
+              {features.cartLink && (
+                  <React.Fragment>
               <li>
                 <CartLink>
                   {count => (
@@ -227,6 +229,7 @@ const Header = ({
                   )}
                 </CartLink>
               </li>
+              </React.Fragment>)}
               {features.gdcApps && (
                   <React.Fragment>
               <li>
