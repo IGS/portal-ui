@@ -16,5 +16,10 @@
   "quickSearch": false,
   "manageSets": false,
   "gdcApps": false,
-  "fileFilter": false
+  "fileFilter": false,
+  "pieCharts": {
+    "primarySite": false,
+    "project": false,
+    "accessLevel": false
+  }
 }

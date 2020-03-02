@@ -17,6 +17,7 @@ import {
   PieTitle,
   SelfFilteringPie,
 } from './';
+import features from '../../../../features.json';
 
 export type TProps = {
   push: Function,
@@ -55,6 +56,8 @@ const RepoFilesPiesComponent = ({
     <div className="test-repo-files-pies">
       <BottomBorderedBox>
         <WrappedRow style={{ maxWidth: `${width}px`, width: '100%' }}>
+          {features.pieCharts.primarySite && (
+              <React.Fragment>
           <ColumnCenter
             style={{ minWidth: `${pieColMinWidth}px` }}
             className="test-primary-site-pie"
@@ -73,6 +76,10 @@ const RepoFilesPiesComponent = ({
               width={125}
             />
           </ColumnCenter>
+              </React.Fragment>
+          )}
+          {features.pieCharts.project && (
+              <React.Fragment>
           <ColumnCenter
             style={{ minWidth: `${pieColMinWidth}px` }}
             className="test-project-pie"
@@ -94,6 +101,8 @@ const RepoFilesPiesComponent = ({
               width={125}
             />
           </ColumnCenter>
+              </React.Fragment>
+          )}
           <ColumnCenter
             style={{ minWidth: `${pieColMinWidth}px` }}
             className="test-data-category-pie"
@@ -148,7 +157,7 @@ const RepoFilesPiesComponent = ({
               width={125}
             />
           </ColumnCenter>
-          {showingMore && [
+          {/*{showingMore && [*/}
             <ColumnCenter
               style={{ minWidth: `${pieColMinWidth}px` }}
               key="files.experimental_strategy"
@@ -173,6 +182,8 @@ const RepoFilesPiesComponent = ({
               style={{ minWidth: `${pieColMinWidth}px` }}
               className="test-access-level"
             >
+              {features.pieCharts.accessLevel && (
+                  <React.Fragment>
               <PieTitle>Access Level</PieTitle>
               <SelfFilteringPie
                 buckets={_.get(aggregations, 'access.buckets')}
@@ -186,15 +197,17 @@ const RepoFilesPiesComponent = ({
                 height={125}
                 width={125}
               />
+                  </React.Fragment>
+              )}
             </ColumnCenter>,
-          ]}
+          {/*]}*/}
         </WrappedRow>
       </BottomBorderedBox>
-      <RowCenter style={{ marginTop: '-1.5rem' }}>
-        <ShowToggleBox onClick={() => setShowingMore(!showingMore)}>
-          Show {showingMore ? 'Less' : 'More'}
-        </ShowToggleBox>
-      </RowCenter>
+      {/*<RowCenter style={{ marginTop: '-1.5rem' }}>*/}
+      {/*  <ShowToggleBox onClick={() => setShowingMore(!showingMore)}>*/}
+      {/*    Show {showingMore ? 'Less' : 'More'}*/}
+      {/*  </ShowToggleBox>*/}
+      {/*</RowCenter>*/}
     </div>
   );
 };
