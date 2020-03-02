@@ -9,6 +9,7 @@ import { RepositoryCasesLink } from '@ncigdc/components/Links/RepositoryLink';
 import FileLink from '@ncigdc/components/Links/FileLink';
 import { makeFilter } from '@ncigdc/utils/filters';
 import FileSize from '@ncigdc/components/FileSize';
+import features from '../../../../features';
 
 const filesTableModel = [
   {
@@ -57,12 +58,15 @@ const filesTableModel = [
     th: () => <Th>File Name</Th>,
     td: ({ node }) => (
       <Td>
-        <FileLink
-          uuid={node.file_id}
-          style={{ whiteSpace: 'pre-line', wordBreak: 'break-all' }}
-        >
-          {node.file_name}
-        </FileLink>
+        {features.fileLinking ? (
+            <FileLink
+                uuid={node.file_id}
+                style={{whiteSpace: 'pre-line', wordBreak: 'break-all'}}
+            >
+              {node.file_name}
+            </FileLink>
+        ) : (node.file_name)
+        }
       </Td>
     ),
   },

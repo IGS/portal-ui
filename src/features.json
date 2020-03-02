@@ -16,5 +16,6 @@
   "quickSearch": false,
   "manageSets": false,
   "gdcApps": false,
-  "fileFilter": false
+  "fileFilter": false,
+  "fileLinking": false
 }
