@@ -203,7 +203,7 @@ const TableActions: React.SFC<IProps> = ({
           />
         </Tooltip>
       )}
-      {tsvSelector &&
+      {downloadable && tsvSelector &&
         tsvFilename && (
           <DownloadTableToTsvButton
             selector={tsvSelector}
