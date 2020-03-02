@@ -135,7 +135,7 @@ export const RepositoryPageComponent = (props: TProps) => {
                       <RepoFilesPies
                         aggregations={props.viewer.File.pies}
                       />
-                      <FilesTable />
+                      <FilesTable downloadable={false} />
                     </div>
                   ) : (
                     <NoResultsMessage>
