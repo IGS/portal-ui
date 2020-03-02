@@ -94,7 +94,7 @@ export const RepositoryPageComponent = (props: TProps) => {
           text: 'Files',
           component: <FileAggregations relay={props.relay} />,
         }];
-  if (features.caseAggregation) {
+  if (features.caseAggregations) {
     facetTabs.push({
       id: 'cases',
       text: 'Cases',

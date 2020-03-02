@@ -17,5 +17,5 @@
   "manageSets": false,
   "gdcApps": false,
   "fileFilter": false,
-  "caseAggregation": false
+  "caseAggregations": false
 }
