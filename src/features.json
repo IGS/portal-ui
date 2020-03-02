@@ -16,5 +16,7 @@
   "quickSearch": false,
   "manageSets": false,
   "gdcApps": false,
-  "fileFilter": false
+  "fileFilter": false,
+  "cartLink": false,
+  "caseAggregations": false
 }
