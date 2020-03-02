@@ -20,6 +20,7 @@ import RepoCasesPies from '@ncigdc/components/TabPieCharts/RepoCasesPies';
 import RepoFilesPies from '@ncigdc/components/TabPieCharts/RepoFilesPies';
 import withRouter from '@ncigdc/utils/withRouter';
 import ActionsRow from '@ncigdc/components/ActionsRow';
+import features from '../../../features.json';
 
 export type TProps = {
   push: Function,
@@ -119,12 +120,13 @@ export const RepositoryPageComponent = (props: TProps) => {
               queryParam="searchTableTab"
               defaultIndex={0}
               tabToolbar={
+                features.saveIcon && (
                 <Row spacing="2rem" style={{ alignItems: 'center' }}>
                   <span style={{ flex: 'none' }}>
                     <SaveIcon style={{ marginRight: 5 }} />{' '}
                     <strong>{formatFileSize(fileSize)}</strong>
                   </span>
-                </Row>
+                </Row>)
               }
               links={[
                 {
