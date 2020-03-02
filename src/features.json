@@ -18,5 +18,11 @@
   "gdcApps": false,
   "fileFilter": false,
   "cartLink": false,
-  "caseAggregations": false
+  "caseAggregations": false,
+  "saveIcon": false,
+  "pieCharts": {
+    "primarySite": false,
+    "project": false,
+    "accessLevel": false
+  }
 }
