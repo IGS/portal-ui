@@ -17,6 +17,9 @@
   "manageSets": false,
   "gdcApps": false,
   "fileFilter": false,
+  "cartLink": false,
+  "caseAggregations": false,
+  "saveIcon": false,
   "pieCharts": {
     "primarySite": false,
     "project": false,
