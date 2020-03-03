@@ -88,13 +88,9 @@ const Header = ({
           <span className="icon-bar" />
           <span className="icon-bar" />
         </button>
-        <HomeLink
-          className="navbar-brand"
-          style={{ padding: 0 }}
-          tabIndex="0"
-          >
+        <div className="navbar-brand" style={{padding: 0}}>
           <img alt="Kidney Precision Medicine Project Atlas" src="img/logo.svg" className="logo"/>
-        </HomeLink>
+        </div>
       </div>
 
       <nav
