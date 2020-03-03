@@ -176,7 +176,7 @@ const RepoFilesPiesComponent = ({
                 height={125}
                 width={125}
               />
-            </ColumnCenter>,
+            </ColumnCenter>
             <ColumnCenter
               key="files.access"
               style={{ minWidth: `${pieColMinWidth}px` }}
@@ -199,7 +199,7 @@ const RepoFilesPiesComponent = ({
               />
                   </React.Fragment>
               )}
-            </ColumnCenter>,
+            </ColumnCenter>
           {/*]}*/}
         </WrappedRow>
       </BottomBorderedBox>
