@@ -20,6 +20,7 @@
   "cartLink": false,
   "caseAggregations": false,
   "saveIcon": false,
+  "fileLinking": false,
   "pieCharts": {
     "primarySite": false,
     "project": false,
