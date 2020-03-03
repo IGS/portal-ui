@@ -18,12 +18,14 @@ const filesTableModel = [
     th: () => <Th>File UUID</Th>,
     td: ({ node }) => (
       <Td>
-        <FileLink
-          uuid={node.file_id}
-          style={{ whiteSpace: 'pre-line', wordBreak: 'break-all' }}
-        >
-          {node.file_id}
-        </FileLink>
+        {features.fileLinking ? (
+            <FileLink
+                uuid={node.file_id}
+                style={{whiteSpace: 'pre-line', wordBreak: 'break-all'}}
+            >
+              {node.file_id}
+            </FileLink>) : (node.file_id)
+        }
       </Td>
     ),
     sortable: true,
