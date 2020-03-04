@@ -6,6 +6,7 @@ import { withTheme } from '@ncigdc/theme';
 import DownloadIcon from '@ncigdc/theme/icons/Download';
 import Hidden from '@ncigdc/components/Hidden';
 import Color from 'color';
+import ReactGA from 'react-ga';
 
 const styles = {
 		  button: theme => ({
@@ -44,7 +45,14 @@ const DownloadButtonSingle = ({
 	    style={{
 	      ...styles.button(theme)
 	    }}
-	    onClick={() => downloadFile(file)}
+	    onClick={() => {
+			ReactGA.event({
+				category: 'Download',
+				action: 'File',
+				label: file.file_name
+			});
+			downloadFile(file);
+	    }}
 	    aria-label="Download file"
 	  >
 	    <DownloadIcon
