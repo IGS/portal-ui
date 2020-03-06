@@ -72,6 +72,7 @@ const presetFacets = [
     type: 'keyword',
   },
   {
+    title: 'Sample ID',
     field: 'sample_id',
     full: 'sample_id',
     type: 'terms',
