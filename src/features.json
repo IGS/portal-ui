@@ -12,6 +12,7 @@
   "advancedSearch": false,
   "browseAnnotations": false,
   "downloadManifest": false,
+  "addFilesToCart": false,
   "login": false,
   "quickSearch": false,
   "manageSets": false,
