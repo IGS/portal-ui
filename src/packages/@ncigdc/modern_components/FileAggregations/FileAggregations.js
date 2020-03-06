@@ -72,6 +72,7 @@ const presetFacets = [
     type: 'keyword',
   },
   {
+    title: 'Sample ID',
     field: 'sample_id',
     full: 'sample_id',
     type: 'terms',
@@ -215,6 +216,7 @@ const FileAggregations = ({
         style={{ borderBottom: `1px solid ${theme.greyScale5}` }}
         />
     ))}
+    {features.filesearch && (
     <FacetHeader
       collapsed={fileIdCollapsed}
       description="Enter File UUID or name"
@@ -222,6 +224,7 @@ const FileAggregations = ({
       setCollapsed={setFileIdCollapsed}
       title="File"
       />
+    )}
     <SuggestionFacet
       collapsed={fileIdCollapsed}
       doctype="files"
