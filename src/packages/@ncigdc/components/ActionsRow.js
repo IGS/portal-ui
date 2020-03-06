@@ -61,12 +61,14 @@ export default compose(
         }}
       >
         <Row spacing="0.2rem">
-          <Button
+            {features.addFilesToCart && (
+                <Button
             onClick={() => dispatch(fetchFilesAndAdd(filters, totalFiles))}
             leftIcon={<ShoppingCartIcon />}
           >
             Add All Files to Cart
           </Button>
+            )}
             {features.downloadManifest && (
                 <DownloadManifestButton fileCount={totalFiles} filters={filters} />
             )}
