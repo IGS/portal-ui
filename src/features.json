@@ -17,6 +17,7 @@
   "manageSets": false,
   "gdcApps": false,
   "fileFilter": false,
+  "filesearch": false,
   "cartLink": false,
   "caseAggregations": false,
   "saveIcon": false,

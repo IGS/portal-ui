@@ -215,6 +215,7 @@ const FileAggregations = ({
         style={{ borderBottom: `1px solid ${theme.greyScale5}` }}
         />
     ))}
+    {features.filesearch && (
     <FacetHeader
       collapsed={fileIdCollapsed}
       description="Enter File UUID or name"
@@ -222,6 +223,7 @@ const FileAggregations = ({
       setCollapsed={setFileIdCollapsed}
       title="File"
       />
+    )}
     <SuggestionFacet
       collapsed={fileIdCollapsed}
       doctype="files"
