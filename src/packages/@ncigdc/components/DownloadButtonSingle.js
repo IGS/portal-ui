@@ -73,10 +73,11 @@ const downloadFile = (file) => {
 		    a.style.display = 'none';
 		    a.href = url;
 		    // the filename you want
-		    a.download = file.file_name;
+		    //a.download = file.file_name;
 		    document.body.appendChild(a);
 		    a.click();
-		    window.URL.revokeObjectURL(url);
+		    document.body.removeChild(a);
+		    //window.URL.revokeObjectURL(url);
 		//})
 		//.catch(() => console.log("FAIL"));
 }
