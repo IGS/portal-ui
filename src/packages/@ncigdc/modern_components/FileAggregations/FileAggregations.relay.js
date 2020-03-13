@@ -93,6 +93,12 @@ export default (Component: ReactClass<*>) =>
                         key
                       }
                     }
+                    platform {
+                      buckets {
+                        doc_count
+                        key
+                      }
+                    }
                   }
               }
             }

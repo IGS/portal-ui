@@ -278,6 +278,14 @@ export const FileAggregationsQuery = {
         		key
         	}
         }
+        
+        platform {
+        	buckets {
+        		doc_count
+        		key
+        	}
+        }
+        		
       }
     `,
   },
