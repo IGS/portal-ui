@@ -65,10 +65,10 @@ const DownloadButtonSingle = ({
 	);
 
 const downloadFile = (file) => {
-	fetch('data/knowledgeEnvironment/' + file.file_name)
-		.then(resp => resp.blob())
-		.then(blob => {
-			const url = window.URL.createObjectURL(blob);
+	//fetch('data/knowledgeEnvironment/' + file.file_name)
+		//.then(resp => resp.blob())
+		//.then(blob => {
+			const url = 'data/knowledgeEnvironment/' + file.file_name;
 			const a = document.createElement('a');
 		    a.style.display = 'none';
 		    a.href = url;
@@ -77,8 +77,8 @@ const downloadFile = (file) => {
 		    document.body.appendChild(a);
 		    a.click();
 		    window.URL.revokeObjectURL(url);
-		})
-		.catch(() => console.log("FAIL"));
+		//})
+		//.catch(() => console.log("FAIL"));
 }
 	
 export default compose(connect(state => state.cart), withTheme)(
