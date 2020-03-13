@@ -65,22 +65,14 @@ const DownloadButtonSingle = ({
 	);
 
 const downloadFile = (file) => {
-	//fetch('data/knowledgeEnvironment/' + file.file_name)
-		//.then(resp => resp.blob())
-		//.then(blob => {
-			const url = 'data/knowledgeEnvironment/' + file.file_name;
-			const a = document.createElement('a');
-		    a.style.display = 'none';
-		    a.href = url;
-		    // the filename you want
-		    //a.download = file.file_name;
-		    document.body.appendChild(a);
-		    a.click();
-		    document.body.removeChild(a);
-		    //window.URL.revokeObjectURL(url);
-		//})
-		//.catch(() => console.log("FAIL"));
-}
+	const url = 'data/knowledgeEnvironment/' + file.file_name;
+	const a = document.createElement('a');
+	a.style.display = 'none';
+	a.href = url;
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+};
 	
 export default compose(connect(state => state.cart), withTheme)(
   DownloadButtonSingle,
