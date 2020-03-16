@@ -51,12 +51,6 @@ const presetFacets = [
     type: 'keyword',
   },
   {
-    title: 'Workflow Type',
-    field: 'analysis.workflow_type',
-    full: 'analysis.workflow_type',
-    type: 'keyword',
-  },
-  {
     field: 'data_format',
     full: 'data_format',
     type: 'keyword',
@@ -118,7 +112,6 @@ export type TProps = {
     data_type: { buckets: [IBucket] },
     experimental_strategy: { buckets: [IBucket] },
     platform: { buckets: [IBucket] },
-    analysis__workflow_type: { buckets: [IBucket] },
     sample_id: { buckets: [IBucket] },
   },
   theme: Object,
