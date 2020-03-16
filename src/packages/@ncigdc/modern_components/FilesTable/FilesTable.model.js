@@ -193,9 +193,9 @@ const filesTableModel = [
     id: 'platform',
     th: () => <Th>Platform</Th>,
     td: ({ node }) => <Td>{node.platform || '--'}</Td>,
-    sortable: false,
+    sortable: true,
     downloadable: true,
-    hidden: true,
+    hidden: false,
   },
 ];
 
