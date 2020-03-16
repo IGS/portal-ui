@@ -188,15 +188,15 @@ const filesTableModel = [
 	  downloadable: true,
 	  hidden: false,
   },
-//  {
-//    name: 'Platform',
-//    id: 'platform',
-//    th: () => <Th>Platform</Th>,
-//    td: ({ node }) => <Td>{node.platform || '--'}</Td>,
-//    sortable: false,
-//    downloadable: true,
-//    hidden: true,
-//  },
+  {
+    name: 'Platform',
+    id: 'platform',
+    th: () => <Th>Platform</Th>,
+    td: ({ node }) => <Td>{node.platform || '--'}</Td>,
+    sortable: false,
+    downloadable: true,
+    hidden: true,
+  },
 ];
 
 export default filesTableModel;
