@@ -1,12 +1,12 @@
 {
-  "version": "1.23.0",
-  "repository": "NCI-GDC/portal-ui",
+  "version": "0.2",
+  "repository": "KPMP/portal-ui",
   "name": "portal-ui",
   "author": {
     "name": "OICR",
-    "url": "https://github.com/NCI-GDC/"
+    "url": "https://github.com/KPMP/"
   },
-  "homepage": "https://portal.gdc.cancer.gov/",
+  "homepage": "https://atlas.kpmp.org/",
   "scripts": {
     "start": "concurrently --kill-others 'npm run start-ui' 'npm run relay -- --watch'",
     "start-ui": "BROWSER=none react-app-rewired start --scripts-version react-scripts-ts",
