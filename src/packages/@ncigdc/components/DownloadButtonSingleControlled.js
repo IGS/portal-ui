@@ -33,28 +33,8 @@ const styles = {
 		  }),
 		};
 
-class DownloadButtonSingle extends Component {
+class DownloadButtonSingleControlled extends Component {
 	
-	constructor(props) {
-		super(props);
-		
-		this.state = { downloadControlled: false };
-		this.downloadFile = this.downloadFile.bind(this);
-	}
-	
-	downloadFile(file) {
-		if (file.access === 'open') {
-			const url = 'data/knowledgeEnvironment/' + file.file_name;
-			const a = document.createElement('a');
-			a.style.display = 'none';
-			a.href = url;
-			document.body.appendChild(a);
-			a.click();
-			document.body.removeChild(a);
-		} else {
-			this.setState({downloadControlled: true});
-		}
-	}
 	
 	render() {
 		let dispatch = this.props.dispatch;
@@ -65,8 +45,7 @@ class DownloadButtonSingle extends Component {
 		let asIcon = false;
 		
 		return (
-			<div>
-			  <Button
+				<Button
 			    className="test-download"
 			    style={{
 			      ...styles.button(theme)
@@ -77,7 +56,7 @@ class DownloadButtonSingle extends Component {
 						action: 'File',
 						label: file.file_name
 					});
-					this.downloadFile(file);
+					downloadFile(file);
 			    }}
 			    aria-label="Download file"
 			  >
@@ -87,25 +66,15 @@ class DownloadButtonSingle extends Component {
 			      }}
 			    />
 			    <Hidden>Download file</Hidden>
-			  </Button>
-			  { this.state.downloadControlled && 
-					<BaseModal title="Access Alert" closeText={'close'}>
-				  		<p> You are attempting to download files that you are not
-				  		authorized to access.
-				  		</p>
-				  		<p>
-				  		Click the button below to request access.
-				  		</p>
-				  	</BaseModal>  
-			  }
-			</div>  
+			  </Button>	
 		);
 	}
-	
-	
 }
-	  
 
+const downloadFile = (file) => {
+	alert("NO")
+};
+	
 export default compose(connect(state => state.cart), withTheme)(
-  DownloadButtonSingle,
+		DownloadButtonSingleControlled,
 );
