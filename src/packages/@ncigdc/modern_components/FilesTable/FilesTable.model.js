@@ -61,7 +61,7 @@ const filesTableModel = [
     th: () => <Th>File Name</Th>,
     td: ({ node }) => (
       <Td>
-        <CopyToClipboardButton text={node.file_name} id={node.file_id}/>
+        <CopyToClipboardButton text={node.file_name} />
         {features.fileLinking ? (
             <FileLink
                 uuid={node.file_id}
