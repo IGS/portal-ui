@@ -10,7 +10,7 @@ class CopyToClipboardButton extends Component {
 
     render() {
         return (
-            <span data-event='click focus' data-tip="Copied!" onMouseOut={() => this.handleMouseOut()}>
+            <span data-event='click focus' data-tip="Copied" onMouseOut={() => this.handleMouseOut()}>
                 <CopyToClipboard text={this.props.text} >
                     <i className="filename-copy fa fa-copy" />
                 </CopyToClipboard>
