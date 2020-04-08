@@ -37,12 +37,9 @@ const styles = {
 };
 
 type TProps = {
-  user: Object,
   file: Object,
   dispatch: Function,
-  activeText?: string,
   inactiveText?: string,
-  style?: Object,
   theme: Object
 };
 

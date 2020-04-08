@@ -43,7 +43,6 @@ class DownloadButtonSingle extends Component {
 	}
 	
 	downloadFile(file) {
-		if (file.access === 'open') {
 			const url = 'data/knowledgeEnvironment/' + file.file_name;
 			const a = document.createElement('a');
 			a.style.display = 'none';
@@ -51,10 +50,6 @@ class DownloadButtonSingle extends Component {
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
-		} else {
-			this.setState({downloadControlled: true});
-			state.blah = "blah";
-		}
 	}
 	
 	render() {
