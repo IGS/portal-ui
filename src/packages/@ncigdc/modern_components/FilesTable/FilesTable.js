@@ -5,17 +5,13 @@ import { compose, setDisplayName, branch, renderComponent } from 'recompose';
 import { connect } from 'react-redux';
 import Pagination from '@ncigdc/components/Pagination';
 import Showing from '@ncigdc/components/Pagination/Showing';
-import AddToCartButtonAll from '@ncigdc/components/AddToCartButtonAll';
 import { Row } from '@ncigdc/uikit/Flex';
 import TableActions from '@ncigdc/components/TableActions';
-import tableModels from '@ncigdc/tableModels';
 import Table, { Th, Tr, Td } from '@ncigdc/uikit/Table';
 import styled from '@ncigdc/theme/styled';
 import Button from '@ncigdc/uikit/Button';
-import DownloadButtonSingle from '@ncigdc/components/DownloadButtonSingle';
-import { toggleFilesInCart } from '@ncigdc/dux/cart';
-import { Tooltip } from '@ncigdc/uikit/Tooltip';
 import timestamp from '@ncigdc/utils/timestamp';
+import DownloadFileSingle from '@ncigdc/components/DownloadFileSingle';
 
 const RemoveButton = styled(Button, {
   backgroundColor: '#FFF',
@@ -111,7 +107,11 @@ export default compose(
                   <Tr key={e.node.id} index={i}>
                     {[
                       <Td key="download">
-                          <DownloadButtonSingle file={e.node} />
+                          <DownloadFileSingle
+                              activeText=""
+                              file={e.node}
+                              inactiveText=""
+                          />
                       </Td>,
                       ...tableInfo
                         .filter(x => x.td)

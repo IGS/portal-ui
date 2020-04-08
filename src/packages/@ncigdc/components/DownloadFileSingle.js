@@ -1,0 +1,94 @@
+// @flow
+import React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+
+import { withTheme } from '@ncigdc/theme';
+import DownloadButtonSingle from '@ncigdc/components/DownloadButtonSingle';
+import DownloadIcon from '@ncigdc/theme/icons/Download';
+import { setModal } from '@ncigdc/dux/modal';
+import BaseModal from '@ncigdc/components/Modals/BaseModal';
+import Hidden from '@ncigdc/components/Hidden';
+import Button from '@ncigdc/uikit/Button';
+import Color from "color";
+
+const styles = {
+    button: theme => ({
+        padding: '3px 5px',
+        height: '22px',
+        border: `1px solid ${theme.greyScale4}`,
+    }),
+    inactive: theme => ({
+        backgroundColor: 'white',
+        color: theme.greyScale2,
+        ':hover': {
+            backgroundColor: theme.greyScale6,
+        },
+    }),
+    active: theme => ({
+        backgroundColor: theme.success,
+        color: '#fff',
+        ':hover': {
+            backgroundColor: Color(theme.success)
+                .darken(0.3)
+                .rgbString(),
+        },
+    }),
+};
+
+type TProps = {
+  user: Object,
+  file: Object,
+  dispatch: Function,
+  activeText?: string,
+  inactiveText?: string,
+  style?: Object,
+  theme: Object
+};
+
+function DownloadFile({
+  file,
+  dispatch,
+  inactiveText,
+    theme
+}: TProps): any {
+  if (file.access === 'open') {
+    return (
+        <DownloadButtonSingle file={file} />
+    );
+  }
+  return (
+    <Button
+      className="test-download"
+      style={{
+        ...styles.button(theme)
+    }}
+      onClick={() =>
+        dispatch(
+          setModal(
+                <BaseModal title="Access Alert" closeText={'Cancel'}>
+                    <p> You are attempting to download files that you are not
+                        authorized to access.
+                    </p>
+                    <p>
+                        Click the button below to request access.
+                    </p>
+                </BaseModal>
+              )
+        )}
+      leftIcon={inactiveText && <i className={'fa fa-download'} />}
+      aria-label="Download file"
+    >
+        <DownloadIcon
+            style={{
+                color: '#fff',
+            }}
+        />
+        <Hidden>Download file</Hidden>
+    </Button>
+  );
+}
+
+export default compose(connect(state => ({ ...state.auth, ...state.cart })),withTheme)(
+  DownloadFile
+);

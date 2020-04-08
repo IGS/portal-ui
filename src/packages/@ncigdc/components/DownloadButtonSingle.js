@@ -53,6 +53,7 @@ class DownloadButtonSingle extends Component {
 			document.body.removeChild(a);
 		} else {
 			this.setState({downloadControlled: true});
+			state.blah = "blah";
 		}
 	}
 	
@@ -88,17 +89,7 @@ class DownloadButtonSingle extends Component {
 			    />
 			    <Hidden>Download file</Hidden>
 			  </Button>
-			  { this.state.downloadControlled && 
-					<BaseModal title="Access Alert" closeText={'close'}>
-				  		<p> You are attempting to download files that you are not
-				  		authorized to access.
-				  		</p>
-				  		<p>
-				  		Click the button below to request access.
-				  		</p>
-				  	</BaseModal>  
-			  }
-			</div>  
+			</div>
 		);
 	}
 	
