@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Button from '@ncigdc/uikit/Button';
@@ -7,6 +7,7 @@ import DownloadIcon from '@ncigdc/theme/icons/Download';
 import Hidden from '@ncigdc/components/Hidden';
 import Color from 'color';
 import ReactGA from 'react-ga';
+import BaseModal from '@ncigdc/components/Modals/BaseModal';
 
 const styles = {
 		  button: theme => ({
@@ -32,48 +33,65 @@ const styles = {
 		  }),
 		};
 
-const DownloadButtonSingle = ({
-	  dispatch,
-	  file,
-	  files,
-	  theme,
-	  style,
-	  asIcon = false,
-	}) => (
-	  <Button
-	    className="test-download"
-	    style={{
-	      ...styles.button(theme)
-	    }}
-	    onClick={() => {
-			ReactGA.event({
-				category: 'Download',
-				action: 'File',
-				label: file.file_name
-			});
-			downloadFile(file);
-	    }}
-	    aria-label="Download file"
-	  >
-	    <DownloadIcon
-	      style={{
-	        color: '#fff',
-	      }}
-	    />
-	    <Hidden>Download file</Hidden>
-	  </Button>
-	);
-
-const downloadFile = (file) => {
-	const url = 'data/knowledgeEnvironment/' + file.file_name;
-	const a = document.createElement('a');
-	a.style.display = 'none';
-	a.href = url;
-	document.body.appendChild(a);
-	a.click();
-	document.body.removeChild(a);
-};
+class DownloadButtonSingle extends Component {
 	
+	constructor(props) {
+		super(props);
+		
+		this.state = { downloadControlled: false };
+		this.downloadFile = this.downloadFile.bind(this);
+	}
+	
+	downloadFile(file) {
+			const url = 'data/knowledgeEnvironment/' + file.file_name;
+			const a = document.createElement('a');
+			a.style.display = 'none';
+			a.href = url;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+	}
+	
+	render() {
+		let dispatch = this.props.dispatch;
+		let file = this.props.file;
+		let files = this.props.files;
+		let theme = this.props.theme;
+		let style = this.props.style;
+		let asIcon = false;
+		
+		return (
+			<div>
+			  <Button
+			    className="test-download"
+			    style={{
+			      ...styles.button(theme)
+			    }}
+			    onClick={() => {
+					ReactGA.event({
+						category: 'Download',
+						action: 'File',
+						label: file.file_name
+					});
+					this.downloadFile(file);
+			    }}
+			    aria-label="Download file"
+			  >
+			    <DownloadIcon
+			      style={{
+			        color: '#fff',
+			      }}
+			    />
+			    <Hidden>Download file</Hidden>
+			  </Button>
+			</div>
+		);
+	}
+	
+	
+}
+	  
+
 export default compose(connect(state => state.cart), withTheme)(
   DownloadButtonSingle,
 );
