@@ -63,7 +63,7 @@ function DownloadFile({
       onClick={() =>
         dispatch(
           setModal(
-                <BaseModal title="Access Alert" closeText={'Cancel'}>
+                <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button>Request Access</Button>]}>
                     <p> You are attempting to download files that you are not
                         authorized to access.
                     </p>
