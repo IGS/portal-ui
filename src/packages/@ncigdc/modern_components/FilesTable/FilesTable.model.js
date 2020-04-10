@@ -11,7 +11,6 @@ import { makeFilter } from '@ncigdc/utils/filters';
 import FileSize from '@ncigdc/components/FileSize';
 import features from '../../../../features';
 import CopyToClipboardButton from '@ncigdc/modern_components/CopyToClipboardButton/CopyToClipboardButton';
-import ReactTooltip from "react-tooltip";
 
 const filesTableModel = [
   {
