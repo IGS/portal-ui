@@ -63,7 +63,6 @@ const filesTableModel = [
     td: ({ node }) => (
       <Td>
         <CopyToClipboardButton text={node.file_name} />
-        <ReactTooltip />
         {features.fileLinking ? (
             <FileLink
                 uuid={node.file_id}
