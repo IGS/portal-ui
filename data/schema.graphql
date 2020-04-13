@@ -5324,7 +5324,7 @@ type FileNode implements Node {
   # keyword
   file_id: String
 
-  sample_id: String
+  sample_id: [String]
 
   # long
   contamination: Float
