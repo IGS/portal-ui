@@ -63,7 +63,7 @@ function DownloadFile({
       onClick={() =>
         dispatch(
           setModal(
-                <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button onClick={() => window.open("https://drive.google.com/open?id=13B_j0RG-x_7TPCSW2a_eXTGyQDQJeURSeO5_hWOtf-g", "_blank")}>Request Access</Button>]}>
+                <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button onClick={() => window.open("https://forms.gle/sAQaiNiUcAoC3Ndx8", "_blank")}>Request Access</Button>]}>
                     <p> You are attempting to download files that you are not
                         authorized to access.
                     </p>
