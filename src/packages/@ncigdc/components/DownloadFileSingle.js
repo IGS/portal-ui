@@ -64,7 +64,7 @@ function DownloadFile({
         dispatch(
           setModal(
                 <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button onClick={() => window.open("https://forms.gle/sAQaiNiUcAoC3Ndx8", "_blank")}>Request Access</Button>]}>
-                    <p> You are attempting to download files that are considered controlled access. To protect the privacy of our study participants, you will need to sign a Data Use Agreement (asking you to agree not to attempt to re-identify any study participants) to gain access to this data.
+                    <p> You are attempting to download files that are considered controlled access. To protect the privacy of our study participants, a signed Data Use Agreement is required to gain access to this data.
                     </p>
                     <p>
                         Click the button below to request access.
