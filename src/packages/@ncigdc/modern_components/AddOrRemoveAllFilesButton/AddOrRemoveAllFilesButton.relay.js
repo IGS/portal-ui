@@ -9,19 +9,19 @@ import { BaseQuery } from '@ncigdc/modern_components/Query';
 export default (Component: ReactClass<*>) =>
   compose(
     branch(
-      ({ viewer }) => !viewer.repository.cases.hits.edges[0],
+      ({ viewer }) => !viewer.repository.files.hits.edges[0],
       renderComponent(() => <div>No case found.</div>),
     ),
     withPropsOnChange(
       ['viewer'],
-      ({ viewer: { repository: { cases: { hits: { edges } } } } }) => {
+      ({ viewer: { repository: { files: { hits: { edges } } } } }) => {
         const p = edges[0].node;
         return {
           variables: {
             first: p.files.hits.total,
             filters: makeFilter([
               {
-                field: 'cases.case_id',
+                field: 'files.file_id',
                 value: [p.case_id],
               },
             ]),
@@ -52,14 +52,8 @@ export default (Component: ReactClass<*>) =>
                         file_id
                         file_size
                         cases {
-                          hits(first: 1) {
-                            edges {
-                              node {
-                                project {
-                                  project_id
-                                }
-                              }
-                            }
+                          demographics {
+                          	sex
                           }
                         }
                       }

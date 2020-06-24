@@ -109,7 +109,7 @@ const presetFacets = [
   {
     title: 'Gender',
     field: 'demographic.gender',
-    full: 'cases.demographic.gender',
+    full: 'cases.demographics.gender',
     doc_type: 'cases',
     type: 'keyword',
   },
@@ -124,28 +124,28 @@ const presetFacets = [
   {
     title: 'Vital Status',
     field: 'demographic.vital_status',
-    full: 'cases.demographic.vital_status',
+    full: 'cases.demographics.vital_status',
     doc_type: 'cases',
     type: 'keyword',
   },
   {
     title: 'Days to Death',
     field: 'demographic.days_to_death',
-    full: 'cases.demographic.days_to_death',
+    full: 'cases.demographics.days_to_death',
     doc_type: 'cases',
     type: 'long',
   },
   {
     title: 'Race',
     field: 'demographic.race',
-    full: 'cases.demographic.race',
+    full: 'cases.demographics.race',
     doc_type: 'cases',
     type: 'keyword',
   },
   {
     title: 'Ethnicity',
     field: 'demographic.ethnicity',
-    full: 'cases.demographic.ethnicity',
+    full: 'cases.demographics.ethnicity',
     doc_type: 'cases',
     type: 'keyword',
   },
@@ -164,8 +164,8 @@ const enhance = compose(
   withTheme,
   withState('caseIdCollapsed', 'setCaseIdCollapsed', false),
   withPropsOnChange(['viewer'], ({ viewer }) => ({
-    parsedFacets: viewer.repository.cases.facets
-      ? tryParseJSON(viewer.repository.cases.facets, {})
+    parsedFacets: viewer.File.files
+      ? tryParseJSON(viewer.File.files, {})
       : {},
   })),
 );
@@ -281,22 +281,22 @@ const CaseAggregationsComponent = (props: TProps) => (
       >
       Upload Case Set
     </UploadSetButton>
-
-    {_.reject(presetFacets, { full: 'cases.case_id' }).map(facet => (
-      <FacetWrapper
-        additionalProps={facet.additionalProps}
-        aggregation={
-          props.viewer.repository.cases.aggregations[
-            escapeForRelay(facet.field)
-        ]
-        }
-        facet={facet}
-        key={facet.full}
-        relay={props.relay}
-        title={facet.title}
-        />
-    ))}
   </div>
+
 );
 
+//    {_.reject(presetFacets, { full: 'cases.case_id' }).map(facet => (
+//      <FacetWrapper
+//        additionalProps={facet.additionalProps}
+//        aggregation={
+//          props.viewer.repository.cases.aggregations[
+//            escapeForRelay(facet.field)
+//        ]
+//        }
+//        facet={facet}
+//        key={facet.full}
+//        relay={props.relay}
+//        title={facet.title}
+//        />
+//    ))}
 export default enhance(CaseAggregationsComponent);

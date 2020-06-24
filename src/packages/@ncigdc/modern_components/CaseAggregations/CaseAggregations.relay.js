@@ -49,82 +49,35 @@ export default (Component: ReactClass<*>) =>
         query={graphql`
           query CaseAggregations_relayQuery(
             $filters: JSON
-            $repoCaseCustomFacetFields: [String]!
           ) {
             viewer {
-              repository {
-                cases {
-                  facets(facets: $repoCaseCustomFacetFields, filters: $filters)
+              File { 
                   aggregations(
                     filters: $filters
                     aggregations_filter_themselves: false
                   ) {
-                    primary_site {
+                    cases__provider {
+                    	buckets {
+                    		doc_count
+                    		key
+                    	}
+                    }
+                    cases__demographics__sex {
                       buckets {
                         doc_count
                         key
                       }
                     }
-                    project__program__name {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    project__project_id {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    disease_type {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    demographic__gender {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    diagnoses__age_at_diagnosis {
-                      stats {
-                        max
-                        min
-                        count
-                      }
-                    }
-                    demographic__vital_status {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    demographic__days_to_death {
-                      stats {
-                        max
-                        min
-                        count
-                      }
-                    }
-                    demographic__race {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
-                    demographic__ethnicity {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
+    		  		cases__demographics__age {
+    		  			buckets {
+    		  				doc_count
+    		  				key
+    		  			}
+    		  		}
+                    
                   }
                 }
               }
-            }
           }
         `}
       />

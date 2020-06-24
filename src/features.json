@@ -20,7 +20,7 @@
   "fileFilter": false,
   "filesearch": false,
   "cartLink": false,
-  "caseAggregations": false,
+  "caseAggregations": true,
   "saveIcon": false,
   "fileLinking": false,
   "pieCharts": {
