@@ -112,6 +112,7 @@ const styles = {
 
 const CaseAggregationsComponent = (props: TProps) => (
   <div className="test-case-aggregations">
+  { features.caseAggregations &&
     <div
       className="text-right"
       style={{
@@ -128,15 +129,14 @@ const CaseAggregationsComponent = (props: TProps) => (
           &nbsp;|&nbsp;
         </span>
       )}
-      { features.caseAggregations &&
 	      <a
 	        onClick={() => props.setShouldShowFacetSelection(true)}
 	        style={styles.link}
 	        >
 	        Add a Case/Biospecimen Filter
 	      </a>
-      }
     </div>
+  }
     { features.caseAggregations &&
 	    <Modal
 	      isOpen={props.shouldShowFacetSelection}
@@ -160,25 +160,26 @@ const CaseAggregationsComponent = (props: TProps) => (
 	    </Modal>
     }
     {props.userSelectedFacets.map(facet => (
-      <FacetWrapper
-        aggregation={props.parsedFacets[facet.field]}
-        facet={facet}
-        isRemovable
-        key={facet.full}
-        onRequestRemove={() => props.handleRequestRemoveFacet(facet)}
-        relayVarName="repoCaseCustomFacetFields"
-        style={{ borderBottom: `1px solid ${props.theme.greyScale5}` }}
-        />
+    		<FacetWrapper
+    		aggregation={props.parsedFacets[facet.field]}
+    		facet={facet}
+    		isRemovable
+    		key={facet.full}
+    		onRequestRemove={() => props.handleRequestRemoveFacet(facet)}
+    		relayVarName="repoCaseCustomFacetFields"
+    			style={{ borderBottom: `1px solid ${props.theme.greyScale5}` }}
+    		/>
     ))}
 
-    <FacetHeader
-      collapsed={props.caseIdCollapsed}
-      description="Enter UUID or ID of Case, Sample, Portion, Slide, Analyte or Aliquot"
-      field="cases.case_id"
-      setCollapsed={props.setCaseIdCollapsed}
-      title="Case"
-      />
-
+    { features.searchByCaseId &&
+	    <FacetHeader
+	      collapsed={props.caseIdCollapsed}
+	      description="Enter UUID or ID of Case, Sample, Portion, Slide, Analyte or Aliquot"
+	      field="cases.case_id"
+	      setCollapsed={props.setCaseIdCollapsed}
+	      title="Case"
+	      />
+    }
     <SuggestionFacet
       collapsed={props.caseIdCollapsed}
       doctype="cases"

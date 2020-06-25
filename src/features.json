@@ -23,6 +23,7 @@
   "casesFilters": true,
   "caseAggregations": false,
   "uploadCaseSet": false,
+  "searchByCaseId": false,
   "saveIcon": false,
   "fileLinking": false,
   "pieCharts": {
