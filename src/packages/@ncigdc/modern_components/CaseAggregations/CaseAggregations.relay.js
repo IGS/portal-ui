@@ -9,7 +9,7 @@ import Query from '@ncigdc/modern_components/Query';
 import { parseFilterParam } from '@ncigdc/utils/uri';
 import withRouter from '@ncigdc/utils/withRouter';
 
-const entityType = 'RepositoryCases';
+const entityType = 'Files';
 export default (Component: ReactClass<*>) =>
   compose(
     withRouter,
@@ -74,7 +74,12 @@ export default (Component: ReactClass<*>) =>
     		  				key
     		  			}
     		  		}
-                    
+                    cases__samples__tissue_type {
+                    	buckets {
+                    		doc_count
+                    		key
+                    	}
+                    }
                   }
                 }
               }

@@ -146,22 +146,22 @@ export const RepositoryPageComponent = (props: TProps) => {
                     </NoResultsMessage>
                   ),
                 },
-                {
-                  id: 'cases',
-                  text: `Cases (${caseCount.toLocaleString()})`,
-                  component: !!props.viewer.File.hits.total ? (
-                    <div>
-                      <RepoCasesPies
-                        aggregations={props.viewer.File.pies}
-                      />
-                      <RepoCasesTable />
-                    </div>
-                  ) : (
-                    <NoResultsMessage>
-                      No results found using those filters.
-                    </NoResultsMessage>
-                  ),
-                },
+//                {
+//                  id: 'cases',
+//                  text: `Cases (${caseCount.toLocaleString()})`,
+//                  component: !!props.viewer.File.hits.total ? (
+//                    <div>
+//                      <RepoCasesPies
+//                        aggregations={props.viewer.File.pies}
+//                      />
+//                      <RepoCasesTable />
+//                    </div>
+//                  ) : (
+//                    <NoResultsMessage>
+//                      No results found using those filters.
+//                    </NoResultsMessage>
+//                  ),
+//                },
               ]}
             />
           </span>
