@@ -1,0 +1,38 @@
+curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/json' -d'
+{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+   "mappings": { 
+   		"properties": { 
+			"file_name": { "type": "keyword" }, 
+			"data_category": { "type": "keyword" }, 
+			"data_format": { "type": "keyword" }, 
+			"file_size": { "type": "keyword" }, 
+			"experimental_strategy": { "type": "keyword" }, 
+			"access": { "type": "keyword" }, 
+			"file_id": { "type": "keyword" }, 
+			"data_type": { "type": "keyword" }, 
+			"project": { "type": "keyword" }, 
+			"sample_id": { "type": "keyword" }, 
+			"platform": {"type": "keyword"},
+			"cases": {
+				"properties": {
+					"demographics": {
+						"properties": {
+							"age": {"type": "keyword"},
+							"sex": {"type": "keyword"}
+						}
+					},
+					"samples": {
+						"properties": {
+							"tissue_type": { "type": "keyword" }
+						}
+					},
+					"provider": {"type": "keyword"}
+				}
+			}
+		}	
+	}
+}
+'

@@ -5772,26 +5772,29 @@ type FileAggregations {
   cases__created_datetime: Aggregations
   cases__slide_ids: Aggregations
   cases__days_to_index: NumericAggregations
-  cases__demographic__cause_of_death: Aggregations
-  cases__demographic__race: Aggregations
-  cases__demographic__age_is_obfuscated: Aggregations
-  cases__demographic__updated_datetime: Aggregations
-  cases__demographic__weeks_gestation_at_birth: NumericAggregations
-  cases__demographic__gender: Aggregations
-  cases__demographic__state: Aggregations
-  cases__demographic__occupation_duration_years: NumericAggregations
-  cases__demographic__submitter_id: Aggregations
-  cases__demographic__cause_of_death_source: Aggregations
-  cases__demographic__year_of_birth: NumericAggregations
-  cases__demographic__demographic_id: Aggregations
-  cases__demographic__days_to_birth: NumericAggregations
-  cases__demographic__premature_at_birth: Aggregations
-  cases__demographic__age_at_index: NumericAggregations
-  cases__demographic__vital_status: Aggregations
-  cases__demographic__days_to_death: NumericAggregations
-  cases__demographic__created_datetime: Aggregations
-  cases__demographic__ethnicity: Aggregations
-  cases__demographic__year_of_death: NumericAggregations
+  cases__demographics__cause_of_death: Aggregations
+  cases__demographics__race: Aggregations
+  cases__demographics__age_is_obfuscated: Aggregations
+  cases__demographics__updated_datetime: Aggregations
+  cases__demographics__weeks_gestation_at_birth: NumericAggregations
+  cases__demographics__gender: Aggregations
+  cases__demographics__state: Aggregations
+  cases__demographics__occupation_duration_years: NumericAggregations
+  cases__demographics__submitter_id: Aggregations
+  cases__demographics__cause_of_death_source: Aggregations
+  cases__demographics__year_of_birth: NumericAggregations
+  cases__demographics__demographic_id: Aggregations
+  cases__demographics__days_to_birth: NumericAggregations
+  cases__demographics__premature_at_birth: Aggregations
+  cases__demographics__age_at_index: NumericAggregations
+  cases__demographics__vital_status: Aggregations
+  cases__demographics__days_to_death: NumericAggregations
+  cases__demographics__created_datetime: Aggregations
+  cases__demographics__ethnicity: Aggregations
+  cases__demographics__year_of_death: NumericAggregations
+  cases__demographics__age: Aggregations
+  cases__demographics__sex: Aggregations
+  cases__provider: Aggregations
 
   # The yes/no/unknown indicator used to describe whether a patient was unable to
   # be contacted or seen for follow-up information.
@@ -6355,6 +6358,15 @@ type FileAggregations {
   sample_id: Aggregations
 }
 
+type FileCasesDemographics {
+  age: String
+  sex: String
+}
+
+type FileCasesSamples {
+  tissue_type: String
+}
+
 type FileAnalysis {
   input_files: InputFiles
   metadata: Metadata
@@ -6581,7 +6593,9 @@ type FileCaseEdge {
 }
 
 type FileCases {
-  hits(offset: Int, sort: [Sort], filters: JSON, before: String, after: String, first: Int, last: Int): FileCaseConnection
+  demographics: FileCasesDemographics
+  samples: FileCasesSamples
+  provider: String
 }
 
 type FileCenter {

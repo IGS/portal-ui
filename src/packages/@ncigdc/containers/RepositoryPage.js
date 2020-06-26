@@ -86,21 +86,20 @@ export const RepositoryPageComponent = (props: TProps) => {
 //  const fileSize = props.viewer.cart_summary.aggregations.fs.value;
   
   // hacking this in to get things to work
-  const caseCount = 0;
+  const caseCount = 1;
   const fileSize = 0;
   const facetTabs=[
-        {
-          id: 'files',
-          text: 'Files',
-          component: <FileAggregations relay={props.relay} />,
-        }];
-  if (features.caseAggregations) {
-    facetTabs.push({
+    {
+      id: 'files',
+      text: 'Files',
+      component: <FileAggregations relay={props.relay} />,
+    },
+    {
       id: 'cases',
       text: 'Cases',
       component: <CaseAggregations relay={props.relay} />,
-    })
-  }
+    }
+  ];
 
   return (
     <div className="test-repository-page">
@@ -150,10 +149,10 @@ export const RepositoryPageComponent = (props: TProps) => {
 //                {
 //                  id: 'cases',
 //                  text: `Cases (${caseCount.toLocaleString()})`,
-//                  component: !!props.viewer.repository.cases.hits.total ? (
+//                  component: !!props.viewer.File.hits.total ? (
 //                    <div>
 //                      <RepoCasesPies
-//                        aggregations={props.viewer.repository.cases.pies}
+//                        aggregations={props.viewer.File.pies}
 //                      />
 //                      <RepoCasesTable />
 //                    </div>
