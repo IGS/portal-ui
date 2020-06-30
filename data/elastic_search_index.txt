@@ -26,7 +26,8 @@ curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/jso
 					},
 					"samples": {
 						"properties": {
-							"tissue_type": { "type": "keyword" }
+							"tissue_type": { "type": "keyword" },
+							"sample_type": { "type": "keyword"}
 						}
 					},
 					"provider": {"type": "keyword"}
