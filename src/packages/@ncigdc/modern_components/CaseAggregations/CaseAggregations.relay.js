@@ -80,6 +80,12 @@ export default (Component: ReactClass<*>) =>
                     		key
                     	}
                     }
+		    		cases__samples__sample_type {
+		    			buckets {
+		    		  		doc_count
+		    		  		key
+		    		  	}
+		    		}
                   }
                 }
               }
