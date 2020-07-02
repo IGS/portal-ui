@@ -187,28 +187,30 @@ const CaseAggregationsComponent = (props: TProps) => (
 	      title="Case"
 	      />
     }
-    <SuggestionFacet
-      collapsed={props.caseIdCollapsed}
-      doctype="cases"
-      dropdownItem={x => (
-        <Row>
-          <CaseIcon style={{
-            paddingRight: '1rem',
-            paddingTop: '1rem',
-          }}
-                    />
-          <div>
-            <div style={{ fontWeight: 'bold' }}>{x.case_id}</div>
-            <div style={{ fontSize: '80%' }}>{x.submitter_id}</div>
-            {x.project.project_id}
-          </div>
-        </Row>
-      )}
-      fieldNoDoctype="case_id"
-      placeholder="e.g. TCGA-A5-A0G2, 432fe4a9-2..."
-      queryType="case"
-      title="Case"
-      />
+    { features.searchByCaseId &&
+	    <SuggestionFacet
+	      collapsed={props.caseIdCollapsed}
+	      doctype="cases"
+	      dropdownItem={x => (
+	        <Row>
+	          <CaseIcon style={{
+	            paddingRight: '1rem',
+	            paddingTop: '1rem',
+	          }}
+	                    />
+	          <div>
+	            <div style={{ fontWeight: 'bold' }}>{x.case_id}</div>
+	            <div style={{ fontSize: '80%' }}>{x.submitter_id}</div>
+	            {x.project.project_id}
+	          </div>
+	        </Row>
+	      )}
+	      fieldNoDoctype="case_id"
+	      placeholder="e.g. TCGA-A5-A0G2, 432fe4a9-2..."
+	      queryType="case"
+	      title="Case"
+	      />
+    }
     { features.uploadCaseSet &&
 	    <UploadSetButton
 	      defaultQuery={{
