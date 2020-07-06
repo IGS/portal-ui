@@ -85,11 +85,11 @@ const enhance = compose(
     validFacetDocTypes: ['files'],
   }),
   withState('fileIdCollapsed', 'setFileIdCollapsed', false),
-//  withPropsOnChange(['viewer'], ({ viewer }) => ({
-//    parsedFacets: viewer.File.facets
-//      ? tryParseJSON(viewer.File.facets, {})
-//      : {},
-//  })),
+  withPropsOnChange(['viewer'], ({ viewer }) => ({
+    parsedFacets: viewer.File.facets
+      ? tryParseJSON(viewer.File.facets, {})
+      : {},
+  })),
 );
 
 const styles = {
@@ -210,37 +210,39 @@ const FileAggregations = ({
         />
     ))}
     {features.filesearch && (
-    <FacetHeader
-      collapsed={fileIdCollapsed}
-      description="Enter File UUID or name"
-      field="file_id"
-      setCollapsed={setFileIdCollapsed}
-      title="File"
-      />
+	    <FacetHeader
+	      collapsed={fileIdCollapsed}
+	      description="Enter File UUID or name"
+	      field="file_id"
+	      setCollapsed={setFileIdCollapsed}
+	      title="File"
+	      />
     )}
-    <SuggestionFacet
-      collapsed={fileIdCollapsed}
-      doctype="files"
-      dropdownItem={x => (
-        <Row>
-          <FileIcon style={{
-            paddingRight: '1rem',
-            paddingTop: '1rem',
-          }}
-          />
-          <div>
-            <div style={{ fontWeight: 'bold' }}>{x.file_id}</div>
-            <div style={{ fontSize: '80%' }}>{x.submitter_id}</div>
-            {x.file_name}
-          </div>
-        </Row>
-      )}
-      fieldNoDoctype="file_id"
-      placeholder="e.g. 142682.bam, 4f6e2e7a-b..."
-      queryType="file"
-      style={{ borderBottom: `1px solid ${theme.greyScale5}` }}
-      title="File"
-      />
+    {features.filesearch && (
+	    <SuggestionFacet
+	      collapsed={fileIdCollapsed}
+	      doctype="files"
+	      dropdownItem={x => (
+	        <Row>
+	          <FileIcon style={{
+	            paddingRight: '1rem',
+	            paddingTop: '1rem',
+	          }}
+	          />
+	          <div>
+	            <div style={{ fontWeight: 'bold' }}>{x.file_id}</div>
+	            <div style={{ fontSize: '80%' }}>{x.submitter_id}</div>
+	            {x.file_name}
+	          </div>
+	        </Row>
+	      )}
+	      fieldNoDoctype="file_id"
+	      placeholder="e.g. 142682.bam, 4f6e2e7a-b..."
+	      queryType="file"
+	      style={{ borderBottom: `1px solid ${theme.greyScale5}` }}
+	      title="File"
+	      />
+    )}
     {_.reject(presetFacets, { full: 'file_id' }).map(facet => (
       <FacetWrapper
         additionalProps={facet.additionalProps}
