@@ -36,6 +36,7 @@ export type TProps = {
     cases__demographics__age: { buckets: [IBucket] },
     cases__samples__tissue_type: { buckets: [IBucket] },
     cases__samples__sample_type: { buckets: [IBucket] },
+    cases__samples__sample_id: { buckets: [IBucket] },
     cases__provider: { buckets: [IBucket] },
   },
   setAutocomplete: Function,
@@ -82,6 +83,12 @@ const presetFacets = [
 	  field: 'cases.samples.sample_type',
 	  full: 'cases.samples.sample_type',
 	  type: 'keyword',
+  },
+  {
+	  title: 'Sample ID',
+	  field: 'cases.samples.sample_id',
+	  full: 'cases.samples.sample_id',
+	  type: 'terms',
   },
   {
 	  title: 'Provider',

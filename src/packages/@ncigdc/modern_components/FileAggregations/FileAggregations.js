@@ -65,12 +65,6 @@ const presetFacets = [
     full: 'access',
     type: 'keyword',
   },
-  {
-    title: 'Sample ID',
-    field: 'sample_id',
-    full: 'sample_id',
-    type: 'terms',
-  },
 ];
 
 const presetFacetFields = presetFacets.map(x => x.field);
@@ -112,7 +106,6 @@ export type TProps = {
     data_type: { buckets: [IBucket] },
     experimental_strategy: { buckets: [IBucket] },
     platform: { buckets: [IBucket] },
-    sample_id: { buckets: [IBucket] },
   },
   theme: Object,
   suggestions: Array<Object>,
