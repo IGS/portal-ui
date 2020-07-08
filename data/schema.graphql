@@ -5324,6 +5324,9 @@ type FileNode implements Node {
   # keyword
   file_id: String
 
+  # keyword
+  package_id: String
+
   sample_id: [String]
 
   # long

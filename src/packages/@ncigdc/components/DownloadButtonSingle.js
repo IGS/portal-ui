@@ -43,7 +43,7 @@ class DownloadButtonSingle extends Component {
 	}
 	
 	downloadFile(file) {
-			const url = '/api/v1/file/download/' + file.file_name;
+			const url = '/api/v1/file/download/' + file.package_id + '/' + file.file_name;
 			const a = document.createElement('a');
 			a.style.display = 'none';
 			a.href = url;

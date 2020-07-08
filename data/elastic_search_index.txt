@@ -14,6 +14,7 @@ curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/jso
 			"file_id": { "type": "keyword" }, 
 			"data_type": { "type": "keyword" }, 
 			"project": { "type": "keyword" }, 
+			"package_id": { "type": "keyword" },
 			"platform": {"type": "keyword"},
 			"cases": {
 				"properties": {

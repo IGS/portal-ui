@@ -66,6 +66,7 @@ export default (Component: ReactClass<*>) =>
                         data_type
                         experimental_strategy
                         platform
+                        package_id
                       }
                     }
                   }
