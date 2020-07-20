@@ -148,7 +148,7 @@ store.dispatch(fetchApiVersionInfo());
 
 if (process.env.NODE_ENV !== 'development') {
   store.dispatch(fetchUser());
-  if (!AWG && features.notification) {
+  if (!AWG && features.notifications) {
     store.dispatch(fetchNotifications());
   }
 }

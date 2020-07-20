@@ -31,5 +31,5 @@
     "project": false,
     "accessLevel": false
   },
-  "notification": false
+  "notifications": false
 }
