@@ -190,6 +190,16 @@ const filesTableModel = [
     downloadable: true,
     hidden: false,
   },
+  {
+	  name: 'Participant ID',
+	  id: 'sample_id',
+	  th: () => <Th>Participant ID</Th>,
+	  td: ({ node }) => <Td>{node.cases.samples.sample_id ? 
+			  node.cases.samples.sample_id.join(", ") : '--'}</Td>,
+	  sortable: true,
+	  downloadable: true,
+	  hidden: false,
+  },
 ];
 
 export default filesTableModel;

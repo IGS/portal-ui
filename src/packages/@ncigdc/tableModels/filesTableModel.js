@@ -183,9 +183,9 @@ const filesTableModel = [
     hidden: true,
   },
   {
-    name: 'Sample ID',
+    name: 'Participant ID',
     id: 'sample_id',
-    th: () => <Th>Sample ID</Th>,
+    th: () => <Th>Participant ID</Th>,
     td: ({ node }) => <Td>{node.sample_id || '--'}</Td>,
     sortable: true,
     downloadable: true,

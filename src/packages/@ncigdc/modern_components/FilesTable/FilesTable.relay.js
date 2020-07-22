@@ -67,6 +67,11 @@ export default (Component: ReactClass<*>) =>
                         experimental_strategy
                         platform
                         package_id
+                        cases {
+                          samples {
+                            sample_id
+                          }
+                        }
                       }
                     }
                   }

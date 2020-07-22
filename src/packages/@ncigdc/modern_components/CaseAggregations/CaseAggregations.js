@@ -85,7 +85,7 @@ const presetFacets = [
 	  type: 'keyword',
   },
   {
-	  title: 'Sample ID',
+	  title: 'Participant ID',
 	  field: 'cases.samples.sample_id',
 	  full: 'cases.samples.sample_id',
 	  type: 'terms',
