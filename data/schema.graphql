@@ -6359,6 +6359,7 @@ type FileAggregations {
   file_autocomplete: Aggregations
   average_insert_size: NumericAggregations
   sample_id: Aggregations
+  project: Aggregations
 }
 
 type FileCasesDemographics {
