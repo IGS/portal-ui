@@ -13,6 +13,7 @@ import CurrentFilters from '@ncigdc/components/CurrentFilters';
 import TabbedLinks from '@ncigdc/components/TabbedLinks';
 import UnstyledButton from '@ncigdc/uikit/UnstyledButton';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@ncigdc/theme/icons';
+import AtlasContentNote from '@ncigdc/components/AtlasContentNote/AtlasContentNote';
 
 const sidePadding = '2.5rem';
 
@@ -92,6 +93,9 @@ const SearchPage = (
       </FacetsPanel>
     )}
     <Content>
+      <Row style={{ marginBottom: '2rem' }}>
+        <AtlasContentNote/>
+      </Row>
       <Row style={{ marginBottom: '2rem' }}>
         {showFacets || (
           <ShowFacetsButton onClick={() => setShowFacets(!showFacets)}>

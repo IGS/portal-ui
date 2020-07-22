@@ -6367,7 +6367,9 @@ type FileCasesDemographics {
 }
 
 type FileCasesSamples {
-  tissue_type: String
+  sample_id: [String]
+  sample_type: [String]
+  tissue_type: [String]
 }
 
 type FileAnalysis {
