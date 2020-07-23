@@ -91,13 +91,13 @@ const presetFacets = [
 	  type: 'terms',
   },
   {
-	  title: 'Provider',
+	  title: 'Tissue Source',
 	  field: 'cases.provider',
 	  full: 'cases.provider',
 	  type: 'keyword',
   },
   {
-	  title: 'Study Type',
+	  title: 'Protocol',
 	  field: 'project',
 	  full: 'project',
 	  type: 'keyword'
