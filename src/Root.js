@@ -29,6 +29,7 @@ import { fetchNotifications } from '@ncigdc/dux/bannerNotification';
 import Loader from '@ncigdc/uikit/Loaders/Loader';
 import Portal from './Portal';
 import ReactGA from 'react-ga';
+import features from './features.json';
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update');
@@ -147,7 +148,7 @@ store.dispatch(fetchApiVersionInfo());
 
 if (process.env.NODE_ENV !== 'development') {
   store.dispatch(fetchUser());
-  if (!AWG) {
+  if (!AWG && features.notifications) {
     store.dispatch(fetchNotifications());
   }
 }

@@ -30,5 +30,6 @@
     "primarySite": false,
     "project": false,
     "accessLevel": false
-  }
+  },
+  "notifications": false
 }
