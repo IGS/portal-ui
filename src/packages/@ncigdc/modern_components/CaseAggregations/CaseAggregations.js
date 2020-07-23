@@ -96,6 +96,12 @@ const presetFacets = [
 	  full: 'cases.provider',
 	  type: 'keyword',
   },
+  {
+	  title: 'Study Type',
+	  field: 'project',
+	  full: 'project',
+	  type: 'keyword'
+  }
 
 ];
 

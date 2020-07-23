@@ -56,6 +56,12 @@ export default (Component: ReactClass<*>) =>
                     filters: $filters
                     aggregations_filter_themselves: false
                   ) {
+                    project {
+                      buckets {
+                        doc_count
+                        key
+                      }
+                    }
                     cases__provider {
                     	buckets {
                     		doc_count
