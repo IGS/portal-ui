@@ -213,7 +213,6 @@ const CurrentFilters = (
 
           {currentFilters.map((filter, i) => {
             const value = [].concat(filter.content.value || []);
-            console.log(filter);
             return (
               <Row
                 key={`${filter.content.field}.${filter.op}.${value.join()}`}
