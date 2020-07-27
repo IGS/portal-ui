@@ -1,4 +1,4 @@
-curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "localhost:9200/file_cases-nested?pretty" -H 'Content-Type: application/json' -d'
 {
     "settings" : {
         "number_of_shards" : 1
@@ -13,9 +13,10 @@ curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/jso
 			"access": { "type": "keyword" }, 
 			"file_id": { "type": "keyword" }, 
 			"data_type": { "type": "keyword" }, 
-			"project": { "type": "keyword" }, 
+			"protocol": { "type": "keyword" }, 
 			"package_id": { "type": "keyword" },
 			"platform": {"type": "keyword"},
+			"workflow_type": {"type": "keyword"},
 			"cases": {
 				"properties": {
 					"demographics": {
@@ -28,10 +29,10 @@ curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/jso
 						"properties": {
 							"tissue_type": { "type": "keyword" },
 							"sample_type": { "type": "keyword"},
-							"sample_id": { "type": "keyword" }
+							"participant_id": { "type": "keyword" }
 						}
 					},
-					"provider": {"type": "keyword"}
+					"tissue_source": {"type": "keyword"}
 				}
 			}
 		}	
