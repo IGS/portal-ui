@@ -24,6 +24,7 @@ import withRouter from '@ncigdc/utils/withRouter';
 import { GlobalTooltip } from '@ncigdc/uikit/Tooltip';
 import styled from '@ncigdc/theme/styled';
 import { setModal } from '@ncigdc/dux/modal';
+import AtlasContentNote from '@ncigdc/components/Modals/AtlasContentNote';
 import {
   AWG,
   FIRST_TIME_KEY,
@@ -83,7 +84,14 @@ export default compose(
   connect(store => ({ notifications: store.bannerNotification })),
   lifecycle({
     componentDidMount(): void {
-
+    Cookies.get(FIRST_TIME_KEY) || this.props.dispatch(setModal(	
+        <AtlasContentNote	
+          onClose={() => {	
+            Cookies.set(FIRST_TIME_KEY, true);	
+          }}	
+          />,	
+        false,	
+    ));
       let lastPathname = this.props.location.pathname;
       this.removeListen = this.props.history.listen(location => {
         if (location.pathname !== lastPathname) {
