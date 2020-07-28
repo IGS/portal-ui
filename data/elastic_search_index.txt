@@ -1,4 +1,4 @@
-curl -X PUT "localhost:9200/file_cases-nested?pretty" -H 'Content-Type: application/json' -d'
+curl -X PUT "localhost:9200/file_cases?pretty" -H 'Content-Type: application/json' -d'
 {
     "settings" : {
         "number_of_shards" : 1
