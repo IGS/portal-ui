@@ -182,6 +182,15 @@ const filesTableModel = [
     hidden: true,
   },
   {
+    name: 'Workflow Type',
+    id: 'workflow_type',
+    th: () => <Th>Workflow Type</Th>,
+    td: ({ node }) => <Td>{node.workflow_type || '--'}</Td>,
+    sortable: true,
+    downloadable: true,
+    hidden: true,
+  },
+  {
     name: 'Platform',
     id: 'platform',
     th: () => <Th>Platform</Th>,
