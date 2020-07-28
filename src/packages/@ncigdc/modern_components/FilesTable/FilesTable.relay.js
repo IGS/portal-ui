@@ -62,6 +62,7 @@ export default (Component: ReactClass<*>) =>
                         file_size
                         access
                         data_category
+                        workflow_type
                         data_format
                         data_type
                         experimental_strategy

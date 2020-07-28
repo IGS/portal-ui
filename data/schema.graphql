@@ -5253,6 +5253,9 @@ type FileNode implements Node {
   experimental_strategy: String
 
   # keyword
+  workflow_type: String
+
+  # keyword
   file_name: String
 
   # keyword
@@ -6359,6 +6362,7 @@ type FileAggregations {
   file_autocomplete: Aggregations
   average_insert_size: NumericAggregations
   sample_id: Aggregations
+  workflow_type: Aggregations
   protocol: Aggregations
 }
 
