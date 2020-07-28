@@ -69,7 +69,7 @@ export default (Component: ReactClass<*>) =>
                         package_id
                         cases {
                           samples {
-                            sample_id
+                            participant_id
                           }
                         }
                       }

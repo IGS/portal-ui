@@ -86,20 +86,20 @@ const presetFacets = [
   },
   {
 	  title: 'Participant ID',
-	  field: 'cases.samples.sample_id',
-	  full: 'cases.samples.sample_id',
+	  field: 'cases.samples.participant_id',
+	  full: 'cases.samples.participant_id',
 	  type: 'terms',
   },
   {
 	  title: 'Tissue Source',
-	  field: 'cases.provider',
-	  full: 'cases.provider',
+	  field: 'cases.tissue_source',
+	  full: 'cases.tissue_source',
 	  type: 'keyword',
   },
   {
 	  title: 'Protocol',
-	  field: 'project',
-	  full: 'project',
+	  field: 'protocol',
+	  full: 'protocol',
 	  type: 'keyword'
   }
 
