@@ -3,7 +3,7 @@ import BaseModal from '@ncigdc/components/Modals/BaseModal';
 
 
 const AtlasContentNote = ({ onClose }) => (	
-  <BaseModal title="Welcome to the KPMP Kidney Tissue Atlas Data Repository." closeText="Accept" onClose={onClose}>	
+  <BaseModal title="Welcome to the KPMP Kidney Tissue Atlas Data Repository." closeText="Close" onClose={onClose}>	
     <p>	
     	The datasets available in this repository are a combination of 
     	KPMP participant biopsies and reference tissue samples.
