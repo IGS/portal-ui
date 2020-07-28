@@ -56,13 +56,13 @@ export default (Component: ReactClass<*>) =>
                     filters: $filters
                     aggregations_filter_themselves: false
                   ) {
-                    project {
+                    protocol {
                       buckets {
                         doc_count
                         key
                       }
                     }
-                    cases__provider {
+                    cases__tissue_source {
                     	buckets {
                     		doc_count
                     		key
@@ -92,7 +92,7 @@ export default (Component: ReactClass<*>) =>
 		    		  		key
 		    		  	}
 		    		},
-		    		cases__samples__sample_id {
+		    		cases__samples__participant_id {
 		    			buckets {
 		    				doc_count
 		    				key
