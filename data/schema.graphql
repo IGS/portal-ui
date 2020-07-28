@@ -5797,7 +5797,7 @@ type FileAggregations {
   cases__demographics__year_of_death: NumericAggregations
   cases__demographics__age: Aggregations
   cases__demographics__sex: Aggregations
-  cases__provider: Aggregations
+  cases__tissue_source: Aggregations
 
   # The yes/no/unknown indicator used to describe whether a patient was unable to
   # be contacted or seen for follow-up information.
@@ -5813,7 +5813,7 @@ type FileAggregations {
   cases__samples__tumor_code_id: Aggregations
   cases__samples__submitter_id: Aggregations
   cases__samples__intermediate_dimension: NumericAggregations
-  cases__samples__sample_id: Aggregations
+  cases__samples__participant_id: Aggregations
   cases__samples__time_between_clamping_and_freezing: NumericAggregations
   cases__samples__pathology_report_uuid: Aggregations
   cases__samples__created_datetime: Aggregations
@@ -6359,7 +6359,7 @@ type FileAggregations {
   file_autocomplete: Aggregations
   average_insert_size: NumericAggregations
   sample_id: Aggregations
-  project: Aggregations
+  protocol: Aggregations
 }
 
 type FileCasesDemographics {
@@ -6368,7 +6368,7 @@ type FileCasesDemographics {
 }
 
 type FileCasesSamples {
-  sample_id: [String]
+  participant_id: [String]
   sample_type: [String]
   tissue_type: [String]
 }
@@ -6601,7 +6601,7 @@ type FileCaseEdge {
 type FileCases {
   demographics: FileCasesDemographics
   samples: FileCasesSamples
-  provider: String
+  tissue_source: String
 }
 
 type FileCenter {
