@@ -74,6 +74,7 @@ const FacetHeader = ({
   showingValueSearch,
   style,
   title,
+  hover
 }) => (
   <LocationSubscriber>
     {(ctx: { pathname: string, query: IRawQuery }) => {
@@ -107,8 +108,8 @@ const FacetHeader = ({
               {searchValue
                   ? internalHighlight(searchValue, title, {
                     backgroundColor: '#FFFF00',
-                  })
-                  : title}
+                  }, hover)
+                  : <span title={hover}>{title}</span>}
               {angleIconRight && (
                 <AngleIcon
                   style={{
