@@ -65,24 +65,28 @@ const presetFacets = [
     field: 'cases.demographics.sex',
     full: 'cases.demographics.sex',
     type: 'keyword',
+    hover: 'Participant\'s sex at birth'
   },
   {
     title: 'Age',
     field: 'cases.demographics.age',
     full: 'cases.demographics.age',
     type: 'keyword',
+    hover: 'Participant\'s age at enrollment'
   },
   {
 	  title: 'Tissue Type',
 	  field: 'cases.samples.tissue_type',
 	  full: 'cases.samples.tissue_type',
 	  type: 'keyword',
+	  hover: 'Clinicopathologic grouping of the participant. "AKI" stands for Acute Kidney Injury; "CKD" stands for Chronic Kidney Disease.'
   },
   {
 	  title: 'Sample Type',
 	  field: 'cases.samples.sample_type',
 	  full: 'cases.samples.sample_type',
 	  type: 'keyword',
+	  hover: 'How sample was obtained'
   },
   {
 	  title: 'Participant ID',
@@ -95,12 +99,14 @@ const presetFacets = [
 	  field: 'cases.tissue_source',
 	  full: 'cases.tissue_source',
 	  type: 'keyword',
+	  hover: 'Group that supplied the tissue sample. "KPMP Recruitment Site" signifies participant data that was procured by a KPMP recruitment site for the study. "KPMP Tissue Interrogation Site" signifies data that was procured by a KPMP tissue interrogation site prior to the start of study biopsy collection. These tissues were primarily used to validate data processing pipelines. "KPMP Pilot" signifies data that was procured centrally by KPMP prior to the start of study biopsy collection. These tissues were also used to validate data processing pipelines.'
   },
   {
 	  title: 'Protocol',
 	  field: 'protocol',
 	  full: 'protocol',
-	  type: 'keyword'
+	  type: 'keyword',
+	  hover: 'The protocol followed to obtain and process the sample. "KPMP Main Protocol" signifies that the sample was procured following the steps in the KPMP Clinical Protocol used for obtaining study participant biopsies. "KPMP Pilot 1 Protocol" signifies that the sample was procured following the steps of an internal pilot protocol developed for validating data processing pipelines.'
   }
 
 ];

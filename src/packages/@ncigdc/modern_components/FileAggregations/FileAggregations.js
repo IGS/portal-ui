@@ -34,41 +34,49 @@ const presetFacets = [
     field: 'file_id',
     full: 'file_id',
     type: 'keyword',
+    hover: ''
   },
   {
     field: 'data_category',
     full: 'data_category',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'data_type',
     full: 'data_type',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'experimental_strategy',
     full: 'experimental_strategy',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'workflow_type',
     full: 'workflow_type',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'data_format',
     full: 'data_format',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'platform',
     full: 'platform',
     type: 'keyword',
+    hover: '',
   },
   {
     field: 'access',
     full: 'access',
     type: 'keyword',
+    hover: '"Open" access data can be freely downloaded. "Controlled" access data can only be downloaded after signing the KPMP Data Use Agreement.',
   },
 ];
 

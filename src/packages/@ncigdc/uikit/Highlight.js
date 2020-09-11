@@ -5,6 +5,7 @@ export const internalHighlight = (
   query: string,
   foundText: string,
   highlightStyle: React.CSSProperties = { fontWeight: 'bold' },
+  hover: string,
 ) => {
   const index = (foundText || '')
     .toLocaleLowerCase()
@@ -21,7 +22,7 @@ export const internalHighlight = (
       </span>
     );
   }
-  return <span>{foundText}</span>;
+  return <span title={hover}>{foundText}</span>;
 };
 
 const Highlight = ({ search, children, ...props }: Object) => (

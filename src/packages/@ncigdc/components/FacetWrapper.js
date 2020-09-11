@@ -100,10 +100,12 @@ export const WrapperComponent = compose(withTheme)(({
 }: any) => {
   const facetType = getFacetType(facet);
   const displayTitle = title || fieldNameToTitle(facet.field);
+  const hover = facet.hover;
   const commonProps = {
     collapsed,
     style,
     title: displayTitle,
+    hover
   };
 
   const facetComponent = {
@@ -168,6 +170,7 @@ export const WrapperComponent = compose(withTheme)(({
         showingValueSearch={showingValueSearch}
         style={headerStyle}
         title={displayTitle}
+        hover={hover}
         />
       {searchValue && DescriptionComponent}
       <div>{facetComponent}</div>
