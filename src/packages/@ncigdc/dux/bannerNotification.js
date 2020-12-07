@@ -33,7 +33,7 @@ export function fetchNotifications() {
 //    });
 //    const res2 = (await fetchApi('login-notifications', {})) || { data: [] };
 	  
-	let res1 = {data:[{"components":["PORTAL"],"dismissible":true,"id":1,"level":"WARNING","message":"PLEASE NOTE: All datasets currently available in this tool were generated from reference tissue samples. This tool is currently still in active development. Additional data releases are expected soon and the user interface will be evolving."}]};
+	let res1 = {data:[{"components":["PORTAL"],"dismissible":true,"id":1,"level":"ERROR","message":"ATTENTION ATLAS REPOSITORY USERS: We have replaced the Participant IDs with a new identifier format."}]};
 	let res2 = { data: [] };
     dispatch({
       type: NOTIFICATION_SUCCESS,
