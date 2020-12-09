@@ -3,7 +3,7 @@
 import React from 'react';
 
 import Row from '@ncigdc/uikit/Flex/Row';
-import Markdown from 'react-markdown';
+import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import './Banner.css';
 import { theme } from '@ncigdc/theme';
 
@@ -90,8 +90,9 @@ const Banner = ({
     {levelToIcon[level.toLowerCase()] || levelToIcon.info}
     <span style={style.message}>
       {!reactElement ? (
-        <Markdown
-          source={message}
+        <ReactMarkdownWithHtml
+            allowDangerousHtml
+            source={message}
           renderers={{ link: props => <BannerLink level={level} {...props} /> }}
         />
       ) : (
