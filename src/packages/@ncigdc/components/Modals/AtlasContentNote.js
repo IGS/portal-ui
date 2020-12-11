@@ -11,12 +11,13 @@ const AtlasContentNote = ({ onClose }) => (
     <p>
     	Current data types in the Repository include:
     		<ul><li>Raw and processed transcriptomics data from single-nucleus, 
-    		single-cell, and/or sub-segmental experiments</li>
-    		<li>Whole slide image .svs files</li>
-    		<li>A limited set of clinical characteristics 
-    		for each participant (Note: This is a live dataset that is 
-    				subject to change as we clean the data and/or revise the 
-    				algorithms that generate the calculated variables.)</li> 
+					single-cell, sub-segmental laser capture microdissection, and bulk 
+					total/mRNA experiments</li>
+				<li>Light microscopic whole slide image .svs files</li>
+    		<li>A limited set of clinical characteristics for each participant 
+					(Note: This is a live dataset that is subject to change as we clean 
+					the data and/or revise the algorithms that generate the calculated 
+					variables.)</li> 
     		</ul>
     </p>
     <p>
