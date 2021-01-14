@@ -1,20 +1,33 @@
 module ngApp.components.user.services {
   import IUser = ngApp.components.user.models.IUser;
-  import IFile = ngApp.files.models.IFile;
   import ILocationService = ngApp.components.location.ILocationService;
   import IGDCConfig = ngApp.IGDCConfig;
   import INotifyService = ng.cgNotify.INotifyService;
 
+  interface WindowService extends ng.IWindowService {
+    saveAs: any;
+    moment: any;
+  }  
+  
   export interface IUserService {
     login(): void;
     setUser(user: IUser): void;
+    addToQueries(q:string): void;
+    addToHrefs(h:string): void;
+    addToScounts(s:string): void;
+    addToFcounts(f:string): void;
+    addToComments(c:string): void;
+    addToTimestamps(t:string): void;
     toggleFilter(): void;
     addMyProjectsFilter(filters: any, key: string): any;
-    isUserProject(file: IFile): boolean;
+    isUserProject(file: any): boolean;
     currentUser: IUser;
-    userCanDownloadFiles(files: IFile[]): boolean;
+    userCanDownloadFiles(files: any[]): boolean;
     getToken(): void;
     hasProjects(): boolean;
+
+    setUserProjectsTerms(terms: any): void;
+    userCanDownloadFile(file: any): any;
   }
 
   const broadcastReset = (context) => {
@@ -28,22 +41,23 @@ module ngApp.components.user.services {
 
 
     /* @ngInject */
-    constructor(private AuthRestangular: restangular.IService,
+    constructor(private AuthRestangular: Restangular.IService,
                 private $rootScope: ng.IRootScopeService,
                 private LocationService: ILocationService,
                 private $cookies: ng.cookies.ICookiesService,
-                private $window: ng.IWindowService,
+                // private $window: ng.IWindowService, //NOTE removed to resolve saveAs and moment TS errors
+                private $window: WindowService,
                 private $uibModal: any,
                 private notify: INotifyService,
                 private config: IGDCConfig,
                 private $log: ng.ILogService) {
-      if (!config.fake_auth) {
+      if (!config['site-wide']['fake-auth']) {
         this.setUser({
-          username: "DEV_USER",
+          username: "USER",
           projects: {
-            phs_ids: {
-              phs000178: ["_member_", "read", "delete"]
-            },
+            // phs_ids: { //NOTE Dustin removed to resolve TS error.
+            //   phs000178: ["_member_", "read", "delete"]
+            // },
             gdc_ids: {
               "TCGA-LAML": ["read", "delete", "read_report", "_member_"],
               "CGCI-BLGSP": ["read_report"],
@@ -64,7 +78,8 @@ module ngApp.components.user.services {
         .post({}, {})
         .then((data) => {
             this.setUser(data);
-        }, (response) => {
+        // }, (response) => { //changed to due 1.7.0
+        }).catch( (response) => {
           if (response && response.status === 401) {
             if (this.currentUser) {
               this.currentUser = undefined;
@@ -104,37 +119,58 @@ module ngApp.components.user.services {
       if (this.$window.URL && this.$window.URL.createObjectURL) {
         this.AuthRestangular.all("token")
         .withHttpConfig({
-          responseType: "blob",
+          // responseType: "blob", //NOTE TS semantic error: responseType type: string is not assignable to parameter of type 'IRequestConfig'
           withCredentials: true
         })
-        .get("", {})
+        .getList("", {})
         .then((file) => {
           // This endpoint receives the header 'content-disposition' which our Restangular
           // setup alters the data.
-          this.$window.saveAs(file.data, "gdc-user-token." + this.$window.moment().format() + ".txt");
-        }, (response) => {
+          this.$window.saveAs(file['data'], "gdc-user-token." + this.$window.moment().format() + ".txt");
+        // }, (response) => { //changed to due 1.7.0
+        }).catch((response) => {
           console.log('User session has expired.', response);
 
-          const modalInstance = $uibModal.open({
+          const modalInstance = this.$uibModal.open({ //NOTE added 'this' to resolve TS error
             templateUrl: "core/templates/session-expired.html",
             controller: "LoginToDownloadController",
             controllerAs: "wc",
             backdrop: true,
             keyboard: true,
-            scope: scope,
+            //scope: scope, //NOTE. removed to resolve TS error. Only place 'scope' is used. TS semantic error cannot find name 'scope'
             size: "lg",
             animation: false
           });
 
-          modalInstance.result.then(() => UserService.logout());
-        });
+          // modalInstance.result.then(() => UserService.logout());
+          modalInstance.result.then(() => this.logout()); //NOTE resolves TS error
+          });
       }
     }
 
     setUser(user: IUser): void {
+      if (user.queries == null) {
+        user.queries = [];
+      }
+      if (user.hrefs == null) {
+        user.hrefs = [];
+      }
+      if (user.scounts == null) {
+        user.scounts = [];
+      }
+      if (user.fcounts == null) {
+        user.fcounts = [];
+      }
+      if (user.comments == null) {
+        user.comments = [];
+      }
+      if (user.timestamps == null) {
+        user.timestamps = [];
+      }
+
       this.currentUser = {
         username: user.username,
-        isFiltered: _.get(this, 'currentUser.isFiltered', false),
+        isFiltered: (<any>_).get(this, 'currentUser.isFiltered', false),
         queries: user.queries,
         hrefs: user.hrefs,
         scounts: user.scounts,
@@ -142,7 +178,7 @@ module ngApp.components.user.services {
         comments: user.comments,
         timestamps: user.timestamps,
         projects: {
-          gdc_ids: _.reduce(user.projects.gdc_ids || {}, (acc, p, key) => {
+          gdc_ids: (<any>_).reduce(user.projects.gdc_ids || {}, (acc, p, key) => {
             if (p.indexOf("_member_") !== -1) {
               acc.push(key);
             }
@@ -154,6 +190,30 @@ module ngApp.components.user.services {
       broadcastReset(this);
     }
 
+    addToQueries(q:string): void {
+      this.currentUser.queries.push(q);
+    }
+
+    addToHrefs(h:string): void {
+      this.currentUser.hrefs.push(h);
+    }
+
+    addToScounts(s:string): void {
+      this.currentUser.scounts.push(s);
+    }
+
+    addToFcounts(f:string): void {
+      this.currentUser.fcounts.push(f);
+    }
+
+    addToComments(c:string): void {
+      this.currentUser.comments.push(c);
+    }
+
+    addToTimestamps(t:string): void {
+      this.currentUser.timestamps.push(t);
+    }
+
     toggleFilter(): void {
       broadcastReset(this);
     }
@@ -162,11 +222,11 @@ module ngApp.components.user.services {
       if(!this.currentUser) {
         return false;
       }
-      var projects = _.get(this.currentUser.projects, 'gdc_ids', []);
+      var projects = (<any>_).get(this.currentUser.projects, 'gdc_ids', []);
       return projects.length > 0;
     }
 
-    isUserProject(file: IFile): boolean {
+    isUserProject(file: any): boolean {
       if (!this.currentUser) {
         return false;
       }
@@ -175,14 +235,14 @@ module ngApp.components.user.services {
 
       // Support multiple use cases
       if (file.projects) {
-        projectIds = _.unique(_.map(file.projects, p => p.project_id || p));
+        projectIds = (<any>_).uniq((<any>_).map(file.projects, p => p.project_id || p));
       } else {
-        projectIds = _.unique(_.map(file.cases, (participant) => {
+        projectIds = (<any>_).uniq((<any>_).map(file.cases, (participant) => {
           return participant.project.project_id;
         }));
       }
 
-      return !!_.intersection(projectIds, this.currentUser.projects.gdc_ids).length;
+      return !!(<any>_).intersection(projectIds, this.currentUser.projects.gdc_ids).length;
     }
 
     setUserProjectsTerms(terms) {
@@ -190,7 +250,7 @@ module ngApp.components.user.services {
         return terms;
       }
 
-      return _.filter(terms, (term) => {
+      return (<any>_).filter(terms, (term) => {
         return this.isUserProject({
           cases: [
             {
@@ -203,12 +263,12 @@ module ngApp.components.user.services {
       });
     }
 
-    userCanDownloadFile(file) {
+    userCanDownloadFile(file: any) {
       return this.userCanDownloadFiles([file]);
     }
 
-    userCanDownloadFiles(files: IFile[]) {
-      return _.every(files, (file) => {
+    userCanDownloadFiles(files: any[]) {
+      return (<any>_).every(files, (file) => {
         if (file.access === "open") {
           return true;
         }
@@ -223,9 +283,10 @@ module ngApp.components.user.services {
       });
     }
 
+	//TODO: mschor: important: search for addMyProjectsFilter on *.ts to find who is calling this and fix hardcoded calls
     addMyProjectsFilter(filters: any, key: string): any {
       if (this.currentUser && this.currentUser.isFiltered &&
-          _.get(this.currentUser.projects, "gdc_ids", []).length) {
+          (<any>_).get(this.currentUser.projects, "gdc_ids", []).length) {
         var userProjects = {
           content: {
             field: key,
@@ -251,7 +312,7 @@ module ngApp.components.user.services {
           } else {
             var projects = this.currentUser.projects.gdc_ids;
 
-            var sharedValues = _.intersection(projectFilter.content.value, projects);
+            var sharedValues = (<any>_).intersection(projectFilter.content.value, projects);
 
             // If any of the projects selected belong to the user, stick with those rather then defaulting
             // to all of the users projects.

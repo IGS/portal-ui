@@ -1,4 +1,4 @@
-@import "../../bower_components/bootstrap/less/bootstrap.less";
+@import "../../node_modules/bootstrap/less/bootstrap.less";
 @import "theme.less";
 @icon-font-path: "../../libs/bootstrap/dist/fonts/";
 
@@ -22,6 +22,12 @@
 @import "bio-tree.less";
 @import "../scripts/components/styles.less";
 
+/* Default styles (skin) here */
+@import "skin_default.less";
+
+/* Override default styles here */
+@import "skin_custom.less"; 
+
 html, body {
   margin: 0;
   padding: 0;
@@ -30,7 +36,7 @@ html, body {
 }
 
 abbr {
-  border-bottom: 1px dashed @NCI_COLOUR;
+  border-bottom: 1px dashed @NCI_COLOR;
 }
 
 #wrapper {
@@ -49,6 +55,7 @@ abbr {
 .navbar-nav > li > a {
   padding-left: 13px;
   padding-right: 13px;
+  /* line-height: 20px; */ /* vmrc added this - appeared to do nothing */
 }
 
 @media (min-width: 768px) {
@@ -68,7 +75,9 @@ abbr {
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-  background-color: #fff;
+  background-color: @NAVBAR_SELECTED_BG;
+  color: @NAVBAR_SELECTED_FG;
+
 }
 
 
@@ -307,11 +316,11 @@ h1, h2, h3, h4, h5, h6 {
 /* Basic Colors
 -------------------------------------------------------------- */
 
-html { background-color: #f5f5f5;}
+html { background-color: @HOME_GRAY;}
 
 body {
-  background-color: #f5f5f5;
-  color: #4d4d4d;
+  background-color: @HOME_GRAY;
+  color: @BODY_FG_COLOR;
 }
 
 /* Links */
@@ -327,7 +336,7 @@ a:visited {
 
 a:hover,
 a:focus {
-  color: #4d4d4d;
+  color: @HOME_BLUE;
   text-decoration: underline;
 }
 
@@ -345,13 +354,13 @@ a.btn {
 .nav-tabs a:visited,
 .nav-tabs a:active,
 .nav-tabs a:focus {
-  color: #4d4d4d;
+  color: @NAV_TABS_TEXT_COLOR;
   text-decoration: none;
 }
 
 /* Headings */
 h1, h2, h3, h4, h5, h6, h3.panel-title {
-  color: #4d4d4d !important;
+  color: @HOME_DARK_GRAY !important;
 }
 
 h3,
@@ -413,7 +422,7 @@ blockquote cite {
   padding: 3px;
 }
 .table > thead > tr > th {
-  background-color:#f5f5f5;
+  background-color:@HOME_GRAY;
 }
 
 
@@ -560,8 +569,8 @@ pre code {
 /-------------------------------------------------------------- */
 
 #footer {
-  background-color: #4d4d4d;
-  border-top: 6px solid #8c8686;
+  background-color: @FOOTER_BG;
+  border-top: @FOOTER_BORDER_TOP;
   border-bottom: none;
 }
 
@@ -596,36 +605,37 @@ pre code {
 
 /* Header and Navigation */
 #gdc-header {
-  background-color: #fff;
+  background-color: @NAVBAR_BG;
 }
 
 .label-primary {
-  background-color:  #4d4d4d;
+  background-color: @LABEL_PRIMARY_BG;
 }
 
 .navbar-default {
-  border-color: #4d4d4d;
+  border-color: @HOME_DARK_GRAY;
 }
 
 .navbar a {
   outline: none;
 }
 
-.navbar-default .navbar-nav > .active > a,
+/*.navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover {
   color: #fff;
-  background-color: #3fb0b1;
+  background-color: @DATA_COLOR;
 }
-
+*/
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  background-color: #c0d080;
+  background-color: @NAVBAR_HOVER_BG;
+  color: @NAVBAR_HOVER_FG;
   text-decoration: none;
 }
 
-.navbar-brand {
-  background:url(/images/HMP_header.png) no-repeat;
+/*.navbar-brand {
+  background:url(/images/logo.svg) no-repeat;
   width: 108px;
   height: 40px;
   text-indent: -10000px;
@@ -634,7 +644,7 @@ pre code {
   position: relative;
   top: 6px;
   left: 18px;
-}
+}*/
 
 @media (min-width: 992px) {
   .navbar-header {
@@ -692,7 +702,8 @@ pre code {
 
 .alert-info i.fa { color: #68644e; }
 
-.btn.btn-primary i.fa { color: #e4eff7; }
+// .btn.btn-primary i.fa { color: #e4eff7; }
+.btn.btn-primary i.fa { color: #fff; }
 
 .nav-tabs {
   border-bottom: 1px solid #c4c4c4;
@@ -701,7 +712,7 @@ pre code {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  background-color: #f5f5f5;
+  background-color: @HOME_GRAY;
   border-color: #c4c4c4 #c4c4c4 transparent;
   color: inherit;
 }
@@ -738,6 +749,7 @@ pre code {
 .facets-sidebar .nav-tabs > li.active > a:hover,
 .facets-sidebar .nav-tabs > li.active > a:focus {
   background-color: #fff;
+  border-bottom: 2px solid #fff; //removes bottom border for active facet tab
 }
 
 .panel-default {
@@ -837,9 +849,8 @@ pre code {
 .btn-bordered:focus,
 .btn-bordered:active,
 .btn-bordered.focus,
-.btn-bordered.active,
-{
-  border-color: #4d4d4d !important;
+.btn-bordered.active {
+  border-color: @HOME_DARK_GRAY !important;
   background-color: #0d95a1;
 }
 
@@ -873,7 +884,7 @@ g
 .dropdown-menu > li > button:hover,
 .dropdown-menu > li > button:focus {
   color: #262626;
-  background-color: #f5f5f5;
+  background-color: @HOME_GRAY;
 }
 
 .dropdown-menu > li > a,

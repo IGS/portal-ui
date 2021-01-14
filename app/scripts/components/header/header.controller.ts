@@ -5,16 +5,21 @@ module ngApp.components.header.controllers {
   import IUserService = ngApp.components.user.services.IUserService;
 
   export interface IHeaderController {
-    isCollapsed: boolean;
-    toggleCollapsed(): void;
-    collapse(event: any): void;
-    currentLang: string;
-    languages: any;
-    addedLanguages: boolean;
-    setLanguage(): void;
-    getNumCartItems(): number;
-    shouldShowOption(option: string): boolean;
     bannerDismissed: boolean;
+    isCollapsed: boolean;
+    currentLang: string;
+    addedLanguages: boolean;
+    languages: any;
+    cookieEnabled: any;
+
+    getToken(): void;
+    collapse(event: any): void;
+    toggleCollapsed(): void;
+    setLanguage(): void;
+    shouldShowOption(option: string): boolean;
+    dismissBanner(): void;
+    showBannerModal(): void;
+    // getNumCartItems(): number;
   }
 
   class HeaderController implements IHeaderController {
@@ -27,6 +32,7 @@ module ngApp.components.header.controllers {
       "fr": "French",
       "es": "Spanish"
     };
+    cookieEnabled: any;
 
     /* @ngInject */
     constructor(
@@ -36,9 +42,14 @@ module ngApp.components.header.controllers {
       private UserService: IUserService,
       private $uibModal: any,
       private $window: ng.IWindowService,
-      private $rootScope,
+      private $rootScope: ngApp.IRootScope,
       private $uibModalStack,
+      private config: any,
+      private CoreService: ngApp.core.services.ICoreService
     ) {
+      // this.config = this.CoreService.getComponentFromConfig('navbar');
+      this.config = $rootScope.config;
+
       this.addedLanguages = !!_.keys(gettextCatalog.strings).length;
       this.cookieEnabled = navigator.cookieEnabled;
       this.bannerDismissed = true;
@@ -58,13 +69,13 @@ module ngApp.components.header.controllers {
       this.isCollapsed = !this.isCollapsed;
     }
 
-    setLanguage() {
+    setLanguage(): void {
       this.gettextCatalog.setCurrentLanguage(this.currentLang);
     }
 
     shouldShowOption(option: string): boolean {
       var showOption = true,
-          currentState = _.get(this.$state, 'current.name', '').toLowerCase();
+          currentState = (<any>_).get(this.$state, 'current.name', '').toLowerCase();
 
       switch(option.toLowerCase()) {
         case 'quick-search':
@@ -84,12 +95,12 @@ module ngApp.components.header.controllers {
       return showOption;
     }
 
-    dismissBanner() {
+    dismissBanner(): void {
       this.bannerDismissed = true;
       this.$rootScope.$emit('hideBanner');
     }
 
-    showBannerModal() {
+    showBannerModal(): void {
       if (!this.$uibModalStack.getTop()) {
         this.$uibModal.open({
           templateUrl: "core/templates/modal.html",

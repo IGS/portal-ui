@@ -1,7 +1,16 @@
 {
-	"compilerOptions": {
-		"target": "es6",
-		"module": "commonjs"
-	},
-	"compileOnSave": false
+    "compilerOptions": {
+        "target": "es3",
+        "lib": ["dom", "es2015"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "removeComments": false,
+        "allowSyntheticDefaultImports": true,
+        "suppressExcessPropertyErrors": true,
+        "typeRoots": [
+            "../../node_modules/@types"
+        ]
+    }
 }

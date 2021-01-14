@@ -6,10 +6,10 @@
       data-ng-click="click(e)"
       data-ng-mouseenter="mouseIn($index)"
       data-ng-class="{true:'Gql_dropdown_item-active'}[e.active]"
-      data-ng-repeat="e in ddItems | limitTo:limit:offset track by e.full">
+      data-ng-repeat="e in ddItems | limitTo:limit:offset track by $index">
     <i class="fa list-indent"
        data-ng-if="e.doc_type"
-       data-ng-class="{'files':'fa-file', 'cases':'fa-user', '':'fa-square'}[e.doc_type]">
+       data-ng-class="{'files':'fa-file','file':'fa-file','cases':'fa-user','':'fa-square'}[e.doc_type]">
     </i>
     <i class="fa fa-square"
        data-ng-if="!e.doc_type"

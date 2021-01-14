@@ -29,7 +29,7 @@ function exceptionDecorator($provide: ng.auto.IProvideService) {
         };
 
         $log.debug("ERROR", post);
-        var Restangular: restangular.IService = $injector.get("Restangular");
+        var Restangular: Restangular.IService = $injector.get("Restangular");
         // Restangular.all('errors').post(post);
         $delegate(exception, cause);
       };

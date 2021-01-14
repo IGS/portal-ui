@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h2 class="modal-title" data-translate>{{ cufc.title }}
+  <h2 class="modal-title" >{{ cufc.title }}
     <a style="font-size:1.5rem" class="pull-right" data-ng-click="cufc.closeModal()">Cancel</a>
   </h2>
   <div style="margin-bottom: 15px">
@@ -31,12 +31,12 @@
     <ul id="facets-list" class="list-unstyled">
       <li
         data-ng-repeat="field in (filteredFields = (cufc.facetFields | filter: q ))"
-        id="{{::field.field | dotReplace:'-' }}"
+        id="{{::field.cypher_field | dotReplace:'-' }}"
         class="custom-facet-item"
         data-ng-mouseover="itemHover($index)"
         data-ng-keydown="keyboardListener($event)"
         data-ng-class="{'add-facet-selected': $index === cufc.selectedIndex }"
-        data-ng-click="cufc.addFacet(field)"
+        data-ng-click="cufc.addFacet(cypher_field)"
       >
         <div>
           <i

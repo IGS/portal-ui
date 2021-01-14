@@ -1,0 +1,165 @@
+/* Default values for color palette and navbar logo
+
+Imported by './app.less'
+
+Notes for site color palette:
+----------------------------
+@HOME_BLUE
+  - Home background color of page box to the left of graph
+  - Text - 'Home' page - non-white. Includes 'studies', 'primary site', 'samples', 'files'.
+       - 'Studies' page - table text
+       - 'Data' page - badge colors, facet values, text under pie charts
+
+@HOME_DARK_GRAY
+  - Footer background color
+  - 'Data' page - title of each tab 'Samples', 'Files'. not the tab name itself
+
+@QUICK_SEARCH_TEXT_EM_COLOR
+  - 'Home' page - 'Get Started...' & 'Performed Advanced Search...'
+
+@HOME_GRAY
+  - background color of body
+
+@DATA_COLOR
+  - Active tab at top of page
+  - 'Home' page - 'Data' button, 6 badges with counts (ie Samples, Files), font-awesome for samples and files at bottom
+
+@PROJECT_COLOR
+  - Hover over tab at top of page
+  - 'Home' page - 'Studies' button, horizontal lines in left-sided box by graph, font-awesome for studies and primary site at bottom
+*/
+
+/* Site's overall color palette */
+@HOME_BLUE: #4d4d4d;
+@HOME_DARK_GRAY: #4d4d4d;
+
+/* @HOME_EM_COLOR is now @QUICK_SEARCH_TEXT_EM_COLOR */
+@HOME_GRAY: #f5f5f5; /* Best to not change. */
+
+@DATA_COLOR: #3fb0b1;
+@DATA_COLOR_HOVER: #43a2d5;
+
+@PROJECT_COLOR: #c0d080;
+@PROJECT_COLOR_HOVER: #019978;
+
+@ALERT_INFO_BG_COLOR: #7a959c;
+@ALERT_INFO_BORDER_COLOR: #c9dce0;
+@ALERT_INFO_COLOR: #5b5151;
+
+@BODY_FG_COLOR: #4d4d4d;
+
+@LABEL_PRIMARY_BG: #4d4d4d;
+
+@NAVBAR_BG: #fff; /* aka #gdc-header */
+@NAVBAR_HOVER_BG: #c0d080;
+@NAVBAR_HOVER_FG: #333;
+@NAVBAR_SELECTED_BG: #3fb0b1;
+@NAVBAR_SELECTED_FG: #fff;
+
+/* Text in Tabs.  Example: Samples/Files in Facets sidebar; Summary/Samples/Files on Data page */
+@NAV_TABS_TEXT_COLOR: #4d4d4d; 
+
+@FOOTER_BG: #4d4d4d;
+@FOOTER_BORDER_TOP: 6px solid #8c8686;
+
+@HOME_PORTAL_HEADING_TEXT_COLOR: #fff;
+@QUICK_SEARCH_TEXT_EM_COLOR: #f5f5f5;
+@QUICK_SEARCH_TEXT_COLOR: #fff;
+@TRIM_COLOR: #c0d080;
+
+/* Spinner colors */
+@SPINNER_COLOR_1: #6b6262;
+@SPINNER_COLOR_2: @DATA_COLOR;
+@SPINNER_COLOR_3: @PROJECT_COLOR;
+
+
+/* navbar logo */
+.navbar-brand {
+  background:url(/images/logo.svg) no-repeat;
+  /*kept the following for tweaking on case-by-case basis*/
+  width: 108px;
+  height: 40px;
+  text-indent: -10000px;
+  overflow: hidden;
+  margin-right: 0;
+  position: relative;
+  top: 6px;
+  left: 18px;
+}
+
+.alert-info {
+  background-color: @ALERT_INFO_BG_COLOR;
+  border-color: @ALERT_INFO_BORDER_COLOR;
+  color: @ALERT_INFO_COLOR;
+}
+
+.btn-primary {
+  background-color: @DATA_COLOR;
+}
+.btn-primary:focus,
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: @DATA_COLOR_HOVER;
+}
+.btn-projects {
+  background-color: @PROJECT_COLOR !important;
+}
+.btn.btn-projects:hover {
+  background-color: @PROJECT_COLOR_HOVER !important;
+}
+.btn-split-control {
+  margin: 0 1rem;
+
+  &.open {
+
+    .dropdown-toggle:hover,
+    .dropdown-toggle:focus,
+    .dropdown-toggle {
+      background-color: @DATA_COLOR;
+    }
+  }
+
+  .btn-primary {
+    border-color: #0d7d89;
+    transition: all 0.25s ease-in-out;
+
+    .caret {
+      transition: all 0.25s ease-in-out;
+    }
+  }
+}
+
+//Overrides angular-ui-bootstrap tooltip styling. Without this, tooltips with long content will flow off screen.
+.tooltip.keep-on-screen {
+  position: absolute;
+  z-index: 1;
+  max-width: 250px;
+}
+
+//Adjusts height of the front-page's bar chart container to keep x-axis labels from overflowing
+// .home-container {
+//     .marked-bar-chart {
+//         .marked-bar-chart-component {
+//             height: 450px;
+//         }
+//     }
+// }
+
+// Styling for the sub-title external link that can be inserted under the portal's main title on the front page 
+// .project-external-link-container {
+//     width: 100%;
+//     margin: 1em 0;
+//     text-align: center;
+
+//     .project-external-link { 
+//         color: #fff;
+//     }
+// }
+
+/* Puts border around non-active tabs 
+   data page: facets sidebar, center panel, advanced search
+   studies page (when 'Charts' tab is enabled) */
+// .nav-tabs > li > a {
+//   border-color: #d9d8d8 #d9d8d8 #c4c4c4;
+//   border-bottom: none;
+// }

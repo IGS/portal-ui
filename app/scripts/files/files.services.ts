@@ -1,23 +1,22 @@
 module ngApp.files.services {
-  import IFiles = ngApp.files.models.IFiles;
   import ICoreService = ngApp.core.services.ICoreService;
-  import IFile = ngApp.files.models.IFile;
   import ILocationService = ngApp.components.location.services.ILocationService;
   import IUserService = ngApp.components.user.services.IUserService;
   import IRootScope = ngApp.IRootScope;
 
   export interface IFilesService {
-    getFile(id: string, params: Object): ng.IPromise<IFile>;
-    getFiles(params?: Object, method?: string): ng.IPromise<IFiles>;
-    downloadManifest(ids: Array<string>, callback: any)
+    getFile(id: string, params: Object): ng.IPromise<any>;
+    getFiles(params?: Object, method?: string): ng.IPromise<any>;
+    downloadManifest(ids: Array<string>, callback: any);
+    sliceBAM(fileID: string, bedTSV: string, completeCallback: any, inProgress: any, downloader: any);
   }
 
   class FilesService implements IFilesService {
-    private ds: restangular.IElement;
+    private ds: any;
 
     /* @ngInject */
     constructor(
-      private Restangular: restangular.IService,
+      private Restangular: Restangular.IService,
       private LocationService: ILocationService,
       private UserService: IUserService,
       private CoreService: ICoreService,
@@ -33,7 +32,7 @@ module ngApp.files.services {
       this.ds = Restangular.all("files");
     }
 
-    getFile(id: string, params: Object = {}): ng.IPromise<IFile> {
+    getFile(id: string, params: Object = {}): ng.IPromise<any> {
       if (params.hasOwnProperty("fields")) {
         params["fields"] = params["fields"].join();
       }
@@ -42,7 +41,7 @@ module ngApp.files.services {
         params["expand"] = params["expand"].join();
       }
 
-      return this.ds.get(id, params).then((response): IFile => {
+      return this.ds.get(id, params).then((response): any => {
         return response["data"];
       });
     }
@@ -72,8 +71,9 @@ module ngApp.files.services {
         .then((response) => {
           var filename: string = response.headers['content-disposition'].match(/filename=(.*)/i)[1];
           this.$window.saveAs(response.data, filename);
-          if(callback) callback(true);
-        }, (response)=>{
+          if (callback) callback(true);
+        // }, (response) => { //changed to due 1.7.0
+        }).catch((response) => {
           //Download Failed
 
           this.$uibModal.open({
@@ -109,10 +109,10 @@ module ngApp.files.services {
 
     sliceBAM(fileID: string, bedTSV: string, completeCallback: () => void, inProgress: () => void, downloader) {
       var params = this.processBED(bedTSV);
-      params.attachment = 'true';
+      params['attachment'] = 'true';
 
-      const url = `${this.config.auth_api}/v0/slicing/view/${fileID}`;
-      
+      const url = `${this['config']['auth_api']}/v0/slicing/view/${fileID}`;
+
       const customMessages = {
         warningHeader: 'BAM Slicing Failed',
         warningPrefix: 'Invalid BED Format (refer to the examples described in the BAM Slicing pop-up): '
@@ -125,7 +125,7 @@ module ngApp.files.services {
     getFiles(
       params: { fields?: any; expand?: any; facets?: any; raw?: any } = {},
       method: string = 'GET'
-    ): ng.IPromise<IFiles> {
+    ): ng.IPromise<any> {
 
       var modifiedParams = _.extend({}, params, {
         fields: params.fields && params.fields.join(),
@@ -142,9 +142,10 @@ module ngApp.files.services {
       };
 
       var defaults = {
-        size: paging.size,
-        from: paging.from,
-        sort: paging.sort || "file_name:asc",
+        size: paging.size || 20,
+        from: paging.from || 1,
+        // sort: paging.sort || "file_name:asc",
+        sort: paging.sort || this.config['search']['files-table']['default-sort'],
         filters: this.LocationService.filters(),
         save: this.LocationService.save()
       };
@@ -156,18 +157,18 @@ module ngApp.files.services {
       this.CoreService.setSearchModelState(false);
 
       var abort = this.$q.defer();
-
+    
       if (method === 'POST') {
-        var prom: ng.IPromise<IFiles> = this.ds.withHttpConfig({
+        var prom: ng.IPromise<any> = this.ds.withHttpConfig({
           timeout: abort.promise
-        }).post(angular.extend(defaults, modifiedParams), undefined, {'Content-Type': 'application/json'}).then((response): IFiles => {
+        }).post(angular.extend(defaults, modifiedParams), undefined, { 'Content-Type': 'application/json' }).then((response): any => {
           this.CoreService.setSearchModelState(true);
           return response.data;
         });
       } else {
-        var prom: ng.IPromise<IFiles> = this.ds.withHttpConfig({
+        var prom: ng.IPromise<any> = this.ds.withHttpConfig({
           timeout: abort.promise
-        }).get("", angular.extend(defaults, modifiedParams)).then((response): IFiles => {
+        }).get("", angular.extend(defaults, modifiedParams)).then((response): any => {
           this.CoreService.setSearchModelState(true);
           return response.data;
         });
@@ -182,7 +183,6 @@ module ngApp.files.services {
 
       return prom;
     }
-
   }
 
   angular

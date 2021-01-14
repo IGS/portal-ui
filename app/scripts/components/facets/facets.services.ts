@@ -2,20 +2,21 @@ module ngApp.components.facets.services {
 
   import ILocationService = ngApp.components.location.services.ILocationService;
   import ILocalStorageService = ngApp.core.services.ILocalStorageService;
-  import ISearch = ngApp.components.location.services.ISearch;
+  // import ISearch = ngApp.components.location.services.ISearch; //NOTE removed to resolve TS error 'no exported ISearch'
   import ICartService = ngApp.cart.services.ICartService;
   import IUserService = ngApp.components.user.services.IUserService;
   import IFilters = ngApp.components.location.IFilters;
   import IFilesService = ngApp.files.services.IFilesService;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
+  import TableiciousConfig = ngApp.components.tables.directives.tableicious.TableiciousConfig; //added to resolve TS error
 
   export interface IFacetService {
     addTerm(facet: string, term: string, op?:string): void;
-    removeTerm(facet: string, term: string, op?: string): void;
+    removeTerm(facet?: string, term?: string, op?: string): void;
     getActives(facet: string, terms: any[]): string[];
     getActiveIDs(facet: string): string[];
     getActivesWithOperator(facet: string): any;
-    getActivesWithOperator(facet: string): any;
+    getActivesWithValue(facet: string): any
     autoComplete(entity: string, query: string, field: string): ng.IPromise<any>;
     ensurePath(filters: IFilters): IFilters;
     filterFacets(facets: Object[]): string[];
@@ -23,14 +24,18 @@ module ngApp.components.facets.services {
 
   class FacetService implements IFacetService {
     /* @ngInject */
-    constructor(private LocationService: ILocationService, private Restangular: restangular.IService,
+    constructor(private LocationService: ILocationService, private Restangular: Restangular.IService,
                 private UserService: IUserService, private $q: ng.IQService) {}
 
+    //TODO: mschor: autoComplete using these project keys! important: search autoComplete in *.ts to see who's calling this
+    
     autoComplete(entity: string, query: string, field: string): ng.IPromise<any> {
       var projectsKeys = {
         "files": "cases.project.project_id",
         "cases": "project.project_id",
-        "projects": "project_id"
+        "projects": "project_id",
+        "sample": "huh",
+        "subject": "sub"
       };
 
       var options: any = {
@@ -38,8 +43,8 @@ module ngApp.components.facets.services {
       };
 
       var filters = this.LocationService.filters();
-      _.remove(filters.content, (filter) => {
-        return filter.content.field === field;
+      _.remove(filters['content'], (filter) => {
+        return filter['content']['field'] === field;
       });
 
       if (filters.content && filters.content.length > 0) {
@@ -47,8 +52,8 @@ module ngApp.components.facets.services {
         options.filters = filters;
       }
 
-      return this.Restangular.all(entity + "/ids").get("", options).then((data) => {
-        return data.data.hits.length ? data.data.hits : [{ warning: "No results found" }];
+      return this.Restangular.all(entity + "/ids").getList("", options).then((data) => {
+        return data['data']['hits'].length ? data['data']['hits'] : [{ warning: "No results found" }];
       });
     }
 
@@ -66,7 +71,7 @@ module ngApp.components.facets.services {
       .withHttpConfig({
         timeout: abort.promise
       })
-      .get("", params).then((data) => {
+      .getList("", params).then((data) => {
         return data;
       });
 
@@ -176,7 +181,7 @@ module ngApp.components.facets.services {
       this.LocationService.setFilters(filters);
     }
 
-    removeTerm(facet: string, term: string, op: string) {
+    removeTerm(facet: string, term?: string, op?: string) {
       var filters = this.ensurePath(this.LocationService.filters());
       var cs = filters["content"];
       for (var i = 0; i < cs.length; i++) {
@@ -199,7 +204,7 @@ module ngApp.components.facets.services {
           break;
         }
       }
-      if (_.get(filters, "content", []).length === 0) {
+      if ((<any>_).get(filters, "content", []).length === 0) {
         this.LocationService.clear();
       } else {
         this.LocationService.setFilters(filters);
@@ -208,8 +213,8 @@ module ngApp.components.facets.services {
 
     filterFacets(facets: Object[]): string[] {
       return _.filter(facets || [],
-        f => _.includes(['terms', 'range'], f.facetType))
-      .map(f => f.name);
+        f => (<any>_).includes(['terms', 'range'], f['facet-type']))
+      .map(f => f['name']);
     }
   }
 
@@ -221,12 +226,12 @@ module ngApp.components.facets.services {
   }
 
   class CustomFacetsService implements ICustomFacetsService {
-    private ds: restangular.IElement;
+    private ds: any;
     public nonEmptyOnlyDisplayed: boolean = false;
 
     /* @ngInject */
-    constructor(private Restangular: restangular.IService,
-                private SearchTableFilesModel: TableiciousConfig,
+    constructor(private Restangular: Restangular.IService,
+                private SearchFilesTableService: TableiciousConfig,
                 private SearchCasesTableService: TableiciousConfig,
                 private FilesService: IFilesService,
                 private ParticipantsService: IParticipantsService,
@@ -238,23 +243,23 @@ module ngApp.components.facets.services {
     // getFacetFields and getNonEmptyFacetFields do not call this to keep the facet fields sent the same in
     // subsequent calls so Restangular/browser uses the cached version. Call this in the controller.
     filterFields(docType: String, data: Object): Array<Object> {
-      var current = _.pluck(this.FacetsConfigService.fieldsMap[docType], "name");
-      return _.map(_.filter(data, (datum) => {
-        return datum.doc_type === docType &&
-               datum.field !== 'archive.revision' &&
-               !_.includes(current, datum.field) &&
-               !_.includes(docType === 'files'
-                ? _.pluck(this.SearchTableFilesModel.facets, "name")
-                : _.pluck(this.SearchCasesTableService.model().facets, "name"), datum.field);
+      var current = _.map(this.FacetsConfigService.fieldsMap[(<any>docType)], "name");
+      return _.map(_.filter(data, (datum: any) => {
+        return datum.doc_type === docType && datum.cypher_field !== 'archive.revision' && 
+        !(<any>_).includes(current, datum.cypher_field) && !(<any>_).includes(docType === 'files'
+                ? _.map(this.SearchFilesTableService.facets, "name")
+                : _.map(this.SearchCasesTableService.model().facets, "name"), datum.cypher_field);
                }), f => f);
     }
 
     getFacetFields(docType: string): ng.IPromise<any> {
-      return this.ds.getList().then((data) => data);
+      return this.ds.getList().then((data) => {
+        return data;
+      });
     }
 
     getNonEmptyFacetFields(docType: string, fields: Array<Object>): ng.IPromise<any> {
-      var facets = fields.reduce((acc, f) => {
+      var facets = fields.reduce((acc: any, f: any) => {
         if (f.doc_type === docType){
           acc.push(f.field);
         }
@@ -265,12 +270,12 @@ module ngApp.components.facets.services {
                       size: 0
                     };
       var getNonEmpty = (data) => { return _.reduce(data.aggregations, (acc, agg, key) => {
-        var field = _.find(fields, f => f.field === key);
-        var filteredBuckets = _.reject(agg.buckets || [], b => b.key === '_missing');
+        var field: any = _.find(fields, f => f['field'] === key);
+        var filteredBuckets: any = _.reject(agg['buckets'] || [], b => b['key'] === '_missing');
           if (filteredBuckets.length !== 0) {
               acc = acc.concat(field);
           }
-          if (agg.max) {
+          if (agg['max']) {
             acc = acc.concat(field);
           }
           return acc;
@@ -287,10 +292,13 @@ module ngApp.components.facets.services {
 
   export interface IFacetsConfigService {
     addField(docType: string, fieldName: string, fieldType: string): void;
-    removeField(docType: string, fieldName: string, fieldType: string): void;
+    removeField(docType: string, fieldName: string): void;
     reset(docType: string): void;
     isDefault(docType: string): boolean;
     save(): void;
+    setFields(docType: string, fields: Array<Object>): void;
+    updateFieldByName(facetName: string, propertyToUpdate: string, newVal: any): void;
+    fieldsMap: any;
   }
 
   class FacetsConfigService implements IFacetsConfigService {
@@ -303,45 +311,66 @@ module ngApp.components.facets.services {
                 private LocalStorageService: ILocalStorageService) {}
 
     setFields(docType: string, fields: Array<Object>) {
-      var saved = _.get(this.LocalStorageService.getItem(this.FACET_CONFIG_KEY), docType, null);
-
+      var saved = (<any>_).get(this.LocalStorageService.getItem(this.FACET_CONFIG_KEY), docType, null);
       if(!saved) {
         this.fieldsMap[docType] = fields;
         this.save();
       } else {
         this.fieldsMap[docType] = saved;
       }
-      this.defaultFieldsMap[docType] = _.clone(fields, true);
+      this.defaultFieldsMap[docType] = _.cloneDeep(fields);
     }
 
     addField(docType: string, fieldName: string, fieldType: string): void {
       var facetType = 'terms';
-      if (_.includes(fieldName, 'datetime')) {
+      if ((<any>_).includes(fieldName, 'datetime')) {
         facetType = 'datetime';
-      } else if (_.some(['_id', '_uuid', 'md5sum'], a => _.includes(fieldName, a))) {
+      } else if (_.some(['_id', '_uuid', 'md5sum'], a => (<any>_).includes(fieldName, a))) {
         facetType = 'id';
       } else if (fieldType === 'long') {
         facetType = 'range';
       }
+      
+      var titleName = fieldName;
+      var idxOfDot = fieldName.indexOf(".");
+      if (idxOfDot > 0) {
+          titleName = fieldName.substring(idxOfDot + 1);
+      }
+      
       this.fieldsMap[docType].unshift({
-          name: fieldName,
-          title: fieldName,
-          collapsed: false,
-          facetType: facetType,
-          removable: true
+          "name": fieldName,
+          "title": titleName,
+          "collapsed": false,
+          "facet-type": facetType,
+          "removable": true,
+          "sort": "count"
       });
       this.save();
     }
 
     removeField(docType: string, fieldName: string): void {
       this.fieldsMap[docType ]= _.reject(this.fieldsMap[docType], (facet) => {
-        return facet.name === fieldName;
+        return facet['name'] === fieldName;
+      });
+      this.save();
+    }
+
+    updateFieldByName(facetName: string, propertyToUpdate:string, newVal: any): void {
+      // Updates a facet property in the facet config that is stored in the cookie (localStorage)
+      // Currently, this is ignorant of docType, and it assumes the facetName is unique, else all instances will be modified
+      // 'facetName' is the cypher field node.property
+      _.forEach(this.fieldsMap, (fields, docType) => {
+        _.forEach(fields, (field ) => {
+          if (field.name == facetName) {
+            field[propertyToUpdate] = newVal;
+          }
+        });
       });
       this.save();
     }
 
     reset(docType: string): void {
-      this.fieldsMap[docType] = _.clone(this.defaultFieldsMap[docType], true);
+      this.fieldsMap[docType] = _.cloneDeep(this.defaultFieldsMap[docType]);
       this.save();
     }
 
@@ -352,7 +381,6 @@ module ngApp.components.facets.services {
     save(): void {
       this.LocalStorageService.setItem(this.FACET_CONFIG_KEY, this.fieldsMap);
     }
-
  }
 
   angular.

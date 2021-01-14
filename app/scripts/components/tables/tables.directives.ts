@@ -1,9 +1,19 @@
 module ngApp.components.tables.directives {
 
-  import IGDCWindowService = ngApp.models.IGDCWindowService;
+  import IGDCWindowService = ngApp.core.models.IGDCWindowService;
 
   interface ITableDirectiveScope extends ng.IScope {
      filtersRevealed:boolean;
+
+     //NOTE: all here were added to resolve TS errors
+     UserService: any; //UserService import?!
+     headings: any;
+     defaultHeadings: any;
+     title: string;
+     saved: any;
+     restoreDefaults: any;
+     toggleVisibility: any;
+     sortOptions: any;
   }
 
   /* @ngInject */
@@ -19,18 +29,18 @@ module ngApp.components.tables.directives {
       },
       replace: true,
       templateUrl: "components/tables/templates/arrange-columns.html",
-      link:function($scope) {
+      link:function($scope: ITableDirectiveScope) {
         $scope.UserService = UserService;
 
         function saveSettings() {
-          var save = _.map($scope.headings, h => _.pick(h, 'id', 'hidden', 'sort', 'order'));
+          var save = _.map($scope.headings, h => _.pick(h, 'field', 'show', 'sort', 'order'));
           $window.localStorage.setItem($scope.title + '-col', angular.toJson(save));
         }
 
         var defaults = $scope.defaultHeadings;
 
         $scope.headings = ($scope.saved || []).length ?
-          _.map($scope.saved, s => _.merge(_.find($scope.headings, {id: s.id}), s)) :
+          _.map($scope.saved, s => _.merge(_.find($scope.headings, {field: s['field']}), s)) :
           $scope.headings;
 
         $scope.restoreDefaults = function() {
@@ -39,7 +49,7 @@ module ngApp.components.tables.directives {
         }
 
         $scope.toggleVisibility = function (item) {
-          item.hidden = !item.hidden;
+          item.show = !item.show;
           saveSettings();
         };
 
@@ -82,24 +92,6 @@ module ngApp.components.tables.directives {
     };
   }
 
-  function SortTable(): ng.IDirective {
-    return {
-      restrict: "EA",
-      scope: {
-        paging: "=",
-        page: "@",
-        headings: "=",
-        title: "@",
-        update: "=",
-        data: "=",
-        saved: "="
-      },
-      replace: true,
-      templateUrl: "components/tables/templates/sort-table.html",
-      controller: "TableSortController as tsc"
-    }
-  }
-
   function GDCTable(): ng.IDirective {
     return {
       restrict: "E",
@@ -123,7 +115,6 @@ module ngApp.components.tables.directives {
   angular.module("tables.directives", ["tables.controllers"])
       .directive("exportTable", ExportTable)
       .directive("reportsExportTable", ReportsExportTable)
-      .directive("sortTable", SortTable)
       .directive("gdcTable", GDCTable)
       .directive("arrangeColumns", ArrangeColumns);
 }

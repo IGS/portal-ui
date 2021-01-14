@@ -1,6 +1,4 @@
 module ngApp.files.controllers {
-  import IFile = ngApp.files.models.IFile;
-  import IFiles = ngApp.files.models.IFiles;
   import ICoreService = ngApp.core.services.ICoreService;
   import ICartService = ngApp.cart.services.ICartService;
   import IFilesService = ngApp.files.services.IFilesService;
@@ -12,15 +10,15 @@ module ngApp.files.controllers {
   }
 
   export interface IFileController {
-    file: IFile;
+    file: any;
     isInCart(): boolean;
     handleCartButton(): void;
     archiveCount: number;
     annotationIds: string[];
     tablesToDisplay: string[];
-    makeSearchPageLink(files: IFile[]): string;
+    makeSearchPageLink(files: any[]): string;
   }
-
+  
   class FileController implements IFileController {
     archiveCount: number = 0;
     annotationIds: string[] = [];
@@ -29,15 +27,17 @@ module ngApp.files.controllers {
       assocEntity: '',
       readGroup: ''
     };
+    filePageConfig: Object;
 
     /* @ngInject */
     constructor(
-      public file: IFile,
+      public file: any,
       public $scope: ng.IScope,
       private CoreService: ICoreService,
       private CartService: ICartService,
       private FilesService: IFilesService,
-      private $filter: ng.IFilterService
+      // private $filter: ng.IFilterService
+      private $filter: ngApp.components.ui.string.ICustomFilterService
     ) {
 
       setTimeout(() => {
@@ -52,7 +52,24 @@ module ngApp.files.controllers {
         });
       });
 
-      CoreService.setPageTitle("File", file.file_name);
+      // Get custom 'files-page' config
+      this.filePageConfig = this.CoreService.getComponentFromConfig('files-page');
+      
+      // Flatten objects for better accessing their properties in file.html template
+      var flatFile = {};
+      _.forEach(this.file, (val, key) => {
+        if ( typeof(val) === 'object' ) {
+          _.forEach(val, (obj_val, obj_prop) => {
+            let newFieldName = key + '_' + obj_prop;
+            flatFile[newFieldName] = obj_val;
+          });
+        } else {
+          flatFile[key] = val;
+        }
+      });
+      this.file = flatFile;
+
+      CoreService.setPageTitle(this.filePageConfig['page-title'], this.file['file_file_name']);
 
       var toDisplayLogic = {
         'Raw Sequencing Data': ['analysis', 'referenceGenome', 'readGroup', 'downstreamAnalysis'],
@@ -74,25 +91,26 @@ module ngApp.files.controllers {
           fields: [
             "archive.archive_id"
           ],
-          filters: {"op": "=", "content": {"field": "files.archive.archive_id", "value": [file.archive.archive_id]}}
+          filters: {"op": "=", "content": {"field": "files.archive.archive_id", "value": [file.archive['archive_id']]}}
         }).then((data) => this.archiveCount = data.pagination.total);
       } else {
         this.archiveCount = 0;
       }
 
-      _.every(file.associated_entities, (entity) => {
-        entity.annotations = _.filter(file.annotations, (annotation) => {
-          return annotation.entity_id === entity.entity_id;
-        });
-
-        if (entity.annotations) {
-          entity.annotations = _.pluck(entity.annotations, "annotation_id");
-        }
-      });
-
-      //insert project into top level because it's in the properties table
-      file.projects = _.reject(_.unique(file.cases.map(c => (c.project || {}).project_id)),
-                                  p => _.isUndefined(p) || _.isNull(p));
+      // TODO: DOLLEY removed for now. Relating to GQL removal
+      // _.every(file.associated_entities, (entity: any) => {
+      //   entity.annotations = _.filter(file.annotations, (annotation: any) => {
+      //     return annotation.entity_id === entity.entity_id;
+      //   });
+        
+      //   if (entity.annotations) {
+      //     entity.annotations = _.map(entity.annotations, "annotation_id");
+      //   }
+      // });
+      //
+      // //insert project into top level because it's in the properties table
+      // file.projects = _.reject(_.uniq(file.cases.map(c => (c.project || {}).project_id)),
+      //                             p => _.isUndefined(p) || _.isNull(p));
 
       //insert cases into related_files for checking isUserProject when downloading
       _.forEach(file.related_files, (related_file) => {
@@ -113,13 +131,14 @@ module ngApp.files.controllers {
       }
     }
 
+	//TODO: mschor: hard-coded file_id throughout is field that adds files to cart
     isInCart(): boolean {
       return this.CartService.isInCart(this.file.file_id);
     }
 
     handleCartButton(): void {
       if (this.CartService.isInCart(this.file.file_id)) {
-        this.CartService.remove([this.file.file_id]);
+        this.CartService.remove([this.file]);
       } else {
         this.CartService.addFiles([this.file], true);
       }
@@ -128,10 +147,10 @@ module ngApp.files.controllers {
     canBAMSlice(): boolean {
       return (this.file.data_type || '').toLowerCase() === 'aligned reads' &&
              (this.file.index_files || []).length != 0 &&
-             (this.file.data_format || '').toLowerCase() === 'bam';
+             (this.file.data_format.name || '').toLowerCase() === 'bam';
     }
 
-    makeSearchPageLink(files: IFile[] = []): any {
+    makeSearchPageLink(files: any[] = []): any {
       if (files.length) {
         var filterString = this.$filter("makeFilter")([{
           field: 'files.file_id',
@@ -157,13 +176,13 @@ module ngApp.files.controllers {
                  private inProgress: any,
                  private downloader: any
     ) {
-      this.$scope.bedModel = "";
+      this.$scope['bedModel'] = "";
     }
 
     submit(): void {
       this.FilesService.sliceBAM(
         this.file.file_id,
-        this.$scope.bedModel,
+        this.$scope['bedModel'],
         this.completeCallback,
         this.inProgress,
         this.downloader);
@@ -171,15 +190,15 @@ module ngApp.files.controllers {
     }
 
     allowTab($event: any): void {
-      if (event.keyCode === 9) {
-        event.preventDefault();
+      if ($event.keyCode === 9) {
+        $event.preventDefault();
 
         // current caret pos
         var start = $event.target.selectionStart;
         var end = $event.target.selectionEnd;
 
-        var oldValue = this.$scope.bedModel;
-        this.$scope.bedModel = oldValue.substring(0, start) + '\t' + oldValue.substring(end);
+        var oldValue = this.$scope['bedModel'];
+        this.$scope['bedModel'] = oldValue.substring(0, start) + '\t' + oldValue.substring(end);
         // put caret in correct place
         this.GqlService.setPos($event.target, start+1);
       }
@@ -190,7 +209,7 @@ module ngApp.files.controllers {
     }
 
     closeModal(): void {
-      this.$uibModalInstance.dismiss('cancelled');
+      this.$uibModalInstance.close('cancelled');
     }
   }
 
@@ -205,7 +224,7 @@ module ngApp.files.controllers {
       this.errorBlobString = "";
       var reader = new FileReader();
       reader.addEventListener("loadend", () => {
-        this.errorBlobString = _.get(JSON.parse(reader.result), "error", "Error slicing");
+        this.errorBlobString = (<any>_).get(JSON.parse(String(reader.result)), "error", "Error slicing");
       });
       reader.readAsText(errorBlob);
     }

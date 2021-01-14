@@ -1,5 +1,23 @@
 module ngApp.components.location.services {
 
+  export interface ILocationService {
+    path(): string;
+    search(): any;
+    setSearch(search: Object): any;
+    clear(): any;
+    filters(): any;
+    setFilters(filters: Object): any;
+    save(): string;
+    comment(): string;
+    query(): string;
+    setQuery(query?: string): any;
+    pagination(): any;
+    setPaging(pagination: Object): any;
+    setHref(href: string): void;
+    getHref(): string;
+    filter2query(f: Object): string;
+  }
+
   class LocationService implements ILocationService {
     /* @ngInject */
     constructor(
@@ -16,7 +34,7 @@ module ngApp.components.location.services {
     }
 
     setSearch(search: ISearch): ng.ILocationService {
-      var propsWithValues = _.pick(search, function(v) {
+      var propsWithValues = _.pickBy(search, function(v) {
         return !_.isEmpty(v) && v !== "{}"
       });
       return this.$location.search(propsWithValues);
@@ -43,8 +61,8 @@ module ngApp.components.location.services {
       //move the user back to pg1
       var paging = this.pagination();
       if (paging) {
-        _.each(paging, (page) => {
-          page.from = 0;
+        _.forEach(paging, (page) => {
+          page['from'] = 0;
         });
         search['pagination'] = angular.toJson(paging);
       }
@@ -80,7 +98,7 @@ module ngApp.components.location.services {
     }
 
     pagination(): any {
-      var f = _.get(this.search(), "pagination", "{}");
+      var f = (<any>_).get(this.search(), "pagination", "{}");
       return angular.fromJson(f);
     }
 

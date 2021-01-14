@@ -1,7 +1,7 @@
 module ngApp.components.quickSearch.services {
 
-  interface IQuickSearchService {
-    getDetails(type: string, id: string): ng.IPromise<any>;
+  export interface IQuickSearchService {
+    // getDetails(type: string, id: string): ng.IPromise<any>; //NOTE: removed to resolve TS error. wasn't used anywhere
     goTo(entity: string, id: string): void;
   }
 

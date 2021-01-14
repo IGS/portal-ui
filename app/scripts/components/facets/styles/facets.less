@@ -18,12 +18,13 @@
 .current-filters {
   font-size: 1.9rem;
 
-  .filter {
+  .facet-filter {
     margin-right: 5px;
 
     span.facet-block {
       display: inline-block;
       line-height: 2rem;
+      margin-right: 10px;
     }
 
     // This is applied to only immediate child spans to prevent
@@ -93,23 +94,50 @@
   }
 }
 
-.facet-title {
+.facet-title-container {
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
+  display: inline;
   align-items: center;
   font-size: 18px;
 
   h4 {
-    max-width: 85%;
+    max-width: 80%;
 
     label {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
   }
+
+  .facet-options-container {
+    display: inline; 
+    padding-left: 12px;
+  }
+  .sort-button-container {
+    // display: inline; 
+    float: right; 
+    color: #4d4d4d;
+  }
+  
+  // resizes fontawesome to better match height of 'x' fontawesome
+  .resize-fa-reset:before {
+    font-size: 16px;
+  }
+  .resize-fa-sort:before {
+    font-size: 15px;
+  }
+}
+
+.facet-title {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+p.facet-title {
+  display: block;
 }
 
 .facet-term-label {
@@ -118,7 +146,7 @@
   max-width: 80%;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis; */
 }
 
 .list-group-item-text {
@@ -193,4 +221,9 @@ li:focus {
   border-left: 32px solid #636869;
   color: rgb(82, 82, 82);
   display: inline-block;
+}
+
+/* Resolves '...' issue in facet sidebar */
+label {
+  display: initial;
 }

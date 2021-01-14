@@ -2,7 +2,7 @@
   <div class="search-panel">
     <div class="facets-sidebar" ng-class="{ collapsed: sc.facetsCollapsed }">
       <uib-tabset active="sc.facetTab">
-        <uib-tab heading="{{ 'Samples' | translate }}" id="participants-facets-tab"
+        <uib-tab heading="{{ sc.searchConfig['facets-panel-samples-tab-name'] || 'Samples' }}" id="participants-facets-tab"
           index="0"
           select="sc.setFacetTab('cases')">
           <div class="facet-section panel-default">
@@ -12,13 +12,15 @@
                  data-title="Add a filter"
                  data-doc-type="cases">
               </add-custom-facets-panel>
-              <facets-section doctype="cases"
-                              aggregations="sc.participants.aggregations">
-              </facets-section>
+              <div class="facets-section-container">
+                <facets-section doctype="cases"
+                                aggregations="sc.participants.aggregations">
+                </facets-section>
+              </div>
             </div>
           </div>
         </uib-tab>
-        <uib-tab heading="{{ 'Files' | translate }}" id="files-facets-tab"
+        <uib-tab heading="{{ sc.searchConfig['facets-panel-files-tab-name'] || 'Files' }}" id="files-facets-tab"
           index="1"
           select="sc.setFacetTab('files')">
           <div class="facet-section panel-default">
@@ -30,9 +32,11 @@
                  data-doc-type="files">
               </add-custom-facets-panel>
               -->
-              <facets-section doctype="files"
-                              aggregations="sc.files.aggregations">
-              </facets-section>
+              <div class="facets-section-container">
+                <facets-section doctype="files"
+                                aggregations="sc.files.aggregations">
+                </facets-section>
+              </div>
             </div>
           </div>
         </uib-tab>
@@ -56,19 +60,19 @@
         <div class="col-sm-10">
           <current-filters></current-filters>
           <span data-ng-if="!cfc.currentFilters.length" style="line-height: 3.4rem">
-            <span data-translate>
+            <span >
               Start searching by selecting a facet or try the Advanced Search
             </span>
           </span>
         </div>
         <div class="col-sm-2 text-right">
-          <a class="btn btn-primary" data-translate data-ng-click="sc.gotoQuery()">
-            <i class="fa fa-gears"></i> <span data-translate>Advanced</span>
+          <a class="btn btn-primary" data-ng-click="sc.gotoQuery()">
+            <i class="fa fa-search"></i> <span>Advanced</span>
           </a>
         </div>
       </div>
 
-      <h3 class="col-lg-9 col-md-8" data-ng-if="!sc.participants.hits.length && !sc.files.hits.length && !sc.participantsLoading && !sc.filesLoading" data-translate>
+      <h3 class="col-lg-9 col-md-8" data-ng-if="!sc.participants.hits.length && !sc.files.hits.length && !sc.participantsLoading && !sc.filesLoading" >
         No results found using those filters.
       </h3>
 
@@ -83,7 +87,7 @@
                   data-ng-href="{{
                   sc.$state.href('search.summary', sc.LocationService.search().filters
                   )}}">
-                  {{ 'Summary' | translate }}
+                  {{ 'Summary' }}
                 </a>
             </li>
             <li role="presentation"
@@ -94,7 +98,7 @@
                   data-ng-href="{{
                   sc.$state.href('search.participants', sc.LocationService.search().filters
                   )}}">
-                    {{ 'Samples' | translate }} ({{ sc.participants.pagination.total | number:0 }})
+                    {{ sc.searchConfig['center-panel-samples-tab-name'] || 'Samples' }} ({{ sc.participants.pagination.total | number:0 }})
                 </a>
             </li>
             <li role="presentation"
@@ -105,13 +109,13 @@
                   data-ng-href="{{
                   sc.$state.href('search.files', sc.LocationService.search().filters
                   )}}">
-                  {{ 'Files' | translate }} ({{ sc.files.pagination.total | number:0 }})
+                  {{ sc.searchConfig['center-panel-files-tab-name'] || 'Files' }} ({{ sc.files.pagination.total | number:0 }})
                 </a>
             </li>
           </ul>
 <!--
           <a ui-sref="annotations" style="margin-top: auto; margin-bottom: auto; margin-left: auto">
-           <span data-translate>Browse Annotations</span>
+           <span >Browse Annotations</span>
           </a>
 -->
         </div>

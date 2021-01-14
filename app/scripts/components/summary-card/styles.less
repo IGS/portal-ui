@@ -23,10 +23,16 @@
     text-align: center;
     line-height: 223px;
     font-size: 20px;
+    height: 217px; //177 piechart + 40 footer. minimize 'jumping' when piecharts render
   }
 }
 
 .card-table {
   max-height: 300px;
   overflow-y: auto;
+}
+
+.chart-spinner-container {
+  position: relative;
+  display:flex;
 }

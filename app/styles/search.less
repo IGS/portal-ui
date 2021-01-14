@@ -3,6 +3,10 @@
   border-bottom: none;
 }
 
+#clear_btn {
+  padding-right:10px;
+}
+
 .collapse-facets-button {
   float: right;
   padding: 10px;
@@ -45,6 +49,20 @@
     transition: transform 0.6s ease;
     animation-name: glow;
     animation-duration: 4s;
+  }
+}
+
+.facets-section-container {
+  // max-height: 775px;
+  max-height: 82vh; 
+  overflow-y: auto;
+  border-left: 1px solid #c4c4c4;
+  border-right: 1px solid #c4c4c4;
+  border-bottom: 1px solid #c4c4c4;
+
+  .facet {
+    border-left: none;
+    border-right: none;
   }
 }
 

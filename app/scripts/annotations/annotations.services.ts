@@ -1,27 +1,25 @@
 module ngApp.annotations.services {
-  import IAnnotation = ngApp.annotations.models.IAnnotation;
-  import IAnnotations = ngApp.annotations.models.IAnnotations;
   import ILocationService = ngApp.components.location.services.ILocationService;
   import ICoreService = ngApp.core.services.ICoreService;
   import IRootScope = ngApp.IRootScope;
   import IUserService = ngApp.components.user.services.IUserService;
 
   export interface IAnnotationsService {
-    getAnnotation(id: string, params?: Object): ng.IPromise<IAnnotation>;
-    getAnnotations(params?: Object): ng.IPromise<IAnnotations>;
+    getAnnotation(id: string, params?: Object): ng.IPromise<any>;
+    getAnnotations(params?: Object): ng.IPromise<any>;
   }
 
   class AnnotationsService implements IAnnotationsService {
-    private ds: restangular.IElement;
+    private ds: any;
 
     /* @ngInject */
-    constructor(Restangular: restangular.IService, private LocationService: ILocationService,
+    constructor(Restangular: Restangular.IService, private LocationService: ILocationService,
                 private CoreService: ICoreService, private $rootScope: IRootScope,
                 private $q: ng.IQService, private UserService: IUserService) {
       this.ds = Restangular.all("annotations");
     }
 
-    getAnnotation(id: string, params: Object = {}): ng.IPromise<IAnnotation> {
+    getAnnotation(id: string, params: Object = {}): ng.IPromise<any> {
       if (params.hasOwnProperty("fields")) {
         params["fields"] = params["fields"].join();
       }
@@ -30,12 +28,12 @@ module ngApp.annotations.services {
         params["expand"] = params["expand"].join();
       }
 
-      return this.ds.get(id, params).then((response): IAnnotation => {
+      return this.ds.get(id, params).then((response): any => {
         return response["data"];
       });
     }
 
-    getAnnotations(params: Object = {}): ng.IPromise<IAnnotations> {
+    getAnnotations(params: Object = {}): ng.IPromise<any> {
       if (params.hasOwnProperty("fields")) {
         params["fields"] = params["fields"].join();
       }
@@ -67,10 +65,10 @@ module ngApp.annotations.services {
       this.CoreService.setSearchModelState(false);
 
       var abort = this.$q.defer();
-      var prom: ng.IPromise<IAnnotations> = this.ds.withHttpConfig({
+      var prom: ng.IPromise<any> = this.ds.withHttpConfig({
         timeout: abort.promise
       })
-      .get("", angular.extend(defaults, params)).then((response): IAnnotations => {
+        .get("", angular.extend(defaults, params)).then((response): any => {
         this.CoreService.setSearchModelState(true);
         return response["data"];
       });

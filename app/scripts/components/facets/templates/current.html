@@ -1,18 +1,18 @@
 <div class="current-filters" data-ng-if="cfc.currentFilters.length">
 
-    <span class="btn-group">
+    <span id="clear_btn" class="btn-group">
       <button class="btn btn-default"
               data-ng-click="cfc.resetQuery()"
-              aria-label="{{ 'Clear Query' | translate }}" data-translate>
+              aria-label="{{ 'Clear Query' }}" >
         <i class="fa fa-rotate-left"></i> Clear
       </button>
     </span>
 
-    <span class="filter" data-ng-repeat="filter in cfc.currentFilters">
+    <span class="facet-filter" data-ng-repeat="filter in cfc.currentFilters">
       <span class="facet-block label label-primary facet-name"
             data-ng-click="cfc.removeTerm(filter.content.field, null, $event, filter.op)"
             data-ng-keypress="cfc.removeTerm(filter.content.field, null, $event, filter.op)">
-        {{ filter.content.field | translate | humanify }}
+        {{ filter.content.field | humanify }}
       </span>
       <span data-ng-switch="filter.op">
         <span data-ng-switch-when="in">
@@ -34,7 +34,7 @@
               <span data-ng-if="filter.content.field.toLowerCase().indexOf('datetime') > -1"
                     class="facet-block"> {{ v }} </span>
               <span data-ng-if="filter.content.field.toLowerCase().indexOf('datetime') === -1"
-                    class="facet-block">{{ v | translate }}</span>
+                    class="facet-block">{{ v }}</span>
             </span>
             <span
               class="facet-block facet-term"

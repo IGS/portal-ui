@@ -1,6 +1,8 @@
 module ngApp.core.services {
 
   export interface ICoreService {
+    getComponentFromConfig(componentName: string): any;
+    getFromAPI(APIRoute: string): ng.IPromise<any>;
     setPageTitle(title: string, id?: string): void;
     setLoadedState(state: boolean): void;
     setSearchModelState(state: boolean): void;
@@ -20,15 +22,14 @@ module ngApp.core.services {
     constructor(private $rootScope: ngApp.IRootScope,
                 private $state: ng.ui.IStateService,
                 private $http: ng.IHttpService,
-                private Restangular: restangular.IProvider,
+                private Restangular: Restangular.IProvider,
                 private config: IGDCConfig,
                 private ngProgressLite: ng.progressLite.INgProgressLite,
                 private $uibModal: any,
                 private $uibModalStack: any,
-                private Restangular: restangular.IProvider,
                 private gettextCatalog) {
       this.setLoadedState(true);
-      Restangular.setErrorInterceptor((response, deferred, responseHandler) => {
+      Restangular.setErrorInterceptor((response, deferred, responseHandler?) => { //NOTE: Resolved TS error. added '?'
         this.xhrDone();
         if (response.status >= 500) {
           console.log(`${JSON.stringify(response.config)} failed with response.status`);
@@ -38,19 +39,39 @@ module ngApp.core.services {
       });
     }
 
+    //Get all config values for component from configcustom.json
+    getComponentFromConfig(componentName: string) {
+      return this.config[componentName];
+    }
+
+    // A custom getter for fetching data from Flask API routes
+    // See home.controller.ts for usage example 
+    getFromAPI(APIRoute: string): ng.IPromise<any> {
+      return this.$http({
+        method: 'GET',
+        url: this.config['site-wide']['api'] + APIRoute
+      }).then( (response)=> {
+        return response['data'];
+      }, (response) => {
+        console.log("Unable to GET from API " + APIRoute);
+        console.log(response['data']);
+        return response['data'];
+      });
+    }
+
     setLoadedState(state: boolean) {
       var wrapper = angular.element(document.getElementById("wrapper"));
       var flippedState = !state;
 
       wrapper.attr("aria-busy", flippedState.toString());
-      this.$rootScope.loaded = state;
+      this.$rootScope['loaded'] = state;
     }
 
     setPageTitle(title: string, id?: string): void {
       // TODO - this could probably be done when the function is called
       var formattedTitle: string = this.gettextCatalog.getString(title);
       formattedTitle = id ? formattedTitle + " - " + id : formattedTitle;
-      this.$rootScope.pageTitle = formattedTitle;
+      this.$rootScope['pageTitle'] = formattedTitle;
     }
 
     xhrSent() {
@@ -72,7 +93,7 @@ module ngApp.core.services {
     }
 
     setSearchModelState(state: boolean): void {
-      this.$rootScope.modelLoaded = state;
+      this.$rootScope['modelLoaded'] = state;
     }
 
     retry(response: any, deferred: any, responseHandler: any) {
@@ -80,7 +101,7 @@ module ngApp.core.services {
         this.$http(response.config)
         .then(responseHandler,
               (response) => {
-                if (response.config.url.indexOf(this.config.auth) !== -1) {
+                if (response.config['url'].indexOf(this.config['site-wide']['auth']) !== -1) {
                   return;
                 }
                 if (!this.$uibModalStack.getTop()) {
@@ -94,7 +115,7 @@ module ngApp.core.services {
                     animation: false,
                     size: "lg",
                     resolve: {
-                      warning: null,
+                      warning: 'The ' + this.config["site-wide"]["project-abbr"] + ' has encountered an error and will be restored as soon as possible.',
                       header: null
                     }
                   });
@@ -150,6 +171,8 @@ module ngApp.core.services {
     }
 
     setItem(key: string, item: any) {
+      // console.log("Setting item into cookie: " + key);
+      // console.log(item);
       var success = true;
       try {
         // always stringify so can always parse

@@ -1,33 +1,60 @@
 module ngApp.participants.controllers {
-  import IParticipant = ngApp.participants.models.IParticipant;
-  import IParticipants = ngApp.participants.models.IParticipants;
   import ICoreService = ngApp.core.services.ICoreService;
   import ILocationService = ngApp.components.location.services.ILocationService;
   import IGDCConfig = ngApp.IGDCConfig;
 
   export interface IParticipantController {
-    participant: IParticipant;
+    participant: any;
     annotationIds: string[];
     clinicalFileId: string;
-    DownloadClinicalXML(): void;
+    // DownloadClinicalXML(): void; //NOTE: removed to resolve typescript error. ParticipantController incorrectly implements interface
   }
 
   class ParticipantController implements IParticipantController {
     annotationIds: string[];
     clinicalFileId: string;
+
+    pluck: any; //type for function?
+    activeClinicalTab: string;
+    setClinicalTab: any; //type for function?
+    clinicalFile: any;
+    clinicalDataExportFilters: Object;
+    clinicalDataExportExpands: Object[];
+    hasNoClinical: boolean;
+    clinicalDataExportFileName: string;
+    expStratConfig: Object;
+    dataCategoriesConfig: Object;
+    participantPageConfig: any;
+
     /* @ngInject */
     constructor(
-      public participant: IParticipant,
+      public participant: any,
       private CoreService: ICoreService,
       private LocationService: ILocationService,
-      private $filter: ng.IFilterService,
+      private $filter: ngApp.components.ui.string.ICustomFilterService,
       private ExperimentalStrategyNames: string[],
-      private DATA_CATEGORIES,
+      // private DATA_CATEGORIES,
       private config: IGDCConfig
     ) {
-      CoreService.setPageTitle("Case", participant.case_id);
 
-      this.participant = participant;
+      // Get custom 'cases-page' config
+      this.participantPageConfig = CoreService.getComponentFromConfig('cases-page');
+
+      // Flatten sample and subject objects for better accessing their properties in participant.html template
+      var flatParticipant = {};
+      _.forEach(this.participant, (val, key) => {
+        if (typeof (val) === 'object' && key !== 'files') {
+          _.forEach(val, (obj_val, obj_prop) => {
+            let newFieldName = key + '_' + obj_prop;
+            flatParticipant[newFieldName] = obj_val;
+          });
+        } else {
+          flatParticipant[key] = val;
+        }
+      });
+      this.participant = flatParticipant;
+      CoreService.setPageTitle(this.participantPageConfig['page-title'], participant.case_id);
+
       this.pluck = (array, property) => array.map(x => x[property]);
 
       this.activeClinicalTab = 'demographic';
@@ -36,7 +63,8 @@ module ngApp.participants.controllers {
       };
 
       this.annotationIds = _.map(this.participant.annotations, (annotation) => {
-        return annotation.annotation_id;
+        console.log('annotation_id: ', String(annotation.id));
+        return String(annotation.id);
       });
 
       this.clinicalFile = _.find(this.participant.files, (file) => {
@@ -60,10 +88,11 @@ module ngApp.participants.controllers {
         'cases.case_id': participant.case_id
       };
       this.clinicalDataExportExpands = ['demographic', 'diagnoses', 'diagnoses.treatments', 'family_histories', 'exposures'];
-      this.hasNoClinical = ! this.clinicalDataExportExpands.some((field) => (participant[field] || []).length > 0);
+      this.hasNoClinical = ! this.clinicalDataExportExpands.some((field: string) => (participant[field] || []).length > 0);
       this.clinicalDataExportFileName = 'clinical.case-' + participant.case_id;
 
-/*
+      // DOLLEY: Not used. Removed, yet remaining for now
+      /*
       this.dataCategories = Object.keys(this.DATA_CATEGORIES).reduce((acc, key) => {
         var type = _.find(participant.summary.data_categories, (item) =>
           item.data_category === this.DATA_CATEGORIES[key].full
@@ -74,7 +103,7 @@ module ngApp.participants.controllers {
           file_count: 0
         });
       }, []);
-*/
+      */
 
       this.expStratConfig = {
         sortKey: "file_count",

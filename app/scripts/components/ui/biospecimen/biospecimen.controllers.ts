@@ -1,13 +1,12 @@
 module ngApp.components.ui.biospecimen.controllers {
-  import IParticipant = ngApp.participants.models.IParticipant;
   import ILocationService = ngApp.components.location.services.ILocationService;
   import IGDCConfig = ngApp.IGDCConfig;
 
   export interface IBiospecimenController {
     activeBioSpecimenDoc: any;
     activeBioSpecimenDocType: string;
-    displayBioSpecimenDocument(doc: any, type: string): void;
-    downloadBiospecimenXML(participant_id: string): void;
+    // displayBioSpecimenDocument(doc: any, type: string): void;
+    // downloadBiospecimenXML(participant_id: string): void;
     bioSpecimenFile: any;
   }
 
@@ -15,8 +14,14 @@ module ngApp.components.ui.biospecimen.controllers {
     activeBioSpecimenDoc: any;
     activeBioSpecimenDocType: string;
 
+    bioSpecimenFile: any;
+    biospecimenDataExportFilters: Object;
+    biospecimenDataExportExpands: any;
+    biospecimenDataExportFileName: any;
+
     /* @ngInject */
     constructor(
+      private hasNoBiospecimen: any,
       private LocationService: ILocationService,
       private config: IGDCConfig,
       private BiospecimenService,
@@ -31,7 +36,7 @@ module ngApp.components.ui.biospecimen.controllers {
       }
 
       this.bioSpecimenFile = _.find($scope.participant.files, (file) => {
-        return (file.data_subtype || '').toLowerCase() === "biospecimen data";
+        return (file['data_subtype'] || '').toLowerCase() === "biospecimen data";
       });
 
       const participant = $scope.participant;
@@ -52,7 +57,7 @@ module ngApp.components.ui.biospecimen.controllers {
       $scope.$on('displayBioSpecimenDocument', (event, data) => {
         this.activeBioSpecimenDocType = data.type;
         this.activeBioSpecimenDoc = data.doc;
-      })
+      });
     }
 
     displayBioSpecimenDocumentRow(key, value): boolean {

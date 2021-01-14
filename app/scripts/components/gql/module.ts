@@ -2,24 +2,51 @@ module ngApp.components.gql {
   import IGDCWindowService = ngApp.core.models.IGDCWindowService;
   import IFilesService = ngApp.files.services.IFilesService;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
-  import IFiles = ngApp.files.models.IFiles;
-  import IParticipants = ngApp.participants.models.IParticipants;
   import IFacet = ngApp.core.models.IFacet;
   import IBucket = ngApp.core.models.IBucket;
 
+  import IHe = he; // Used to encode user's input into HTML entities to help protect against those would do evil against us. Link: https://mths.be/he
+
   enum KeyCode { Space = 32, Enter = 13, Esc = 27, Left = 37, Right = 39, Up = 38, Down = 40 }
-  enum Mode { Field, Quoted, Unquoted, List, Op }
-  enum Cycle { Up = -1, Down = 1 }
+  export enum Mode { Field, Quoted, Unquoted, List, Op }
+  export enum Cycle { Up = -1, Down = 1 }
+
+  interface IDocumentService extends ng.IDocumentService {
+    selection: any;
+  }
+
 
   class GqlService implements IGqlService {
+    private ds: any;
+
     /* @ngInject */
     constructor(
       private $timeout: ng.ITimeoutService,
-      private $document: ng.IDocumentService,
+      private $document: IDocumentService,
       private FilesService: IFilesService,
       private ParticipantsService: IParticipantsService,
-      private GqlTokens: ITokens
-    ) {  }
+      private GqlTokens: ITokens,
+      private Restangular: Restangular.IService
+    ) {
+      this.ds = Restangular.all("gql/_mapping");
+    }
+
+
+    getMapping(): ng.IPromise<any> {
+      return this.ds.getList().then((data: any) => {
+        return data;
+      });
+    }
+
+    getFields(): ng.IPromise<any> {
+      return this.ds.getList().then((data: any) => {
+        var fields = [];
+        _.forEach(data, (field) => {
+          fields.push(field.cypher_field);
+        });
+        return fields;
+      });
+    }
 
     getPos(element: any): number {
       if (element.selectionStart) {
@@ -149,34 +176,36 @@ module ngApp.components.gql {
         filters: {}
       };
 
-      if (parts.docType === "files") {
+      if (parts.facet.indexOf("file") !== -1) {
         return this.FilesService.getFiles(params)
-          .then((fs: IFiles): IDdItem[] => {
+          .then((fs: any): any[] => {
             var f: IFacet = (fs.aggregations || {})[parts.facet] || [];
             return _.map(f.buckets, (b) => {
-              return {field: b.key, full: b.key};
+              return { field: b.key, cypher_field: b.key };
             });
           });
       } else {
         return this.ParticipantsService.getParticipants(params)
-          .then((fs: IParticipants): IDdItem[] => {
+          .then((fs: any): any[] => {
             var f: IFacet = (fs.aggregations || {})[parts.facet] || [];
             return _.map(f.buckets, (b) => {
-              return {field: b.key, full: b.key};
+              return { field: b.key, cypher_field: b.key };
             });
           });
       }
     }
 
-    parseGrammarError(needle: string, error: IGqlSyntaxError): IDdItem[] {
+    parseGrammarError(needle: string, error: IGqlSyntaxError): any[] {
+      error.expected = _.uniq(error.expected); //DOLLEY: removes duplicated operators from dropdown. 
+
       // Handles GQL Parser errors
       return _.map(_.filter(error.expected, (e) => {
         return this.contains(e.description, needle) && this.clean(e.description);
       }), (m) => {
-          var val = m.description ? m.description : m.value
+        var val = m.description ? m.description : m.value
         return {
           field: val,
-          full: val
+          cypher_field: val
         };
       });
     }
@@ -230,14 +259,14 @@ module ngApp.components.gql {
       }
     }
 
-    ajaxList(parts: IParts, listValues): ng.IPromise<IDdItem[]> {
+    ajaxList(parts: IParts, listValues: string | string[]): ng.IPromise<IDdItem[]> {
       // Autocomplete suggestions
       return this.ajaxRequest(parts.field).then((d) => {
         return _.filter(d, (m) => {
           // Filter out values that are already in the list
-          return m && m.full && listValues.indexOf(m.field.toString()) === -1 &&
-            this.contains(m.full.toString(), parts.needle) &&
-            this.clean(m.full.toString());
+          return m && m.cypher_field && listValues.indexOf(m.field.toString()) === -1 &&
+            this.contains(m.cypher_field.toString(), parts.needle) &&
+            this.clean(m.cypher_field.toString());
         });
       });
     }
@@ -268,8 +297,8 @@ module ngApp.components.gql {
       // Autocomplete suggestions
       return this.ajaxRequest(parts.field).then((d)=> {
         return _.filter(d, (m) => {
-          return m && m.full && this.contains(m.full.toString(), parts.needle) &&
-          this.clean(m.full.toString());
+          return m && m.cypher_field && this.contains(m.cypher_field.toString(), parts.needle) &&
+            this.clean(m.cypher_field.toString());
         });
       });
     }
@@ -308,11 +337,53 @@ module ngApp.components.gql {
       if (e.found) {
         e.message = e.message.replace(/but.*$/, `but "${token}" found.`);
       }
-      return `${e.location.start.line} : ${e.location.start.column} - ${e.message}`;
+      return `- ${e.message}`;
+    }
+
+    getQueryErrorLocation(s: string, e: IGqlSyntaxError): string {
+      var errorLocation: string = "";
+
+      if (e.location) {
+        // Gql parser error. Split using location
+        // Gql only reports the 1st error it encounters
+        var left = s.substring(0, e.location.start.offset);
+        var right = s.substring(e.location.start.offset);
+        var space = right.indexOf(this.GqlTokens.SPACE);
+        space = space === -1 ? right.length : space;
+        var token = right.substring(0, space);
+        right = right.replace(token, '');
+
+        // Convert user's input into corresponding HTML entities.
+        left = IHe.encode(left);
+        right = IHe.encode(right);
+        token = IHe.encode(token);
+
+        errorLocation = left + '<b><sub class="error-location">^</sub>' + token + '</b>' + right;
+      } else {
+        // findInvalidFields - reports all erroring fields
+        //   error: "Error: 2 invalid fields found: subject.gend, sample.body_sit"
+        //   query string: "subject.gende = male AND sample.body_sit != abdomen"
+
+        var colon = e.message.lastIndexOf(":");
+        var fields = e.message.substring(colon + 1).trim();
+        var invalidFields = fields.split(",");
+
+        // Convert user's input into corresponding HTML entities.
+        s = IHe.encode(s);
+
+        // Convert user's input into corresponding HTML entities.
+        _.forEach(invalidFields, (token) => {
+          token = IHe.encode(token.trim());
+          s = s.replace(token, '<b><sub class="error-location">^</sub>' + token + '</b>');
+        });
+
+        errorLocation = s;
+      }
+      return errorLocation;
     }
 
     _isValidField = (validFields: string[] = [], node: IParts = {}): boolean =>
-      _.includes(validFields, (node.field || ''));
+      (<any>_).includes(validFields, (node.field || ''));
 
     _findBogusFields = (gqlTree: any = {}, isValidField: (any) => boolean = () => false): string[] =>
       [].concat(gqlTree).reduce((acc, g) => {
@@ -326,19 +397,20 @@ module ngApp.components.gql {
       }, []);
 
     findInvalidFields = (validFields: string[] = [], gqlTree: any = {}): string[] => {
-      const result = this._findBogusFields(gqlTree, _.partial(this._isValidField, validFields));
-      return _.unique(result)
+      const result = this._findBogusFields( gqlTree, (<any>_).partial(this._isValidField, validFields) );
+      return _.uniq(result)
         .filter(f => f.length > 0);
     };
   }
 
   /* @ngInject */
   function gqlInput(
+    $sanitize: ng.sanitize.ISanitizeService,
     $window: IGDCWindowService,
     $document: ng.IDocumentService,
     $compile: ng.ICompileService,
     $timeout: ng.ITimeoutService,
-    Restangular: restangular.IService,
+    Restangular: Restangular.IService,
     GqlService: IGqlService,
     GqlTokens: ITokens
   ): IGqlInput {
@@ -346,13 +418,12 @@ module ngApp.components.gql {
       restrict: 'E',
       replace: true,
       scope: {
-        gql: '=',
+        gql: '=', // Changed from '=' to '=?' (optional) to resolve console error [$compile:nonassign]
         query: '=',
-        error: '='
+        validQuery: '=?'
       },
       templateUrl: "components/gql/templates/gql.html",
       link: function ($scope, element) {
-
         $document.on('click', function(e){
           if (element !== e.target && !element[0].contains(e.target)) {
             $scope.$apply(function () {
@@ -361,7 +432,7 @@ module ngApp.components.gql {
           }
         });
 
-        $document.on('keydown', (e: KeyboardEvent) => {
+        $document.on('keydown', function(e: any){
           let key = e.which || e.keyCode;
           if (key === KeyCode.Esc) {
             $scope.onBlur();
@@ -371,11 +442,10 @@ module ngApp.components.gql {
         var INACTIVE = -1;
         var T = GqlTokens;
         var mapping: IDdItem[];
-        var validFields = [];
+        $scope['validFields'] = [];
 
-        Restangular.all('gql').get('_mapping', {}).then((m: IDdItem[]) => {
-          mapping = m;
-          validFields = _.keys(mapping);
+        GqlService.getMapping().then(data => {
+          mapping = data;
         });
 
         $scope.active = INACTIVE;
@@ -399,16 +469,29 @@ module ngApp.components.gql {
             $scope.mode = Mode.Op;
 
             let ddItems = GqlService.parseGrammarError($scope.parts.needle, $scope.error)
-
             $scope.ddItems = ddItems.filter(
-              (item: IDdItem): boolean => {
-                var op: IDdItem = mapping[$scope.parts.op.toLowerCase()] || {};
+              (item: any): boolean => {
+
+                // At this point, parts = {field: "", needle: "", op: "SUBJECT.GENDER"}
+                // mapping = METADATA_MAPPING from app.py, which is keyed on node properties
+                // mapping = {
+                //   "gender": {
+                //     "cypher_field": "subject.gender",
+                //     "description": "The subject's sex",
+                //     "doc_type": "cases",
+                //     "field": "subject gender",
+                //     "type": "string"
+                //   }
+                // }
+                var metadata_key = $scope.parts.op.toLowerCase().split('.')[1];
+                var op: IDdItem = mapping[metadata_key] || {};
+
                 if (['long', 'integer'].indexOf(op.type || '') !== -1) {
                   return [T.EQ, T.NE, T.GT, T.GTE, T.LT, T.LTE, T.IS, T.NOT].indexOf(item.full.toString()) !== -1;
-                } else if ((op.full || '').toString().indexOf('datetime') != -1) {
-                  return [T.GT, T.GTE, T.LT, T.LTE, T.IS, T.NOT].indexOf(item.full.toString()) !== -1;
+                } else if ((op.cypher_field || '').toString().indexOf('datetime') != -1) {
+                  return [T.GT, T.GTE, T.LT, T.LTE, T.IS, T.NOT].indexOf(item.cypher_field.toString()) !== -1;
                 } else {
-                  return [T.EQ, T.NE, T.IN, T.EXCLUDE, T.IS, T.NOT].indexOf(item.full.toString()) !== -1;
+                  return [T.EQ, T.NE, T.IN, T.EXCLUDE, T.IS, T.NOT].indexOf(item.cypher_field.toString()) !== -1;
                 }
               }
             );
@@ -442,10 +525,10 @@ module ngApp.components.gql {
                 $scope.ddItems = _.filter(mapping, (m: IDdItem) => {
                   return (
                     m &&
-                    m.full &&
-                    GqlService.clean(m.full.toString()) &&
+                    m.cypher_field &&
+                    GqlService.clean(m.cypher_field.toString()) &&
                     (
-                        GqlService.contains(m.full.toString(), $scope.parts.needle.replace(T.LPARENS, T.NOTHING)) ||
+                      GqlService.contains(m.cypher_field.toString(), $scope.parts.needle.replace(T.LPARENS, T.NOTHING)) ||
                         GqlService.contains(m.type, $scope.parts.needle.replace(T.LPARENS, T.NOTHING)) ||
                         GqlService.contains(m.description, $scope.parts.needle.replace(T.LPARENS, T.NOTHING))
                     )
@@ -457,7 +540,7 @@ module ngApp.components.gql {
                 $scope.mode = Mode.Unquoted;
                 GqlService.ajaxRequest($scope.parts.field).then((d)=> {
                   $scope.ddItems = _.filter(d, (m) => {
-                    return m && m.full && GqlService.contains(m.full.toString(), $scope.parts.needle) && GqlService.clean(m.full.toString());
+                    return m && m.cypher_field && GqlService.contains(m.cypher_field.toString(), $scope.parts.needle) && GqlService.clean(m.cypher_field.toString());
                   });
                 });
               }
@@ -465,25 +548,35 @@ module ngApp.components.gql {
           }
         };
 
+
         function gqlParse() {
           try {
             $scope.gql = $window.gql.parse($scope.query);
             $scope.error = null;
+            $scope.validQuery = true;
+            $scope.$parent['validQuery'] = true; //$parent refers to the $scope of SearchBarController
+            $scope.$parent['showError'] = false; //Reset. Only true if validQuery is false when query is submitted
+            $scope.$parent['error'] = null;
 
-            const invalids = GqlService.findInvalidFields(validFields, $scope.gql.filters);
+            const invalids = GqlService.findInvalidFields($scope['validFields'], $scope.gql.filters);
+            // const invalids = GqlService.findInvalidFields(validFields, $scope.gql.filters);
             if (invalids.length > 0) {
-              throw new Error('' + invalids.length + ' invalid field' +
+              throw new Error('- ' + invalids.length + ' invalid field' +
                 ((invalids.length > 1) ? 's' : '') +
                 ' found: ' + invalids.join(', ')
               );
             }
           } catch (Error) {
             Error.human = Error.location ?
-              GqlService.humanError($scope.query, Error) :
+            GqlService.humanError($scope.query, Error) :
               Error.message;
+
+              Error.queryErrorLocation = GqlService.getQueryErrorLocation($scope.query, Error);
 
             $scope.error = Error;
             $scope.gql = null;
+            $scope.$parent['validQuery'] = false; //$parent refers to the $scope of SearchBarController
+            $scope.$parent['error'] = Error;     //$parent refers to the $scope of SearchBarController
           }
         }
 
@@ -553,10 +646,11 @@ module ngApp.components.gql {
                 if ($scope.query && !$scope.error) {
                     $scope.ddItems = [{
                         field: 'AND',
-                        full: 'AND'
+                        cypher_field: 'AND'
+
                     }, {
                         field: 'OR',
-                        full: 'OR'
+                        cypher_field: 'OR'
                     }];
                 }
               }
@@ -582,11 +676,12 @@ module ngApp.components.gql {
           $scope.focused = false;
         }
 
-        $scope.enter = function(item: IDdItem): void {
+        $scope.enter = function(item: any): void {
           item = item || ($scope.active === INACTIVE ? $scope.ddItems[0] : $scope.ddItems[$scope.active]);
-  	      var needleLength = $scope.parts.needle.length;
+
+          var needleLength = $scope.parts.needle.length;
           // Quote the value if it has a space so the parse can handle it
-          if (GqlService.isQuoted(item.full)) item.full = T.QUOTE + item.full + T.QUOTE;
+          if (GqlService.isQuoted(item.cypher_field)) item.cypher_field = T.QUOTE + item.cypher_field + T.QUOTE;
 
           // After selecting a value close the autocomplete
           clearActive();
@@ -594,14 +689,19 @@ module ngApp.components.gql {
           var left = $scope.left;
           var right = $scope.right;
 
+          // DOLLEY: $scope.Mode is 'undefined' if query is prepopulated with text from the facet search page
+          if (typeof($scope.mode) === "undefined" && [T.AND, T.OR].indexOf(item.cypher_field) !== -1) {
+            $scope.mode = Mode.List; 
+          }
+          
           if ([Mode.Field, Mode.Op, Mode.Unquoted].indexOf($scope.mode) !== -1) {
 
             var newLeft = GqlService.lhsRewrite(left, needleLength);
             var newRight = GqlService.rhsRewrite(right);
 
-            var insert = [T.IN, T.EXCLUDE].indexOf(item.full.toString().toUpperCase()) !== -1
-              ? item.full.toString() + T.SPACE + T.LBRACKET
-              : item.full;
+            var insert = [T.IN, T.EXCLUDE].indexOf(item.cypher_field.toString().toUpperCase()) !== -1
+              ? item.cypher_field.toString() + T.SPACE + T.LBRACKET
+              : item.cypher_field;
 
             $scope.query = newLeft + insert + newRight;
             GqlService.setPos(element[0], (newLeft + insert).length);
@@ -609,18 +709,19 @@ module ngApp.components.gql {
             var newLeft = GqlService.lhsRewrite(left, needleLength + 1);
             var newRight = GqlService.rhsRewriteQuoted(right);
 
-            $scope.query = newLeft + item.full + newRight;
-            GqlService.setPos(element[0], (newLeft + item.full).length);
+            $scope.query = newLeft + item.cypher_field + newRight;
+            GqlService.setPos(element[0], (newLeft + item.cypher_field).length);
           } else if ($scope.mode === Mode.List) {
             if (GqlService.isCountOdd(left, T.QUOTE)) needleLength++;
             // [OICR-925] Auto insert [ if not there already
-            // if (left.substr(-4).toUpperCase() === T.SPACE + T.IN + T.SPACE) left += T.LBRACKET;
+            if (left.substr(-4).toUpperCase() === T.SPACE + T.IN + T.SPACE) left += T.LBRACKET;
             var newLeft = GqlService.lhsRewrite(left, needleLength);
             var newRight = GqlService.rhsRewriteList(right);
 
-            $scope.query = newLeft + item.full + newRight;
-            GqlService.setPos(element[0], (newLeft + item.full).length);
+            $scope.query = newLeft + item.cypher_field + newRight;        
+            GqlService.setPos(element[0], (newLeft + item.cypher_field).length);
           }
+
           gqlParse();
         };
 
@@ -635,9 +736,19 @@ module ngApp.components.gql {
             $scope.focused = true;
         }
 
-        gqlParse();
+        // On page load, gqlParse runs before scope.validFields is populated causing an error (Invalid Query)
+        // This block looks to delay gqlParse until those values are returned, unless they already exist
+        if ($scope['validFields'].length == 0) {
+          GqlService.getFields().then(data => {
+            $scope['validFields'] = data;
+          }).finally( () => {
+            gqlParse(); 
+          });
+        } else {
+          gqlParse();
+        }
 
-        element.after($compile('<gql-dropdown></gql-dropdown>')($scope));
+        (<any>element).after($compile('<gql-dropdown></gql-dropdown>')($scope));
       }
     };
   }
@@ -698,22 +809,22 @@ module ngApp.components.gql {
     .directive("gqlDropdown", gqlDropdown)
     .constant('GqlTokens', Tokens);
 
-  interface IFieldParts {
+  export interface IFieldParts {
     docType: string;
     facet: string;
   }
 
-  interface IParts {
-    op: string;
-    field: string;
-    needle: string;
+  export interface IParts {
+    op?: string;
+    field?: string;
+    needle?: string;
   }
 
-  interface IGqlInput extends ng.IDirective {
-    link($scope: IGqlScope, element: Node): void;
+  export interface IGqlInput extends ng.IDirective {
+    link($scope: IGqlScope, element: any): any; 
   }
 
-  interface IGqlService {
+  export interface IGqlService {
     getPos(element: any): number;
     setPos(element: any, caretPos: number): void;
     countNeedle(stack: string, needle: string): number;
@@ -741,10 +852,13 @@ module ngApp.components.gql {
     rhsRewriteList(left: string): string;
     isQuoted(s: string | number): boolean;
     humanError(s: string, e: IGqlSyntaxError): string;
-    findInvalidFields(validFields: string[] = [], gqlTree: any = {}): string[];
+    getQueryErrorLocation(s: string, e: IGqlSyntaxError): string,
+    findInvalidFields(validFields: string[], gqlTree: any): string[];
+    getMapping(): ng.IPromise<any>;
+    getFields(): ng.IPromise<any>;
   }
 
-  interface ITokens {
+  export interface ITokens {
     EQ: string;
     NE: string;
     EXCLUDE: string;
@@ -769,36 +883,47 @@ module ngApp.components.gql {
     PERIOD: string;
   }
 
-  interface IGqlFilters {
+  export interface IGqlFilters {
     op: string;
     content: IGqlFilters[]
   }
 
-  interface IGqlResult {
+  export interface IGqlResult {
     filters: IGqlFilters;
   }
 
-  interface IGqlSyntaxErrorLocationValues {
+  export interface IGqlSyntaxErrorLocationValues {
     offset: number;
     line: number;
     column: number;
   }
 
-  interface IGqlSyntaxErrorLocation {
+  export interface IGqlSyntaxErrorLocation {
     start: IGqlSyntaxErrorLocationValues;
     end: IGqlSyntaxErrorLocationValues;
   }
 
-  interface IGqlSyntaxError {
+  // The query string split into 3 parts. 
+  // Meant to give better location of the error within the query
+  // export interface IGqlQueryErrorLocation {
+  //   queryLeftSide: string;  // portion of query before token
+  //   queryRightSide: string; // portion of query after token 
+  //   queryConjunction?: string; // AND|OR 
+  //   token: string;          //portion of query causing the error
+  // }
+
+  export interface IGqlSyntaxError {
     expected: IGqlExpected[];
     found: string;
     message: string;
     name: string;
     location: IGqlSyntaxErrorLocation
     human?: string;
+    // queryErrorLocation?: IGqlQueryErrorLocation[];
+    queryErrorLocation?: string;
   }
 
-  interface IGqlExpected {
+  export interface IGqlExpected {
     description?: string;
     value?: string;
     type?: string;
@@ -808,15 +933,15 @@ module ngApp.components.gql {
     text: string;
   }
 
-  interface IDdItem {
+  export interface IDdItem {
     field: string | number;
-    full: string | number;
+    cypher_field: string;
     description?: string;
     type?: string;
     active?: boolean;
   }
 
-  interface IGqlScope extends ng.IScope {
+  export interface IGqlScope extends ng.IScope {
     offset: number;
     limit: number;
     mouseIn(idx: number): void;
@@ -841,5 +966,7 @@ module ngApp.components.gql {
     click(item: IDdItem): void;
     handleOnClickUpArrow(): void;
     handleOnClickDownArrow(): void;
+    onBlur(): void; //NOTE Dusti added
+    validQuery: boolean;
   }
 }

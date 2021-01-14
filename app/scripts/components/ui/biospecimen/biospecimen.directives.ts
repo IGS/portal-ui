@@ -5,7 +5,8 @@ module ngApp.components.ui.biospecimen.directives {
   interface IBiospecimenScope extends ng.IScope {
     expandTree(event: any, doc: any): void;
     expandAll(event: any, participant: any, expand: boolean): void;
-    search(searchTerm: string, participant: any, field: string): void;
+    // search(searchTerm: string, participant: any, field: string): void;
+    search(searchTerm: string, participant: any): void; //NOTE resolves TS error 
     searchTerm: string;
     found: any[];
   }
@@ -55,7 +56,7 @@ module ngApp.components.ui.biospecimen.directives {
         };
 
         if ($stateParams.bioId) {
-          $scope.search($stateParams.bioId, $scope.participant);
+          $scope.search($stateParams['bioId'], $scope['participant']);
           $scope.searchTerm = $stateParams.bioId;
         }
       }

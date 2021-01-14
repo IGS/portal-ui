@@ -22,7 +22,7 @@
       typeahead-click-open
       data-ng-if="ftc.autocomplete"
       type="text" data-ng-model="ftc.searchTerm"
-      placeholder="{{ 'Search for' | translate }} {{ placeholder | translate }}"
+      placeholder="{{ 'Search for' }} {{ placeholder }}"
       data-uib-typeahead="id for id in ftc.autoComplete($viewValue)"
       data-typeahead-on-select="ftc.termSelected()"
       data-ng-focus="ftc.saveInput()"
@@ -37,7 +37,7 @@
     <input
       data-ng-if="!ftc.autocomplete"
       type="text" data-ng-model="ftc.searchTerm"
-      placeholder="{{ 'Enter' | translate }} {{ placeholder | translate }}"
+      placeholder="{{ 'Enter' }} {{ placeholder }}"
       data-ng-change="ftc.saveInput()"
       maxlength="100"
       id="{{ 'input-' + field }}"

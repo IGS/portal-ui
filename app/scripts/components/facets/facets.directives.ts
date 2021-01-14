@@ -4,7 +4,12 @@ module ngApp.components.facets.directives {
   import IFacetScope = ngApp.components.facets.models.IFacetScope;
   import ITermsController = ngApp.components.facets.controllers.ITermsController;
   import ICustomFacetsService = ngApp.components.facets.services.ICustomFacetsService;
-  import IFacetsConfigService = ngApp.components.facets.models.IFacetsService;
+  // import IFacetsConfigService = ngApp.components.facets.models.IFacetsService;
+  import IFacetsConfigService = ngApp.components.facets.services.IFacetsConfigService; //NOTE resolves TS error no export IFacetsService
+  import IFreeTextController = ngApp.components.facets.controllers.IFreeTextController;
+  import IDateFacetController = ngApp.components.facets.controllers.IDateFacetController;
+  import IRangeFacetController = ngApp.components.facets.controllers.IRangeFacetController;
+  import IFacetService = ngApp.components.facets.services.IFacetService;
 
   /* @ngInject */
   function FacetsHeading() {
@@ -14,10 +19,11 @@ module ngApp.components.facets.directives {
         hasActives: '=',
         removeFunction: '&',
         clearFunction: '&',
+        sort: "@"
       },
       replace: true,
       templateUrl: "components/facets/templates/facet-heading.html",
-      controller: 'facetsHeadingCtrl as fhc',
+      controller: 'facetsHeadingCtrl as fhc'
     };
   }
 
@@ -36,13 +42,14 @@ module ngApp.components.facets.directives {
         name: "@",
         removeFunction: "&",
         removable: "=",
-        showTooltip: "@"
+        showTooltip: "@",
+        sort: "@"
       },
       replace: true,
       templateUrl: "components/facets/templates/facet.html",
       controller: "termsCtrl as tc",
       link: ($scope: IFacetScope, elem: ng.IAugmentedJQuery, attr: ng.IAttributes, ctrl: ITermsController) => {
-
+        $scope.sort = $scope.sort;
         $scope.collapsed = angular.isDefined($scope.collapsed) ? $scope.collapsed : false;
         //after directive has been rendered, check if text overflowed then add tooltip
         $timeout(() => {
@@ -54,10 +61,10 @@ module ngApp.components.facets.directives {
         });
 
         $scope.clear = (facet: string) => {
-          ctrl.terms.forEach(term => ctrl.FacetService.removeTerm(facet, term));
+          ctrl.terms.forEach(term => ctrl.remove(facet, term));
         };
 
-        $scope.ProjectsService = ProjectsService;
+        $scope['ProjectsService'] = ProjectsService;
 
         $scope.add = (facet: string, term: string, event: any) => {
           if (event.which === 13) {
@@ -88,14 +95,14 @@ module ngApp.components.facets.directives {
         template: "@",
         autocomplete: "@",
         removeFunction: "&",
-        removable: "=",
+        removable: "="
       },
       replace: true,
       templateUrl: "components/facets/templates/facets-free-text.html",
       controller: "freeTextCtrl as ftc",
       link: ($scope: IFacetScope, elem: ng.IAugmentedJQuery, attr: ng.IAttributes, ctrl: IFreeTextController) => {
         $scope.clear = () => {
-          ctrl.actives.forEach(term => ctrl.FacetService.removeTerm($scope.field, term));
+          ctrl.actives.forEach(term => ctrl.remove($scope.field, term));
         };
       }
     };
@@ -118,7 +125,7 @@ module ngApp.components.facets.directives {
       controller: "freeTextCtrl as ftc",
       link: ($scope: IFacetScope, elem: ng.IAugmentedJQuery, attr: ng.IAttributes, ctrl: IFreeTextController) => {
         $scope.clear = () => {
-          ctrl.actives.forEach(term => ctrl.FacetService.removeTerm($scope.field, term));
+          ctrl.actives.forEach(term => ctrl.remove($scope.field, term));
         };
       }
     };
@@ -141,7 +148,7 @@ module ngApp.components.facets.directives {
       link: ($scope: IFacetScope, elem: ng.IAugmentedJQuery, attr: ng.IAttributes, ctrl: IDateFacetController) => {
         $scope.collapsed = angular.isDefined($scope.collapsed) ? $scope.collapsed : false;
         $scope.clear = () => {
-          ctrl.FacetService.removeTerm(ctrl.name, ctrl.$window.moment($scope.date).format('YYYY-MM-DD'));
+          ctrl.remove(ctrl.name, ctrl.$window.moment($scope['date']).format('YYYY-MM-DD'));
           ctrl.facetAdded = false;
         };
       }
@@ -168,8 +175,8 @@ module ngApp.components.facets.directives {
         $scope.collapsed = angular.isDefined($scope.collapsed) ? $scope.collapsed : false;
 
         $scope.clear = () => {
-          ctrl.FacetService.removeTerm($scope.field, null, ">=");
-          ctrl.FacetService.removeTerm($scope.field, null, "<=");
+          ctrl.remove($scope.field, null, ">=");
+          ctrl.remove($scope.field, null, "<=");
           ctrl.upperFacetAdded = ctrl.lowerFacetAdded = false;
         };
       }
@@ -210,15 +217,18 @@ module ngApp.components.facets.directives {
         aggregations: "="
       },
       link: ($scope: ng.IScope) => {
-        $scope.$watch( () => { return FacetsConfigService.fieldsMap[$scope.doctype]; }, function (config) {
-          $scope.facetsConfig = config;
+        $scope.$watch( () => { return FacetsConfigService.fieldsMap[$scope['doctype']]; }, function (config) {
+          $scope['facetsConfig'] = config;
         });
 
-        $scope.facetsConfig = FacetsConfigService.fieldsMap[$scope.doctype];
+        $scope['facetsConfig'] = FacetsConfigService.fieldsMap[$scope['doctype']];
 
-        $scope.removeFacet = function(name: string) {
-          FacetsConfigService.removeField($scope.doctype, name);
-          FacetService.removeTerm($scope.doctype + "." + name);
+        $scope['removeFacet'] = function(name: string) {
+
+          // Remove facet from cookie (local storage)
+          FacetsConfigService.removeField($scope['doctype'], name);
+          // Remove facet from URL
+          FacetService.removeTerm(name);
         }
       }
     }

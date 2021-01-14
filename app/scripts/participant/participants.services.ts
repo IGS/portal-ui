@@ -1,27 +1,28 @@
 module ngApp.participants.services {
-  import IParticipants = ngApp.participants.models.IParticipants;
   import ICoreService = ngApp.core.services.ICoreService;
-  import IParticipant = ngApp.participants.models.IParticipant;
   import ILocationService = ngApp.components.location.services.ILocationService;
   import IUserService = ngApp.components.user.services.IUserService;
   import IRootScope = ngApp.IRootScope;
 
   export interface IParticipantsService {
-    getParticipant(id: string, params: Object): ng.IPromise<IParticipant>;
-    getParticipants(params?: Object, method?: string): ng.IPromise<IParticipants>;
+    getParticipant(id: string, params: Object): ng.IPromise<any>;
+    getParticipants(params?: Object, method?: string): ng.IPromise<any>;
   }
 
   class ParticipantsService implements IParticipantsService {
-    private ds: restangular.IElement;
+    private ds: any;
+    private searchConfig: any;
 
     /* @ngInject */
-    constructor(Restangular: restangular.IService, private LocationService: ILocationService,
+    constructor(Restangular: Restangular.IService, private LocationService: ILocationService,
                 private UserService: IUserService, private CoreService: ICoreService,
-                private $rootScope: IRootScope, private $q: ng.IQService) {
-      this.ds = Restangular.all("cases");
+                private $rootScope: IRootScope, private $q: ng.IQService,
+                private config: ngApp.IGDCConfig) {
+      this.ds = Restangular.all("samples");
+      this.searchConfig = config['search'];
     }
 
-    getParticipant(id: string, params: Object = {}): ng.IPromise<IParticipant> {
+    getParticipant(id: string, params: Object = {}): ng.IPromise<any> {
       if (params.hasOwnProperty("fields")) {
         params["fields"] = params["fields"].join();
       }
@@ -30,13 +31,13 @@ module ngApp.participants.services {
         params["expand"] = params["expand"].join();
       }
 
-      return this.ds.get(id, params).then((response): IParticipant => {
+      return this.ds.get(id, params).then((response): any => {
         return response["data"];
       });
     }
 
-    getParticipants(params: Object = {}, method: string = 'GET'): ng.IPromise<IParticipants> {
-      if (params.hasOwnProperty("fields")) {
+    getParticipants(params: Object = {}, method: string = 'GET'): ng.IPromise<any> {
+      if (params.hasOwnProperty("fields") && params["fields"] != undefined) {
         params["fields"] = params["fields"].join();
       }
 
@@ -57,9 +58,10 @@ module ngApp.participants.services {
       };
 
       var defaults = {
-        size: paging.size,
-        from: paging.from,
-        sort: paging.sort || 'case_id:asc',
+        size: paging.size || 20,
+        from: paging.from || 1,
+        // sort: paging.sort || 'sample.id:asc',
+        sort: paging.sort || this.searchConfig['cases-table']['default-sort'],
         filters: this.LocationService.filters(),
         comment: this.LocationService.comment(),
         save: this.LocationService.save()
@@ -72,18 +74,18 @@ module ngApp.participants.services {
 
       var abort = this.$q.defer();
       if (method === 'POST') {
-        var prom: ng.IPromise<IParticipants> = this.ds.withHttpConfig({
+        var prom: ng.IPromise<any> = this.ds.withHttpConfig({
           timeout: abort.promise
         })
-        .post(angular.extend(defaults, params), undefined, {'Content-Type': 'application/json'}).then((response): IParticipants => {
+          .post(angular.extend(defaults, params), undefined, { 'Content-Type': 'application/json' }).then((response): any => {
           this.CoreService.setSearchModelState(true);
           return response["data"];
         });
       } else {
-        var prom: ng.IPromise<IParticipants> = this.ds.withHttpConfig({
+        var prom: ng.IPromise<any> = this.ds.withHttpConfig({
           timeout: abort.promise
         })
-        .get("", angular.extend(defaults, params)).then((response): IParticipants => {
+        .get("", angular.extend(defaults, params)).then((response): any => {
           this.CoreService.setSearchModelState(true);
           return response["data"];
         });

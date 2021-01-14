@@ -6,6 +6,7 @@ module ngApp.components.downloader.directive {
     $timeout: ng.ITimeoutService,
     $cookies: ng.cookies.ICookiesService,
     $uibModal: any,
+    config: IGDCConfig,
     notify: INotifyService,
     $rootScope: IRootScope,
     $log: ng.ILogService
@@ -18,7 +19,7 @@ module ngApp.components.downloader.directive {
     const getIframeResponse = (iFrame: ng.IAugmentedJQuery): Object =>
       JSON.parse(iFrame.contents().find('body pre').text());
 
-    const showErrorModal = (error: Object, options: Object): void => {
+    const showErrorModal = (error: any, options: any): void => {
       const warning = error.warning || error.message;
 
       $uibModal.open({
@@ -44,22 +45,23 @@ module ngApp.components.downloader.directive {
       downloadToken: string,
       options: Object,
       inProgress: () => {},
-      done: () => {},
+      done: (response?: any) => {},
       altMessage: boolean
     ): void => {
 
       inProgress();
       const waitTime = 1000; // 1 second
-      const timeoutInterval = 10;
+      // const timeoutInterval = 10;
+      const timeoutInterval = 90;  // DOLLEY: Allows large carts to download a file (~7000 items). Prevents UI timeout
       var attempts = 0;
       var timeoutPromise = null;
 
       const cookieStillThere = (): boolean => downloadToken === $cookies.get(cookieKey);
 
       const handleError = (): Object => {
-        const error = _.flow(_.attempt,
+        const error = (<any>_).flow((<any>_).attempt,
           (e) => _.isError(e)
-            ? { message: 'iHMP download service is currently experiencing issues.' }
+            ? { message: config["site-wide"]["project-abbr"] + ' download service is currently experiencing issues.' }
             : e
         )(_.partial(getIframeResponse, iFrame));
 
@@ -78,7 +80,7 @@ module ngApp.components.downloader.directive {
         done();
       };
 
-      notifyScope.cancelDownload = (): void => {
+      notifyScope['cancelDownload'] = (): void => {
         if (timeoutPromise) {
           $timeout.cancel(timeoutPromise);
         }
@@ -108,7 +110,7 @@ module ngApp.components.downloader.directive {
         </a>`;
 
       const checker = (): void => {
-        if (iFrame[0].__frame__loaded) {
+        if ((<any>iFrame[0]).__frame__loaded) {
           // The downloadToken cookie is removed before the server sends the response
           if (cookieStillThere()) {
             const error = handleError();
@@ -120,9 +122,14 @@ module ngApp.components.downloader.directive {
             finished();
           }
         } else if (cookieStillThere()) {
-          if (++attempts % timeoutInterval === 0) {
+          // if (++attempts % timeoutInterval === 0) {
+          if (++attempts === timeoutInterval) {
+            // Timeout reached. Display error. 
             notify.closeAll();
             finished();
+            const error = handleError();
+            $cookies.remove(cookieKey);
+            showErrorModal(error, options);
             /*
             notify({
               message: null,
@@ -148,7 +155,7 @@ module ngApp.components.downloader.directive {
       iFrame: ng.IAugmentedJQuery,
       options: Object,
       inProgress: any, // not used but obligated to the interface
-      done: () => {}
+      done: (response?:any) => {}
     ): void => {
 
       const waitTime = 5000; // 5 seconds
@@ -160,7 +167,7 @@ module ngApp.components.downloader.directive {
       const checker = (): void => {
         // Here we simply try to read the error message if the iFrame DOM is reloaded; for a successful download,
         // the error message is not in the DOM therefore #getIframeResponse will return a JS error.
-        const error = _.attempt(_.partial(getIframeResponse, iFrame));
+        const error = (<any>_).attempt(_.partial(getIframeResponse, iFrame));
         if (_.isError(error)) {
           // Keep waiting until we exhaust `attempts` then we do the cleanup.
           if (--attempts < 0) {
@@ -193,14 +200,14 @@ module ngApp.components.downloader.directive {
     // TODO: this should probably be factored out.
     const arrayToStringFields = ['expand', 'fields', 'facets'];
 
-    const arrayToStringOnFields = (key, value, fields) => _.includes(fields, key)
+    const arrayToStringOnFields = (key, value, fields) => (<any>_).includes(fields, key)
       ? [].concat(value).join()
       : value;
 
     return {
       restrict: 'A',
       link: (scope, element) => {
-        scope.download = (params, apiEndpoint, target = () => element, method = 'GET', options = {}) => {
+        scope['download'] = (params, apiEndpoint, target = () => element, method = 'GET', options = {}) => {
           const downloadToken = _.uniqueId('' + (+ new Date()) + '-');
           const iFrameId = iFrameIdPrefix + downloadToken;
           const formId = formIdPrefix + downloadToken;
@@ -243,7 +250,7 @@ module ngApp.components.downloader.directive {
             .appendTo('body');
 
           const iFrame = $('#' + iFrameId);
-          iFrame[0].__frame__loaded = false;
+          (<any>iFrame[0]).__frame__loaded = false;
 
           iFrame.ready(() => {
             const iFrameBody = iFrame.contents().find('body');

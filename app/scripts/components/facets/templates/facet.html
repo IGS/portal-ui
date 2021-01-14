@@ -2,10 +2,11 @@
   <facets-heading has-actives="tc.actives.length !== 0"
                   remove-function="removeFunction()"
                   clear-function="clear(tc.name)"
+                  sort="{{ sort }}"
   ></facets-heading>
   <div data-ng-hide="collapsed">
     <p data-ng-show="(!tc.terms.length && !tc.error) || (tc.terms.length === 1 && tc.terms[0].key === '_missing')">
-      No Data for this Field
+      No matches
     </p>
     <p data-ng-show="tc.error">
       {{tc.error}}
@@ -23,7 +24,7 @@
               data-tooltip-placement="right"
               for="facet-checkbox-true-{{term.key}}">{{ ::term.key.toUpperCase() }}</label>
         <label data-ng-if="tc.name.indexOf('project_id') === -1" for="facet-checkbox-true-{{term.key}}">
-          {{ ::term.key | translate }}
+          {{ ::term.key }}
         </label>
       </span>
       <span class="label label-primary pull-right">{{ term.doc_count | number:0 }}</span>
@@ -48,10 +49,10 @@
               data-tooltip-append-to-body="true"
               data-uib-tooltip="{{::term.key}}"
               for="facet-checkbox-false-{{term.key}}">
-          {{ ::term.key | translate }}
+          {{ ::term.key }}
         </label>
         <label data-ng-if="tc.name.indexOf('project_id') === -1 && !showTooltip" for="facet-checkbox-false-{{term.key}}">
-          {{ ::term.key | translate }}
+          {{ ::term.key }}
         </label>
       </span>
       <span class="label label-primary pull-right">{{ term.doc_count | number:0 }}</span>

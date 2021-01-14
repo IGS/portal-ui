@@ -1,18 +1,16 @@
 module ngApp.projects.controllers {
-  import IProject = ngApp.projects.models.IProject;
-  import IProjects = ngApp.projects.models.IProjects;
   import IProjectsService = ngApp.projects.services.IProjectsService;
   import ICoreService = ngApp.core.services.ICoreService;
-  import ITableService = ngApp.components.tables.services.ITableService;
   import TableiciousConfig = ngApp.components.tables.directives.tableicious.TableiciousConfig;
   import ILocationService = ngApp.components.location.ILocationService;
   import IAnnotationsService = ngApp.annotations.services.IAnnotationsService;
   import IProjectsState = ngApp.projects.services.IProjectsState;
   import IFacetService = ngApp.components.facets.services.IFacetService;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
+  import ISearchService = ngApp.search.services.ISearchService;
 
   export interface IProjectsController {
-    projects: IProjects;
+    projects: any;
     ProjectsState: IProjectsState;
     tabSwitch: boolean;
     numPrimarySites: number;
@@ -23,22 +21,29 @@ module ngApp.projects.controllers {
   }
 
   class ProjectsController implements IProjectsController {
-    projects: IProjects;
+    projects: any;
     projectColumns: any[];
     tabSwitch: boolean = false;
     numPrimarySites: number = 0;
     loading: boolean = true;
 
+    projectsConfig: any;
+    ProjectsTableModel: any;
+    chartConfigs: any;
+
     /* @ngInject */
     constructor(private $scope: IProjectScope, private $rootScope: IRootScope,
                 private ProjectsService: IProjectsService,
-                private CoreService: ICoreService, private ProjectsTableService: TableiciousConfig,
+                public CoreService: ICoreService, public ProjectsTableService: TableiciousConfig,
                 private $state: ng.ui.IStateService, public ProjectsState: IProjectsState,
                 private LocationService: ILocationService, private $filter,
-                private ProjectsGithutConfig, private ProjectsGithutColumns, private ProjectsGithut,
-                private FacetService: IFacetService
+                private FacetService: IFacetService, ProjectsChartConfigs
     ) {
-      CoreService.setPageTitle("Projects");
+      this.projectsConfig = CoreService.getComponentFromConfig('projects');
+      this.CoreService.setPageTitle(this.projectsConfig['pageTitle']);
+      this.chartConfigs = ProjectsChartConfigs;
+      this.projects = {'charts': this.ProjectsService.createChartPlaceholders(ProjectsChartConfigs)};
+
       $scope.$on("$locationChangeSuccess", (event, next) => {
         if (next.indexOf("projects/t") !== -1 || next.indexOf("projects/g") !== -1) {
           this.refresh();
@@ -46,7 +51,8 @@ module ngApp.projects.controllers {
       });
       $scope.$on("$stateChangeSuccess", (event, toState: any, toParams: any, fromState: any) => {
         if (toState.name.indexOf("projects") !== -1) {
-          this.ProjectsState.setActive("tabs", toState.name.split(".")[1], "active");
+          // this.ProjectsState.setActive("tabs", toState.name.split(".")[1], "active");
+          this.ProjectsState.setActive("tabs", toState.name.split(".")[1]); //NOTE: resolves above TS error: supplied params dont match signature of call target
         }
         if (fromState.name.indexOf("projects") === -1) {
           document.body.scrollTop = 0;
@@ -59,7 +65,8 @@ module ngApp.projects.controllers {
 
       var data = $state.current.data || {};
       this.ProjectsState.setActive("tabs", data.tab);
-      $scope.tableConfig = this.ProjectsTableService.model();
+      this.ProjectsTableModel = this.ProjectsTableService.model();
+      $scope.tableConfig = this.ProjectsTableModel;
 
       this.refresh();
     }
@@ -67,37 +74,32 @@ module ngApp.projects.controllers {
     refresh() {
       this.loading = true;
       this.$rootScope.$emit('ShowLoadingScreen');
-      var projectsTableModel = this.ProjectsTableService.model();
       if (!this.tabSwitch) {
         this.ProjectsService.getProjects({
-          fields: projectsTableModel.fields,
-          facets: this.FacetService.filterFacets(projectsTableModel.facets),
           size: 100
         }).then((data) => {
           this.loading = false;
           this.$rootScope.$emit('ClearLoadingScreen');
-          this.projects = data;
-          if (this.ProjectsState.tabs.graph.active) {
-            this.drawGraph(this.projects);
-          } else if(this.ProjectsState.tabs.summary.active || this.numPrimarySites === 0) {
-            this.numPrimarySites = _.unique(this.projects.hits, (project) => { return project.primary_site; }).length;
+          
+          //Table data (under 'hits' and 'pagination')
+          this.projects['hits'] = data['hits'];
+          this.projects['pagination'] = data['pagination'];
+          
+          // Piechart data (under 'charts')
+          for (var i = 0, len = this.projects['charts'].length; i < len; i++) {
+            this.projects['charts'][i]['results-status'] = 'complete';
+          }
+
+          if(this.ProjectsState.tabs.summary.active || this.numPrimarySites === 0) {
+            var projectKey = this.projectsConfig['projects-table']['row-id']
+            this.numPrimarySites = _.uniqBy(this.projects.hits, (project) => { return project[projectKey]; }).length;
           }
         });
       } else {
         this.loading = false;
         this.$rootScope.$emit('ClearLoadingScreen');
         this.tabSwitch = false;
-        if (this.ProjectsState.tabs.graph.active) {
-          this.drawGraph(this.projects);
-        }
       }
-    }
-
-    drawGraph(data) {
-      var githut = this.ProjectsGithut(data);
-
-      this.githutData = githut.data;
-      this.githutConfig = githut.config;
     }
 
     select(section: string, tab: string) {
@@ -115,31 +117,14 @@ module ngApp.projects.controllers {
       }
     }
 
-    gotoQuery() {
-      var stateParams = {};
-      var f = this.LocationService.filters();
-      var prefixed = {
-        "op": "and",
-        "content": _.map(f.content, x => ({
-          op: "in",
-          content: {
-            field: x.content.field.indexOf("summary") === 0 ? "files." + x.content.field.split(".")[2] : "cases.project." + x.content.field,
-            value: x.content.value
-          }
-        }))
-      }
-      if (f) {
-        stateParams = {
-          filters: angular.toJson(prefixed)
-        };
-      }
-
-      this.$state.go("search.participants", stateParams, { inherit: true });
-    }
   }
 
+  // DOLLEY - IProjectController and ProjectController appears to not be in use.
+  // Looks like it is for an individual project page (similiar to the ones for cases and files)
+  // Do (Will) we want an individual project ("study") page? Keeping for now.
+  // No complement API route currently exists to support this
   export interface IProjectController {
-    project: IProject;
+    project: any;
     biospecimenCount: number;
     clinicalCount: number;
   }
@@ -148,14 +133,25 @@ module ngApp.projects.controllers {
     biospecimenCount: number = 0;
     clinicalCount: number = 0;
 
+    experimentalStrategies: any;
+    dataCategories: any; // DOLLEY: this gets populated by DATA_CATEGORIES in constructor
+    expStratConfig: any;
+    dataCategoriesConfig: any;
+    clinicalDataExportFilters: any;
+    biospecimenDataExportFilters: any;
+    clinicalDataExportExpands: any;
+    clinicalDataExportFileName: any;
+    biospecimenDataExportExpands: any;
+    biospecimenDataExportFileName: any;
+
     /* @ngInject */
-    constructor(public project: IProject, private CoreService: ICoreService,
+    constructor(public project: any, private CoreService: ICoreService,
                 private AnnotationsService: IAnnotationsService,
                 private ParticipantsService: IParticipantsService,
                 private ExperimentalStrategyNames: string[],
-                private DATA_CATEGORIES,
+                // private DATA_CATEGORIES,
                 public $state: ng.ui.IStateService,
-                private $filter: ng.ui.IFilterService) {
+      private $filter: ngApp.components.ui.string.ICustomFilterService) { //
       CoreService.setPageTitle("Project", project.project_id);
 
       this.experimentalStrategies = _.reduce(ExperimentalStrategyNames.slice(), function(result, name) {
@@ -170,7 +166,8 @@ module ngApp.projects.controllers {
         return result;
       }, []);
 
-      this.dataCategories = Object.keys(this.DATA_CATEGORIES).reduce((acc, key) => {
+      // DOLLEY: Not used. Removed, yet remaining for now
+      /*this.dataCategories = Object.keys(this.DATA_CATEGORIES).reduce((acc, key) => {
         var type = _.find(project.summary.data_categories, (item) => {
           return item.data_category === this.DATA_CATEGORIES[key].full;
         });
@@ -179,7 +176,7 @@ module ngApp.projects.controllers {
           data_category: this.DATA_CATEGORIES[key].full,
           file_count: 0
         });
-      }, []);
+      }, []);*/
 
       this.expStratConfig = {
         sortKey: "file_count",
@@ -364,7 +361,6 @@ module ngApp.projects.controllers {
         "projects.services",
         "core.services",
         "projects.table.service",
-        "projects.githut.config",
         "annotations.services"
       ])
       .controller("ProjectsController", ProjectsController)

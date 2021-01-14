@@ -1,5 +1,5 @@
 module ngApp.components.ui.scrollFix {
-  import IGDCWindowService = ngApp.models.IGDCWindowService;
+  import IGDCWindowService = ngApp.core.models.IGDCWindowService;
 
   interface IScrollFixAttributes extends ng.IAttributes {
     scrollFix: any;
@@ -66,4 +66,3 @@ module ngApp.components.ui.scrollFix {
       .directive("scrollFix", ScrollFix)
       .directive("scrollFixTarget", ScrollFixTarget);
 }
-

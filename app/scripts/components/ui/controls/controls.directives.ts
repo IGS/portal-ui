@@ -2,12 +2,13 @@ module ngApp.components.ui.control.directives {
 
   export type IUIControl = {
     id: string;
-    isOpen: boolean;
+    isOpen?: boolean;
     isLoading: boolean;
     controlLabelText: string;
     srLabel: string;
     shouldSplitControl: boolean;
     iconClasses: string;
+    btnType?: string;
   };
 
   interface ISplitControlScope extends ng.IScope {
@@ -44,14 +45,14 @@ module ngApp.components.ui.control.directives {
           $scope.uiControl = {
             id: 'split-control-' + (new Date().getTime()),
             isLoading: false,
-            controlLabelText: $attrs.controlLabelText || 'Action Label',
-            srLabel: $attrs.srLabel || 'Split Control',
-            shouldSplitControl: $attrs.noSplit === 'true' ? false : true,
-            iconClasses: $attrs.iconClasses || false,
-            btnType: $attrs.btnType || 'primary'
+            controlLabelText: $attrs['controlLabelText'] || 'Action Label',
+            srLabel: $attrs['srLabel'] || 'Split Control',
+            shouldSplitControl: $attrs['noSplit'] === 'true' ? false : true,
+            iconClasses: $attrs['iconClasses'] || false,
+            btnType: $attrs['btnType'] || 'primary'
           };
-          $scope.reportStatus = (id, status) => {
-            _.set(childStates, [id], status);
+          $scope['reportStatus'] = (id, status) => {
+            (<any>_).set(childStates, [id], status);
             loadingState = _.some(_.values(childStates), (s) => s);
           };
 
@@ -72,17 +73,21 @@ module ngApp.components.ui.control.directives {
       require: "^splitControl",
       templateUrl: "components/ui/controls/templates/split-control-option.html",
       link: (scope, element, attributes, controller, transclude) => {
-        const myId = scope.id;
+        const myId = scope['id'];
         var loadingState = false;
         var childStates = {};
 
-        scope.reportStatus = (id, status) => {
-          _.set(childStates, [id], status);
+        scope['reportStatus'] = (id, status) => {
+          (<any>_).set(childStates, [id], status);
           loadingState = _.some(_.values(childStates), (s) => s);
         };
 
         scope.$watch(() => loadingState, (isLoading) => {
-          scope.$parent.$parent.reportStatus(myId, isLoading);
+          // scope.$parent.$parent.reportStatus(myId, isLoading);
+          scope.$parent.$parent['reportStatus'] = (myId, isLoading) => { //NOTE resolves above TS error
+            (<any>_).set(childStates, [myId], isLoading);
+            loadingState = _.some(_.values(childStates), (s) => s);
+          };
         });
 
         transclude(scope.$new(), (clone) => {

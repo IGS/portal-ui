@@ -19,7 +19,7 @@ angular.module("reports.githut.config",[])
         primary_sites = [];
 
     var aggregations = data.reduce(function(a,b) {
-      if (!_.contains(primary_sites, b.primary_site)) {
+      if (!_.includes(primary_sites, b.primary_site)) {
         primary_sites.push(b.primary_site);
       }
 
@@ -58,7 +58,7 @@ angular.module("reports.githut.config",[])
                                                     }, []);
     var nest = d3.nest().key((a) => {
                   if (a) {
-                    return a.data_type;
+                    return a['data_type'];
                   }
                 }).entries(data_types);
 
@@ -102,7 +102,7 @@ angular.module("reports.githut.config",[])
       return a;
     }, {});
 
-    ReportsGithutConfig.dimensions = _.map(_.filter(columns, (column) => { return column.dimensional; }), (column) => { return column.id; });
+    ReportsGithutConfig.dimensions = _.map(_.filter(columns, (column: any) => { return column.dimensional; }), (column: any) => { return column.id; });
 
     return {
       data: d3.values(aggregations),
@@ -140,7 +140,7 @@ angular.module("reports.githut.config",[])
 ])
 .service("ReportsGithutConfig",function(ReportsGithutColumns,$filter){
 
-  var color = d3.scale.category10();
+  var color: any = d3.scale.category10();
   var columns = ReportsGithutColumns;
   return {
     container:"#pc",

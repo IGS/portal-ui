@@ -16,7 +16,7 @@
     </span>
     <input data-ng-if="ftc.autocomplete"
            type="text" data-ng-model="ftc.searchTerm"
-           placeholder="{{ 'Search for' | translate }} {{ placeholder | translate }}"
+           placeholder="{{ 'Search for' }} {{ placeholder }}"
            data-uib-typeahead="id for id in ftc.prefixValue($viewValue)"
            data-typeahead-on-select="ftc.termSelected()"
            data-ng-change="ftc.saveInput()"

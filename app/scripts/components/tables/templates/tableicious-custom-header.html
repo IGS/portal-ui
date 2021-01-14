@@ -1,0 +1,23 @@
+<!-- 
+  This is originally taken from ng-table/sorterRow.html and adapted for our use.
+  We are overriding the native template because we need to control the sorting function. 
+-->
+
+<tr class="ng-table-sort-header">
+  <th title="{{h.title}}" ng-repeat="h in tsc.headings" ng-class="{
+              'sortable': h['sortable'],
+              'sort-asc': tsc.tableParams.sorting()[h['sortable']]=='asc',
+              'sort-desc': tsc.tableParams.sorting()[h['sortable']]=='desc'
+            }" ng-click="tsc.sortByCol(h, $event)" ng-if="h.show"
+    class="header">
+    <div class="ng-table-header {{ h.thClassName ? h.thClassName : '' }}"
+      ng-class="{'sort-indicator': tsc.tableParams.defaultSettings.sortingIndicator == 'div'}">
+
+      <!-- NOTE: data-data="data" data-paging="paging" allows for custom header.th elements to work -->
+      <!-- (ie  <add-to-cart-all-dropdown> from search.files.table.service) -->
+      <span data-cell="tsc.getHeaderCell(h)"
+        data-data="data" data-paging="paging"
+        ng-class="{'sort-indicator': tsc.tableParams.defaultSettings.sortingIndicator == 'span'}"></span>
+    </div>
+  </th>
+</tr>

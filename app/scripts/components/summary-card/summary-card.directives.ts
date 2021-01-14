@@ -1,8 +1,20 @@
 module ngApp.components.summaryCard.directives {
+  import ILocationFilters = ngApp.components.location.IFilters; //NOTE added to resolve TS errors
   import ILocationService = ngApp.components.location.services.ILocationService;
   import IProjectsService = ngApp.projects.services.IProjectsService;
 
-  function SummaryCard(LocationService: ILocationService, ProjectsService: IProjectsService): ng.IDirective {
+  interface ISummaryCardScope extends ng.IScope {  //NOTE added to resolve TS errors
+    ProjectsService: IProjectsService,
+    config: any,
+    mode: string,
+    activeFilters: boolean,
+    tableData: any,
+    resultsStatus: string,
+    setContainerHeight: any;
+  }
+
+
+  function SummaryCard(LocationService: ILocationService): ng.IDirective {
     return {
       restrict: "E",
       templateUrl: "components/summary-card/templates/summary-card.html",
@@ -16,10 +28,10 @@ module ngApp.components.summaryCard.directives {
         mode: "@",
         tableId: "@",
         groupingTitle: "@",
-        showCases: "="
+        showCases: "=",
+        resultsStatus: "="
       },
-      link: function($scope) {
-        $scope.ProjectsService = ProjectsService;
+      link: function($scope: ISummaryCardScope) {
         var config = $scope.config;
         $scope.mode = $scope.mode || "graph";
 
@@ -27,10 +39,10 @@ module ngApp.components.summaryCard.directives {
           if (LocationService.path().indexOf('/query') === 0) {
             return;
           }
-
-          var filters = LocationService.filters();
+          
+          var filters: ILocationFilters = LocationService.filters();
           $scope.activeFilters = _.some(filters.content, (filter) => {
-            return filter.content && filter.content.field === config.filterKey;
+            return filter.content && filter.content.field === config['filter-key'];
           });
         }
 
@@ -40,32 +52,25 @@ module ngApp.components.summaryCard.directives {
           checkFilters();
         });
 
-        $scope.$watch("data", function(newVal){
+        $scope.$watch("data", (newVal:any[]) => {
           if (newVal) {
-            // Ensure pie chart data is always sorted highest to lowest
-            // for tables
-            if (config.sortData) {
-              newVal.sort(function(a, b) {
-                if (a[config.sortKey] > b[config.sortKey]) {
-                  return -1;
-                }
-
-                if (b[config.sortKey] > a[config.sortKey]) {
-                  return 1;
-                }
-
-                return 0;
-              });
+            if (config['sort-key']) {
+              newVal = _.orderBy(newVal, config['sort-key'], "desc");
             }
-
+            var coloredSortedData = [];
             var color = d3.scale.category20();
             _.forEach(newVal, (item, index) => {
-              item.color = color(index);
+              coloredSortedData.push({ "color": color(String(index)), "data": item })
             });
-
-            $scope.tableData = newVal;
+            $scope.tableData = coloredSortedData;
           }
         });
+
+        // Set the height of the placeholder div.no-results until the piechart renders
+        $scope.setContainerHeight = () => {
+          var height = Number($scope['height']) + 40;
+          return { 'height': height + 'px' };
+        }
       }
     };
   }
@@ -84,9 +89,10 @@ module ngApp.components.summaryCard.directives {
         mode: "@",
         tableId: "@",
         groupingTitle: "@",
-        showCases: "="
+        showCases: "=",
+        resultsStatus: "="
       },
-      link: function($scope) {
+      link: function($scope: ISummaryCardScope) {
         var config = $scope.config;
         $scope.mode = $scope.mode || "graph";
 
@@ -95,9 +101,9 @@ module ngApp.components.summaryCard.directives {
             return;
           }
 
-          var filters = LocationService.filters();
+          var filters: ILocationFilters = LocationService.filters();
           $scope.activeFilters = _.some(filters.content, (filter) => {
-            return filter.content && filter.content.field === config.filterKey;
+            return filter.content && filter.content.field === config['filter-key'];
           });
         }
 
@@ -107,18 +113,17 @@ module ngApp.components.summaryCard.directives {
           checkFilters();
         });
 
-        $scope.$watch("data", function(newVal){
+        $scope.$watch("data", function(newVal: any){
           if (newVal) {
             // Ensure pie chart data is always sorted highest to lowest
             // for tables
-
-            if (config.sortData) {
+            if (config['sort-data']) {
               newVal.sort(function(a, b) {
-                if (a[config.sortKey] > b[config.sortKey]) {
+                if (a[config['sort-key']] > b[config['sort-key']]) {
                   return -1;
                 }
 
-                if (b[config.sortKey] > a[config.sortKey]) {
+                if (b[config['sort-key']] > a[config['sort-key']]) {
                   return 1;
                 }
 
@@ -128,7 +133,7 @@ module ngApp.components.summaryCard.directives {
 
             var color = d3.scale.category20();
             _.forEach(newVal, (item, index) => {
-              item.color = color(index);
+              item['color'] = color(index);
             });
 
             $scope.tableData = config.blacklist
@@ -158,9 +163,10 @@ module ngApp.components.summaryCard.directives {
         mode: "@",
         tableId: "@",
         groupingTitle: "@",
-        showCases: "="
+        showCases: "=",
+        resultsStatus: "="
       },
-      link: function($scope) {
+      link: function($scope: ISummaryCardScope) {
         var config = $scope.config;
         $scope.mode = $scope.mode || "graph";
 
@@ -169,9 +175,9 @@ module ngApp.components.summaryCard.directives {
             return;
           }
 
-          var filters = LocationService.filters();
+          var filters: ILocationFilters = LocationService.filters();
           $scope.activeFilters = _.some(filters.content, (filter) => {
-            return filter.content && filter.content.field === config.filterKey;
+            return filter.content && filter.content.field === config['filter-key'];
           });
         }
 
@@ -181,17 +187,17 @@ module ngApp.components.summaryCard.directives {
           checkFilters();
         });
 
-        $scope.$watch("data", function(newVal){
+        $scope.$watch("data", function(newVal: any){
           if (newVal) {
             // Ensure pie chart data is always sorted highest to lowest
             // for tables
-            if (config.sortData) {
+            if (config['sort-data']) {
               newVal.sort(function(a, b) {
-                if (a[config.sortKey] > b[config.sortKey]) {
+                if (a[config['sort-key']] > b[config['sort-key']]) {
                   return -1;
                 }
 
-                if (b[config.sortKey] > a[config.sortKey]) {
+                if (b[config['sort-key']] > a[config['sort-key']]) {
                   return 1;
                 }
 
@@ -201,7 +207,7 @@ module ngApp.components.summaryCard.directives {
 
             var color = d3.scale.category20();
             _.forEach(newVal, (item, index) => {
-              item.color = color(index);
+              item['color'] = color(index);
             });
 
             $scope.tableData = config.blacklist

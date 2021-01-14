@@ -1,12 +1,7 @@
 module ngApp.search.controllers {
   import IFacet = ngApp.core.models.IFacet;
   import IFilesService = ngApp.files.services.IFilesService;
-  import IFiles = ngApp.files.models.IFiles;
-  import IFile = ngApp.files.models.IFile;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
-  import IParticipants = ngApp.participants.models.IParticipants;
-  import IParticipant = ngApp.participants.models.IParticipant;
-  import IAnnotations = ngApp.annotations.models.IAnnotations;
   import ICoreService = ngApp.core.services.ICoreService;
   import ICartService = ngApp.cart.services.ICartService;
   import ILocationService = ngApp.components.location.services.ILocationService;
@@ -17,18 +12,21 @@ module ngApp.search.controllers {
   import IFacetsConfigService = ngApp.components.facets.services.IFacetsConfigService;
 
   export interface ISearchController {
-    files: IFiles;
-    participants: IParticipants;
+    files: any;
+    participants: any;
     summary: any;
     SearchState: ISearchState;
     CartService: ICartService;
     addFilesKeyPress(event: any, type: string): void;
     setState(tab: string, next: string): void;
     select(section: string, tab: string): void;
-    removeFiles(files: IFile[]): void;
+    removeFiles(files: any[]): void;
     tabSwitch: boolean;
     projectIdChartConfig: any;
     primarySiteChartConfig: any;
+    SearchCasesModel: any;
+    SearchFilesModel: any;
+    chartConfigs: any;
   }
 
   interface ISearchScope extends ng.IScope {
@@ -37,8 +35,8 @@ module ngApp.search.controllers {
   }
 
   class SearchController implements ISearchController {
-    files: IFiles;
-    participants: IParticipants;
+    files: any;
+    participants: any;
     participantsLoading: boolean = true;
     filesLoading: boolean = true;
     summary: any;
@@ -48,6 +46,10 @@ module ngApp.search.controllers {
     facetsCollapsed: boolean = false;
     firstLoad: boolean = true;
     facetTab: number;
+    SearchCasesModel: any;
+    SearchFilesModel: any;
+    chartConfigs: any;
+    searchConfig: any; //will hold custom configuration for 'search'
 
     /* @ngInject */
     constructor(
@@ -64,8 +66,8 @@ module ngApp.search.controllers {
       private LocationService: ILocationService,
       private UserService: IUserService,
       public CoreService: ICoreService,
-      public SearchTableFilesModel: TableiciousConfig,
       public SearchCasesTableService: TableiciousConfig,
+      public SearchFilesTableService: TableiciousConfig,
       private FacetsConfigService: IFacetsConfigService,
       public FacetService,
       SearchChartConfigs
@@ -84,7 +86,6 @@ module ngApp.search.controllers {
       var data = $state.current.data || {};
       this.SearchState.setActive("tabs", data.tab, "active");
       this.SearchState.setActive("facets", data.tab, "active");
-      CoreService.setPageTitle("Search");
 
       $scope.$on("$locationChangeSuccess", (event, next: string) => {
         if (next.indexOf("search") !== -1) {
@@ -106,15 +107,25 @@ module ngApp.search.controllers {
         this.refresh();
       });
 
-      $scope.fileTableConfig = this.SearchTableFilesModel;
-      $scope.participantTableConfig = this.SearchCasesTableService.model();
+      this.searchConfig = this.CoreService.getComponentFromConfig("search");
+      this.CoreService.setPageTitle(this.searchConfig['page-title']);
+      this.SearchCasesModel = this.SearchCasesTableService.model();
+      var cartTable = false;
+      this.SearchFilesModel = this.SearchFilesTableService.model(cartTable);
 
-      this.FacetsConfigService.setFields('files', this.SearchTableFilesModel.facets);
-      this.FacetsConfigService.setFields('cases', this.SearchCasesTableService.model().facets);
+      $scope.fileTableConfig = this.SearchFilesModel;
+      $scope.participantTableConfig = this.SearchCasesModel;
+      
+      this.FacetsConfigService.setFields('files', this.SearchFilesModel.facets);
+      this.FacetsConfigService.setFields('cases', this.SearchCasesModel.facets);
       this.refresh();
-      this.chartConfigs = SearchChartConfigs;
-    }
+      this.chartConfigs = SearchChartConfigs; //NOTE: SearchChartConfigs now creates pie chartConfigs from custom config.
 
+      // Create placeholders for charts to allow spinners to display
+      // Essentially we're setting buckets to an empty array to trigger the spinners, and also passing piechart config settings now
+      this.summary = { 'charts': this.SearchService.createChartPlaceholders(SearchChartConfigs) };
+    } //end SearchController constructor
+    
     refresh() {
       if (this.tabSwitch) {
         if (this.SearchState.tabs.participants.active) {
@@ -127,20 +138,29 @@ module ngApp.search.controllers {
         this.tabSwitch = false;
         return;
       }
-
-      const casesTableModel = this.SearchCasesTableService.model();
+      const casesTableModel = this.SearchCasesModel;
+      const filesTableModel = this.SearchFilesModel;
 
       this.$rootScope.$emit('ShowLoadingScreen');
       this.filesLoading = true;
       this.participantsLoading = true;
 
+      // Get pie chart summaries
       this.SearchService.getSummary().then((data) => {
+        // Add chartConfigs to summaries
+        for (var i=0, len=data['charts'].length; i<len; i++){
+          var chart_name = 'chart' + String(i)
+          data['charts'][i]['piechart-config'] = this.chartConfigs[chart_name];
+          data['charts'][i]['results-status'] = 'complete';
+        }
+        
         this.summary = data;
         this.tabSwitch = false;
       });
 
       var fileOptions = {
-        fields: this.SearchTableFilesModel.fields,
+        fields: filesTableModel.fields,
+        expand: filesTableModel.expand,
         facets: this.FacetService.filterFacets(this.FacetsConfigService.fieldsMap['files'])
       };
 
@@ -149,15 +169,15 @@ module ngApp.search.controllers {
         expand: casesTableModel.expand,
         facets: this.FacetService.filterFacets(this.FacetsConfigService.fieldsMap['cases'])
       };
-
-      this.FilesService.getFiles(fileOptions).then((data: IFiles) => {
+      
+      this.FilesService.getFiles(fileOptions).then((data: any) => {
         this.filesLoading = false;
 
         if (!this.participantsLoading && !this.filesLoading) {
           this.$rootScope.$emit('ClearLoadingScreen');
         }
 
-        this.files = this.files || {};
+        this.files = this.files || data;
         this.files.aggregations = data.aggregations;
         this.files.pagination = data.pagination;
 
@@ -169,20 +189,20 @@ module ngApp.search.controllers {
           }
 
           for (var i = 0; i < this.files.hits.length; i++) {
-            this.files.hits[i].related_ids = _.pluck(this.files.hits[i].related_files, "file_id");
+            this.files.hits[i].related_ids = _.map(this.files.hits[i].related_files, "file_id");
           }
         }
       });
 
-      this.ParticipantsService.getParticipants(participantOptions).then((data: IParticipants) => {
+      this.ParticipantsService.getParticipants(participantOptions).then((data: any) => {
         this.participantsLoading = false;
 
         if (!this.participantsLoading && !this.filesLoading) {
           this.$rootScope.$emit('ClearLoadingScreen');
         }
 
-        this.participants = this.participants || {};
-        this.participants.aggregations = data.aggregations;
+        this.participants = this.participants || data; 
+        this.participants.aggregations = data.aggregations;        
         this.participants.pagination = data.pagination;
 
         if (!_.isEqual(this.participants.hits, data.hits)) {
@@ -229,11 +249,11 @@ module ngApp.search.controllers {
       }
     }
 
-    addToCart(files: IFile[]): void {
+    addToCart(files: any[]): void {
       this.CartService.addFiles(files);
     }
 
-    removeFiles(files: IFile[]): void {
+    removeFiles(files: any[]): void {
       this.CartService.remove(files);
     }
 
@@ -267,7 +287,7 @@ module ngApp.search.controllers {
         "cart.services",
         "core.services",
         "participants.services",
-        "search.table.files.model",
+        "search.files.table.service",
         "search.cases.table.service",
         "files.services",
         "facets.services"

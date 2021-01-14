@@ -1,7 +1,5 @@
 module ngApp.cart.services {
 
-  import IFiles = ngApp.files.models.IFiles;
-  import IFile = ngApp.files.models.IFile;
   import IFilesService = ngApp.files.services.IFilesService;
   import ILocalStorageService = ngApp.core.services.ILocalStorageService;
   import ITabs = ngApp.search.services.ITabs;
@@ -10,10 +8,10 @@ module ngApp.cart.services {
   import INotifyService = ng.cgNotify.INotifyService;
 
   export interface IQueryCartService {
-    files: IFiles;
+    files: any;
     pushAddedQuery(query: Object): void;
     pushRemovedQuery(query: Object): void;
-    addFile(): void;
+    // addFile(): void; //NOTE Resolves TS error. 'addFile' is missing in 'QueryCartService'
     isInCart(fileId: string): boolean;
   }
 
@@ -23,7 +21,7 @@ module ngApp.cart.services {
     private static GDC_CART_ADDED_FILES: string = "gdc-cart-added-files";
     private static GDC_CART_REMOVED_FILES: string = "gdc-cart-removed-files";
 
-    public files: IFiles;
+    public files: any;
     /* @ngInject */
     constructor(private $window: IGDCWindowService,
                 private $q: ng.IQService,
@@ -68,7 +66,7 @@ module ngApp.cart.services {
       return fileIds.find(f => f === fileId) ? true : false;
     }
 
-    getFiles(): ng.IPromise<IFile> {
+    getFiles(): ng.IPromise<any> {
       var addedQuery = this.LocalStorageService.getItem(QueryCartService.GDC_CART_ADDED_QUERY);
       var removedQuery = this.LocalStorageService.getItem(QueryCartService.GDC_CART_REMOVED_QUERY);
       //incomplete
@@ -89,14 +87,14 @@ module ngApp.cart.services {
               filters: filters.content.length ? filters : '', // empty content gives api error so send no filter
               size: 20,
               from: 0
-            }).then((data): IFile => {
+            }).then((data): any => {
               this.files = data;
               return data;
             });
       } else {
         // if there was no filter sending an empty query to ES returns everything
         // so don't send a request but return an empty promise
-        return this.$q((resolve) => {
+        return new this.$q((resolve) => {  //NOTE: Resolved TS error. Added 'new'
           var data = {hits: [], pagination: { total: 0}}
           this.files = data;
           resolve(data)
@@ -106,30 +104,35 @@ module ngApp.cart.services {
   }
 
   export interface ICartService {
-    files: IFile[];
-    getFiles(): IFile[];
+    files: any[];
+    getFiles(): any[];
     getFileIds(): string[];
-    add(file: IFile): void;
-    addFiles(files: IFile[], displayAddingNotification: boolean): void;
+    add(file: any): void;
+    addFiles(files: any[], displayAddingNotification?: boolean): void;
     isInCart(fileId: string): boolean;
-    areInCart(files: IFile[]): boolean;
+    areInCart(files: any[]): boolean;
     removeAll(): void;
-    remove(files: IFile[]): void;
+    remove(files: any[]): void;
     buildAddedMsg(added: Array<Object>, alreadyIn: Array<Object>): string;
-    buildRemovedMsg(removedFiles: IFile[]): string;
+    buildRemovedMsg(removedFiles: any[]): string;
     undoAdded(): void;
     undoRemoved(): void;
     getMaxSize(): number;
     isFull(): boolean;
     getCartVacancySize(): number;
-    getAuthorizedFiles(): IFile[];
-    getUnauthorizedFiles(): IFile[];
+    getAuthorizedFiles(): any[];
+    getUnauthorizedFiles(): any[];
     reloadFromLocalStorage(): void;
+
+    lastModified: any;
+    sizeWarning(): void;
   }
 
   class CartService implements ICartService {
-    files: IFile[];
-    lastModifiedFiles: IFile[];
+    files: any[];
+    lastModifiedFiles: any[];
+
+    lastModified: any;
 
     private static GDC_CART_KEY = "gdc-cart-items";
     private static GDC_CART_UPDATE = "gdc-cart-updated";
@@ -174,39 +177,39 @@ module ngApp.cart.services {
       return this.getMaxSize() - this.getFiles().length;
     }
 
-    getFiles(): IFile[] {
+    getFiles(): any[] {
       return this.files;
     }
 
     getFile(fileId: string) {
-      return _.find(this.getFiles(), { "file_id": fileId });
+      return _.find(this.getFiles(), function(f){ return f.file_id === fileId });
     }
 
-    getAuthorizedFiles(): IFile[] {
+    getAuthorizedFiles(): any[] {
       return this.files.filter((file)=>{
         return this.UserService.userCanDownloadFile(file);
       });
     }
 
-    getUnauthorizedFiles(): IFile[] {
+    getUnauthorizedFiles(): any[] {
       return this.files.filter( (file) => {
         return !this.UserService.userCanDownloadFile(file);
       });
     }
 
     isInCart(fileId: string): boolean {
-      return _.some(this.files, { "file_id": fileId });
+      return _.some(this.files, function(f){ return f.file_id === fileId });
     }
 
-    areInCart(files: IFile[]): boolean {
+    areInCart(files: any[]): boolean {
       return _.every(files, (f) => this.isInCart(f.file_id));
     }
 
-    add(file: IFile): void {
+    add(file: any): void {
       this.addFiles([file]);
     }
 
-    addFiles(files: IFile[], displayAddingNotification: boolean = true): void {
+    addFiles(files: any[], displayAddingNotification: boolean = true): void {
       if (navigator.cookieEnabled) {
         if (displayAddingNotification) {
           var addingMsgPromise = this.$timeout(() => {
@@ -221,7 +224,7 @@ module ngApp.cart.services {
 
         this.lastModifiedFiles = [];
 
-        var alreadyIn:IFile[] = [];
+        var alreadyIn: any[] = [];
 
         files.forEach(file => {
           if (!this.isInCart(file.file_id)) {
@@ -265,7 +268,7 @@ module ngApp.cart.services {
       }
     }
 
-    sizeWarning() {
+    sizeWarning(): void {
       var cartAvailable = this.getCartVacancySize()
       var template = [
         "The cart is limited to " + this.$filter("number")(this.getMaxSize()) + " files.",
@@ -294,12 +297,12 @@ module ngApp.cart.services {
 
     buildAddedMsg(added: Array<Object>, alreadyIn: Array<Object>): string {
       var message = this.gettextCatalog.getPlural(added.length,
-                    "<span>Added <strong class='word-break-all'>" + _.get(_.first(added), "file_name", "1 file") + "</strong> to the cart.",
+                    "<span>Added <strong class='word-break-all'>" + (<any>_).get(_.head(added), "file_name", "1 file") + "</strong> to the cart.",
                     "<span>Added <strong>" + added.length + "</strong> files to the cart.");
 
       if (alreadyIn.length) {
         message += this.gettextCatalog.getPlural(alreadyIn.length,
-                   added.length === 0 ? "<br />The file was already in cart, not added." : "<strong class='word-break-all'>" + _.get(_.first(added), "file_name") + "</strong> already in cart, not added",
+                   added.length === 0 ? "<br />The file was already in cart, not added." : "<strong class='word-break-all'>" + (<any>_).get(_.head(added), "file_name") + "</strong> already in cart, not added",
                    "<br /><strong>" + alreadyIn.length + "</strong> files were already in cart, not added");
       }
 
@@ -309,9 +312,9 @@ module ngApp.cart.services {
       return message + "</span>";
     }
 
-    buildRemovedMsg(removedFiles: IFile[]): string {
+    buildRemovedMsg(removedFiles: any[]): string {
       var message = this.gettextCatalog.getPlural(removedFiles.length,
-                    "<span>Removed <strong class='word-break-all'>" + _.get(_.first(removedFiles), "file_name", "1 file") + "</strong> from the cart.",
+                    "<span>Removed <strong class='word-break-all'>" + (<any>_).get(_.head(removedFiles), "file_name", "1 file") + "</strong> from the cart.",
                     "<span>Removed <strong>" + removedFiles.length + "</strong> files from the cart.");
 
       if (removedFiles.length !== 0) {
@@ -324,7 +327,7 @@ module ngApp.cart.services {
       this.remove(this.files);
     }
 
-    remove(filesToRemove: IFile[]): void {
+    remove(filesToRemove: any[]): void {
       if (navigator.cookieEnabled) {
         var partitioned = this.files.reduce((acc, f) => {
           var fileToRemove = _.find(filesToRemove, f2r => f2r.file_id === f.file_id);
@@ -364,7 +367,7 @@ module ngApp.cart.services {
     }
 
     getFileIds(): string[] {
-      return _.pluck(this.files, "file_id");
+      return _.map(this.files, "file_id");
     }
 
     undoAdded(): void {
@@ -380,11 +383,14 @@ module ngApp.cart.services {
       this.lastModified = this.$window.moment();
 
       var filesArray = this.files.map(f => {
+
+        // if/else handles diffs between returned data structure for data files table and individual file page.
         return {
-          access: f.access,
-          file_id: f.file_id,
-          file_size: f.file_size,
-          projects: f.projects || _.map(f.cases, c => c.project.project_id)
+          'access': f.access ? f.access : f.file_access,
+          'file_id': f.file_id,
+          'file_size': f.file_size ? f.file_size : f.file.size
+          
+          //projects: f.projects || (<any>_).map(f.cases, c => c.project.project_id)
         }
       });
 
@@ -411,7 +417,7 @@ module ngApp.cart.services {
 
     setActive(section: string, tab: string) {
       if (section && tab) {
-        _.each(this[section], function (section: ITab) {
+        _.forEach(this[section], function (section: ITab) {
           section.active = false;
         });
 

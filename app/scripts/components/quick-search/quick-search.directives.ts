@@ -1,39 +1,42 @@
 module ngApp.components.quickSearch.directives {
   import KeyCode = ngApp.components.facets.controllers.KeyCode;
+  import IQuickSearchService = ngApp.components.quickSearch.services.IQuickSearchService;
 
   /* @ngInject */
   function QuickSearch($uibModal: any, $window: ng.IWindowService, $uibModalStack): ng.IDirective {
     return {
       restrict: "A",
       controller: function($scope) {
-        var modalInstance;
+        this.$onInit = function() {
+          var modalInstance;
 
-        $scope.$on("$stateChangeStart", () => {
-          if (modalInstance) {
-            modalInstance.close();
-          }
-        });
-
-        this.openModal = () => {
-          // Modal stack is a helper service. Used to figure out if one is currently
-          // open already.
-          if ($uibModalStack.getTop()) {
-            return;
-          }
-
-          modalInstance = $uibModal.open({
-            templateUrl: "components/quick-search/templates/quick-search-modal.html",
-            backdrop: true,
-            keyboard: true,
-            animation: false,
-            size: "lg",
-            controller: ($uibModalInstance, $scope) => {
-              $scope.close = () => $uibModalInstance.close();
+          $scope.$on("$stateChangeStart", () => {
+            if (modalInstance) {
+              modalInstance.close();
             }
           });
-        };
+
+          this.openModal = () => {
+            // Modal stack is a helper service. Used to figure out if one is currently
+            // open already.
+            if ($uibModalStack.getTop()) {
+              return;
+            }
+
+            modalInstance = $uibModal.open({
+              templateUrl: "components/quick-search/templates/quick-search-modal.html",
+              backdrop: true,
+              keyboard: true,
+              animation: false,
+              size: "lg",
+              controller: ($uibModalInstance, $scope) => {
+                $scope.close = () => $uibModalInstance.close();
+              }
+            });
+          };
+        }; //end $onInit
       },
-      link: function($scope, $element, attrs, ctrl) {
+      link: function($scope, $element, attrs, ctrl: any) {
         const openAndBlur = () => {
           ctrl.openModal();
           $element.blur();
@@ -92,9 +95,9 @@ module ngApp.components.quickSearch.directives {
 
     $scope.keyboardListener = function(e: any) {
       function selectItem(dir) {
-        var newIndex;
+        var newIndex: number;
 
-        _.forEach($scope.results.hits, (elem, index) => {
+        _.forEach($scope.results.hits, (elem, index:number) => {
           if (_.isEqual(elem, $scope.selectedItem)) {
             if (dir === "down" && index + 1 < $scope.results.hits.length) {
 

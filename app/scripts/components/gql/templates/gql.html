@@ -1,4 +1,4 @@
-<textarea
+<!-- <textarea
     id="gql"
     class="form-control Gql"
     data-ng-model="query"
@@ -10,4 +10,17 @@
     data-ng-trim="false"
     rows="3"
     role="textbox">
-</textarea>
+</textarea> -->
+<input
+    id="gql"
+    class="form-control Gql"
+    data-ng-model="query"
+    data-ng-model-options="{ debounce: 200 }"
+    data-ng-change="onChange()"
+    data-ng-keydown="keypress($event)"
+    aria-label="Advanced Query"
+    placeholder="Start Typing Your Query...."
+    data-ng-trim="false"
+    role="textbox"
+    autocomplete="off">
+</input>

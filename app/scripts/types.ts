@@ -1,6 +1,3 @@
-// LIBS DEFINITION
-/// <reference path="../../typings/main.d.ts"/>
-
 // APP TYPES
 /// <reference path="404/module.ts"/>
 /// <reference path="annotations/module.ts"/>
@@ -13,5 +10,4 @@
 /// <reference path="projects/module.ts"/>
 /// <reference path="query/module.ts"/>
 /// <reference path="reports/module.ts"/>
-/// <reference path="search/module.ts"/>
 /// <reference path="search/module.ts"/>

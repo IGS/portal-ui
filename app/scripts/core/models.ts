@@ -1,8 +1,8 @@
 module ngApp.core.models {
   import IPagination = ngApp.components.tables.pagination.models.IPagination;
-  
+
   export interface IEntity {
-    uuid: any;
+    uuid?: any;
   }
 
   export interface IGDCWindowService extends ng.IWindowService {
@@ -36,9 +36,9 @@ module ngApp.core.models {
   export interface IFacet {
     buckets: IBucket[];
   }
-  
+
   export interface IBucket {
     key: string;
   }
-  
+
 }

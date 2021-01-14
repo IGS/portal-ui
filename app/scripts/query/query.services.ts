@@ -2,16 +2,18 @@ module ngApp.query.services {
 
   export interface ITab {
     active: boolean;
+    hasLoadedOnce: boolean;
   }
 
   export interface ITabs {
+    summary: ITab;
     participants: ITab;
     files: ITab;
   }
 
   export interface IQueryState {
     tabs: ITabs;
-    setActive(tab: string): void;
+    setActive(tab: string, key: string): void;
   }
 
   class QState implements IQueryState {
@@ -33,7 +35,7 @@ module ngApp.query.services {
     setActive(tab: string, key: string) {
       if (tab) {
         if (key === "active") {
-          _.each(this.tabs, (t: ITab) => {
+          _.forEach(this.tabs, (t: ITab) => {
             t.active = false;
           });
 

@@ -3,6 +3,10 @@
         ng-class="{'btn':true, 'btn-primary': true, active: ctrl.CartService.isInCart(ctrl.file.file_id)}"
         data-ng-click="ctrl.CartService.isInCart(ctrl.file.file_id) ? ctrl.removeFromCart() : ctrl.addToCart()">
   <i class="fa fa-shopping-cart"></i>
-  <span data-ng-if="ctrl.CartService.isInCart(ctrl.file.file_id)" data-translate>Remove from Cart</span>
-  <span data-ng-if="!ctrl.CartService.isInCart(ctrl.file.file_id)" data-translate>Add to Cart</span>
+  <span data-ng-if="ctrl.CartService.isInCart(ctrl.file.file_id)" >Remove from Cart</span>
+  <span data-ng-if="!ctrl.CartService.isInCart(ctrl.file.file_id)">
+    <span data-ng-if="!ctrl.text">Add to Cart</span>
+    <span data-ng-if="ctrl.text && ctrl.text == 'no-text'"></span>
+    <span data-ng-if="ctrl.text && ctrl.text != 'no-text'">{{ ctrl.text }}</span>
+  </span>
 </button>

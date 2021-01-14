@@ -1,135 +1,116 @@
 module ngApp.components.tables.directives.tableicious {
 
-    import ILocationService = ngApp.components.location.ILocationService;
+  import ILocationService = ngApp.components.location.ILocationService;   
 
-    /* @ngInject */
-    function Tableicious(
-        $filter: ng.IFilterService,
-        LocationService: ILocationService,
-        UserService: IUserService,
-        $window: ng.IWindowService): ITableicious {
-        return {
-            restrict: "E",
-            scope: {
-                rowId: "@",
-                data: "=",
-                paging: "=",
-                headings: "=",
-                title: "@",
-                saved: "="
-            },
-            replace: true,
-            templateUrl: "components/tables/templates/tableicious.html",
-            link: function($scope: ITableiciousScope) {
-                $scope.$filter = $filter;
-                $scope.UserService = UserService;
-                $scope.LocationService = LocationService;
-                $scope.getCell = function(h, d) {
-                    return h.td(d, $scope);
-                }
-                $scope.getToolTipText = function(h, d) {
-                  return h.toolTipText ? h.toolTipText(d, $scope) : '';
-                };
-                function hasChildren(h: IHeading): boolean {
-                    return h.children && h.children.length > 0;
-                }
-
-                function refresh(hs: IHeading[]): void {
-                    $scope.enabledHeadings = _.reject(hs, h => {
-                        return h.hidden;// || (h.inactive && h.inactive($scope))
-                    });
-                    $scope.subHeaders = _.flatten<IHeading>(
-                        _.pluck(_.filter($scope.enabledHeadings, (h) => {
-                            return hasChildren(h);
-                    }), 'children'));
-                    $scope.dataCols = _.flatten<IHeading>(
-                        _.map($scope.enabledHeadings, (h: IHeading): IHeading[] | IHeading => {
-                            return hasChildren(h) ? h.children : h;
-                    }));
-                }
-
-                $scope.$watch('headings', (n: IHeading[], o: IHeading[]) => {
-                   if (_.isEqual(n,o)) return;
-                   refresh(n);
-                }, true);
-
-                var loadedHeadings = ($scope.saved || []).length ?
-                  _.map($scope.saved, (s: IHeading): IHeading => _.merge(_.find($scope.headings, {id: s.id}), s)) :
-                  _.cloneDeep($scope.headings);
-
-                refresh(loadedHeadings);
-            }
-        }
+  /* @ngInject */
+  function Tableicious(): ng.IDirective {
+    /* 
+    * Setting 'bindToController' to true to prevent multi-directive error with ng-table. 
+    * This binds the scope properties to the controller, and also allows both scopes 
+    * (tablecious & ng-table) to exist and not collide/overwrite one another.
+    * The scope props (above) get attached to the controller, so are accessible:
+    * controller['property'] or this['property']  
+    */ 
+    return {
+      restrict: "E",
+      scope: {
+        rowId: "@",
+        data: "=",
+        paging: "=",
+        headings: "=",
+        title: "@",
+        saved: "=",
+        page: "@",
+        update: "=",
+        tableModelConfig: "="
+      },
+      bindToController: true, 
+      replace: true,
+      templateUrl: "components/tables/templates/tableicious.html",
+      controller: "TableiciousController as tc"
     }
+  }
 
-    interface ITableicious extends ng.IDirective {
-        link(scope: ITableiciousScope): void;
+  function TableiciousCustomHeader(): ng.IDirective {
+    // This directive overrides the native ngTable directive ngTableSorterRow
+    return {
+      restrict: "E",
+      scope: {
+        tableParams: "=",
+        headings: "=",
+        paging: "=",
+        page: "=",
+        data: "="
+      },
+      replace: true,
+      templateUrl: "components/tables/templates/tableicious-custom-header.html",
+      controller: "TableiciousSortController",
+      controllerAs: "tsc",
     }
+  }
 
-    interface ITableiciousScope extends ng.IScope {
-        data: any[];
-        headings: IHeading[];
-        enabledHeadings: IHeading[];
-        subHeaders: IHeading[];
-        dataCols: IHeading[];
-        rowId: string;
-        hasChildren(h: IHeading): boolean;
-        refresh(h: IHeading[]): void;
-        getCell(h, d): string;
-        $filter: ng.IFilterService;
-        UserService:IUserService;
-        LocationService:ILocationService;
-        saved: string[];
-    }
+  export interface IConfig { //TODO is this TableiciousConfig?!
+      title: string;
+      order: string[];
+      rowId: string;
+      headings: IHeading[];
+      render(row: any): string;
+  }
 
-    interface IConfig {
-        title: string;
-        order: string[];
-        rowId: string;
-        headings: IHeading[];
-        render(row: any): string;
-    }
+  export interface IHeading {
+      //NOTE: all made optional to resolve TS error LINE 57
+      th?: string;
+      id?: string;
+      td?(row:any, filter: ngApp.components.ui.string.ICustomFilterService): string;
+      sortable?: any;
+      show?: boolean;
+  }
 
-    interface IHeading {
-        th: string;
-        id: string;
-        td(row:any, filter: ng.IFilterService): string;
-        sortable: boolean;
-        hidden: boolean;
-        inactive($scope): boolean;
-        children: IHeading[];
-    }
+  // NOTE: added to resolve TS errors for no export TableiciousConfig.
+  //      TableiciousConfig is in essence IHeading and IConfig.
+  export interface TableiciousConfig extends IConfig {
+    headings: IHeading[];
+    fields?: any;
+    facets?: any;
+    model?: any;
+    push?: any;
+  }
 
-    /* @ngInject */
-    function Cell($compile: ng.ICompileService): ICell {
-        return {
-            restrict: "A",
-            scope: {
-                cell: "=",
-                row: "=",
-                data: "=",
-                paging: "="
-            },
-            link: function ($scope: ICellScope, element: ng.IAugmentedJQuery) {
-              $scope.$watch('cell', function(value) {
-                  element.html(value);
-                  $compile(element.contents())($scope);
-                }
-              );
-            }
+  interface ICellJqueryElement extends ng.IAugmentedJQuery {
+      accessKey: string;
+  }
 
-        }
-    }
+  /* @ngInject */
+  function Cell($compile: ng.ICompileService): ICell {
+      return {
+          restrict: "A",
+          scope: {
+              cell: "=",
+              row: "=",
+              data: "=",
+              paging: "="
+          },
+          link: function ($scope: ICellScope, element: ICellJqueryElement) {
+            $scope.$watch('cell', function(value: any) {
+                element.html(value);
+                $compile(<any>element.contents())($scope);
+              }
+            );
+          }
 
-    interface ICell extends ng.IDirective {
-        link(scope: ICellScope, element: ng.IAugmentedJQuery): void;
-    }
+      }
+  }
 
-    interface ICellScope extends ng.IScope {
-        cell: string;
-    }
+  interface ICell extends ng.IDirective {
+      link(scope: ICellScope, element: ng.IAugmentedJQuery): void;
+  }
 
-    angular.module("tableicious.directive", [])
-    .directive("tableicious", Tableicious)
-    .directive("cell", Cell);
+  interface ICellScope extends ng.IScope {
+      cell: string;
+  }
+
+  angular.module("tableicious.directive", ["ngTable"])
+  .directive("tableicious", Tableicious)
+  .directive("cell", Cell)
+  .directive("tableiciousCustomHeader", TableiciousCustomHeader)
 }

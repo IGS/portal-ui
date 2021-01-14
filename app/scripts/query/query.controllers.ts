@@ -2,10 +2,6 @@ module ngApp.query.controllers {
   import IFacet = ngApp.core.models.IFacet;
   import IFilesService = ngApp.files.services.IFilesService;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
-  import IFiles = ngApp.files.models.IFiles;
-  import IFile = ngApp.files.models.IFile;
-  import IParticipants = ngApp.participants.models.IParticipants;
-  import IAnnotations = ngApp.annotations.models.IAnnotations;
   import ICoreService = ngApp.core.services.ICoreService;
   import IQueryState = ngApp.query.services.IQueryState;
   import ICartService = ngApp.cart.services.ICartService;
@@ -15,15 +11,15 @@ module ngApp.query.controllers {
   import TableiciousConfig = ngApp.components.tables.directives.tableicious.TableiciousConfig;
 
   export interface IQueryController {
-    files: IFiles;
-    participants: IParticipants;
+    files: any;
+    participants: any;
     QState: IQueryState;
     CartService: ICartService;
     addFilesKeyPress(event: any, type: string): void;
     setState(tab: string, next: string): void;
     select(section: string, tab: string): void;
-    removeFiles(files: IFile[]): void;
-    isUserProject(file: IFile): boolean;
+    removeFiles(files: any[]): void;
+    isUserProject(file: any): boolean;
     tabSwitch: boolean;
     query: string;
     projectIdChartConfig: any;
@@ -36,14 +32,17 @@ module ngApp.query.controllers {
   }
 
   class QueryController implements IQueryController {
-    files: IFiles;
-    participants: IParticipants;
+    files: any;
+    participants: any;
     participantsLoading: boolean = true;
     filesLoading: boolean = true;
     query: string = "";
     tabSwitch: boolean = false;
     projectIdChartConfig: any;
     primarySiteChartConfig: any;
+    chartConfigs: any;
+    summary: any;
+    queryConfig: any;
 
     /* @ngInject */
     constructor(private $scope: IQueryScope,
@@ -57,7 +56,7 @@ module ngApp.query.controllers {
                 private LocationService: ILocationService,
                 private UserService: IUserService,
                 private CoreService: ICoreService,
-                private SearchTableFilesModel: TableiciousConfig,
+                private SearchFilesTableService: TableiciousConfig,
                 private SearchCasesTableService: TableiciousConfig,
                 SearchChartConfigs) {
       var data = $state.current.data || {};
@@ -80,11 +79,19 @@ module ngApp.query.controllers {
         }
       });
 
-      $scope.fileTableConfig = this.SearchTableFilesModel;
-      $scope.participantTableConfig = this.SearchCasesTableService.model();
+      //TODO Currently gets 'search' configuration (NOTE ONLY PIE CHARTS ARE IMPLEMENTED)
+      this.queryConfig = this.CoreService.getComponentFromConfig("search");
+      $scope.participantTableConfig = this.SearchCasesTableService.model(this.queryConfig);
 
+	  var cartTable = false;
+      $scope.fileTableConfig = this.SearchFilesTableService.model(cartTable);
+      
       this.refresh();
       this.chartConfigs = SearchChartConfigs;
+
+      // Create placeholders for charts to allow spinners to display
+      // Essentially we're setting buckets to an empty array to trigger the spinners, and also passing piechart config settings now
+      this.summary = { 'charts': this.SearchService.createChartPlaceholders(SearchChartConfigs) };
     }
 
     refresh() {
@@ -105,28 +112,38 @@ module ngApp.query.controllers {
       this.filesLoading = true;
 
       this.SearchService.getSummary().then((data) => {
+        
+        // Add chartConfigs to summaries
+        for (var i = 0, len = data['charts'].length; i < len; i++) {
+          var chart_name = 'chart' + String(i)
+          data['charts'][i]['piechart-config'] = this.chartConfigs[chart_name];
+          data['charts'][i]['results-status'] = 'complete'; 
+        }
         this.summary = data;
       });
 
-      var casesTableModel = this.SearchCasesTableService.model();
+      var casesTableModel = this.SearchCasesTableService.model(this.queryConfig);
 
+	  var cartTable = false;
       var fileOptions = {
-        fields: this.SearchTableFilesModel.fields
+        fields: this.SearchFilesTableService.model(cartTable).fields
       };
+
 
       var participantOptions = {
         fields: casesTableModel.fields,
         expand: casesTableModel.expand,
       };
 
-      this.FilesService.getFiles(fileOptions).then((data: IFiles) => {
+      this.FilesService.getFiles(fileOptions).then((data: any) => {
         this.filesLoading = false;
 
         if (!this.participantsLoading && !this.filesLoading) {
           this.$rootScope.$emit('ClearLoadingScreen');
         }
 
-        this.files = this.files || {};
+        // this.files = this.files || {};
+        this.files = this.files || data; //NOTE: fixes semantic error from line above
         this.files.aggregations = data.aggregations;
         this.files.pagination = data.pagination;
 
@@ -138,19 +155,20 @@ module ngApp.query.controllers {
           }
 
           for (var i = 0; i < this.files.hits.length; i++) {
-            this.files.hits[i].related_ids = _.pluck(this.files.hits[i].related_files, "file_id");
+            this.files.hits[i].related_ids = _.map(this.files.hits[i].related_files, "file_id");
           }
         }
       });
 
-      this.ParticipantsService.getParticipants(participantOptions).then((data: IParticipants) => {
+      this.ParticipantsService.getParticipants(participantOptions).then((data: any) => {
         this.participantsLoading = false;
 
         if (!this.participantsLoading && !this.filesLoading) {
           this.$rootScope.$emit('ClearLoadingScreen');
         }
 
-        this.participants = this.participants || {};
+        // this.participants = this.participants || {};
+        this.participants = this.participants || data; //NOTE: fixes semantic error from line above
         this.participants.aggregations = data.aggregations;
         this.participants.pagination = data.pagination
 
@@ -174,7 +192,7 @@ module ngApp.query.controllers {
       }
     }
 
-    isUserProject(file: IFile): boolean {
+    isUserProject(file: any): boolean {
       return this.UserService.isUserProject(file);
     }
 
@@ -195,11 +213,11 @@ module ngApp.query.controllers {
       }
     }
 
-    addToCart(files: IFile[]): void {
+    addToCart(files: any[]): void {
       this.CartService.addFiles(files);
     }
 
-    removeFiles(files: IFile[]): void {
+    removeFiles(files: any[]): void {
       this.CartService.remove(files);
     }
   }
@@ -211,7 +229,7 @@ module ngApp.query.controllers {
         "cart.services",
         "core.services",
         "participants.services",
-        "search.table.files.model",
+        "search.files.table.service",
         "search.cases.table.service",
         "files.services"
       ])

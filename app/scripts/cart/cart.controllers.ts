@@ -1,36 +1,43 @@
 module ngApp.cart.controllers {
   import ICartService = ngApp.cart.services.ICartService;
-  import IFiles = ngApp.files.models.IFiles;
-  import IFile = ngApp.files.models.IFile;
   import ICoreService = ngApp.core.services.ICoreService;
   import IUserService = ngApp.components.user.services.IUserService;
   import ISearchService = ngApp.search.services.ISearchService;
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
   import IFilesService = ngApp.files.services.IFilesService;
+  import TableiciousConfig = ngApp.components.tables.directives.tableicious.TableiciousConfig;
+  
+  import ILocationService = ngApp.components.location.services.ILocationService;
 
   export interface ICartController {
-    files: IFiles;
+    files: any;
     getTotalSize(): number;
     getFileIds(): string[];
     getRelatedFileIds(): string[];
     cartTableConfig: any;
-    projectCountChartConfig: any;
-    fileCountChartConfig: any;
     fileCountChartData: any[];
   }
 
   class CartController implements ICartController {
-    displayedFiles: IFile[];
+    displayedFiles: any;
     numberFilesGraph: any;
     sizeFilesGraph: any;
     cartTableConfig: any;
-    projectCountChartConfig: any;
-    fileCountChartConfig: any;
     fileCountChartData: Object[];
     helpHidden: boolean = false;
-    participantCount: number;
+    // participantCount: number;
 
-    defaultFiles: IFiles = {
+    lastModified: any;
+    clinicalDataExportFilters: any;
+    biospecimenDataExportFilters: any;
+    clinicalDataExportExpands: Object[];
+    clinicalDataExportFileName: string;
+    biospecimenDataExportExpands: Object[];
+    biospecimenDataExportFileName: string;
+    summary: any;
+    cartConfig: any;
+
+    defaultFiles: any = {
       hits: [],
       pagination: {
         count: 0,
@@ -47,23 +54,38 @@ module ngApp.cart.controllers {
     constructor(private $scope: ng.IScope,
                 private $state: ng.ui.IStateService,
                 private $filter: ng.IFilterService,
-                public files: IFiles,
+                public files: any,
                 private CoreService: ICoreService,
                 private CartService: ICartService,
                 private UserService: IUserService,
-                private CartTableModel,
+                public SearchFilesTableService: TableiciousConfig,
                 private Restangular,
                 private SearchService: ISearchService,
                 private FilesService: IFilesService,
                 private ParticipantsService: IParticipantsService,
-                private CartState) {
+                private CartState,
+                private config, 
+                SearchChartConfigs) {
+      this.cartConfig = this.CoreService.getComponentFromConfig('cart');
+
       var data = $state.current.data || {};
       this.CartState.setActive("tabs", data.tab);
       this.lastModified = this.CartService.lastModified;
-      this.cartTableConfig = CartTableModel;
+      var cartTable = true;
+      this.cartTableConfig = this.SearchFilesTableService.model(cartTable);
+      this.cartTableConfig['title'] = 'Cart'; //changes 'Files' to 'Cart'. Allowing for cart table to have its own arrangement saved in cookie
 
       this.CartService.reloadFromLocalStorage();
       this.refresh();
+
+      // Create placeholders for charts to allow spinners to display
+      // Essentially we're setting buckets to an empty array to trigger the spinners, and also passing piechart config settings now
+      var chartPlaceholders = this.SearchService.createChartPlaceholders(SearchChartConfigs);
+
+      // Remove the charts that are not used by the cart
+      var cartChartPlaceholders = _.remove(chartPlaceholders, (chart) => this.cartConfig['piechart-order'].indexOf(chart['name']) != -1);
+
+      this.summary = {'charts': cartChartPlaceholders};
 
       $scope.$on("$locationChangeSuccess", (event, next: string) => {
         if (next.indexOf("cart") !== -1) {
@@ -79,31 +101,8 @@ module ngApp.cart.controllers {
         this.refresh();
       });
 
-      this.projectCountChartConfig = {
-        textValue: "file_size",
-        textFilter: "size",
-        filterKey: "file_size",
-        label: "file",
-        sortKey: "doc_count",
-        displayKey: "key",
-        sortData: true,
-        defaultText: "gender",
-        pluralDefaultText: "genders",
-      };
-
-      this.fileCountChartConfig = {
-        textValue: "file_size",
-        textFilter: "size",
-        label: "file",
-        sortKey: "doc_count",
-        displayKey: "key",
-        sortData: true,
-        defaultText: "study",
-        pluralDefaultText: "studies"
-      };
-
       this.clinicalDataExportFilters = this.biospecimenDataExportFilters = {
-        'files.file_id': this.CartService.getFileIds()
+        'file.id': this.CartService.getFileIds()
       };
       this.clinicalDataExportExpands = ['demographic', 'diagnoses', 'family_histories', 'exposures'];
       this.clinicalDataExportFileName = 'clinical.cart';
@@ -123,7 +122,7 @@ module ngApp.cart.controllers {
           {
             op: "in",
             content: {
-              field: "files.file_id",
+              field: "file.id",
               value: this.CartService.getFileIds()
             }
           }
@@ -131,6 +130,22 @@ module ngApp.cart.controllers {
       };
 
       this.SearchService.getSummary(filters, true).then((data) => {
+
+        //Only keep the piecharts we're interested in
+        data.charts = _.filter(data.charts, chart => _.includes(this.cartConfig['piechart-order'], chart['name']));
+
+        // Add chartConfigs to summaries
+        for (var i = 0, len = data.charts.length; i < len; i++) {
+          data['charts'][i]['piechart-config'] = this.cartConfig['piechart-configs'][i];
+          data['charts'][i]['piechart-config']["text-value"] = "file_size";
+          data['charts'][i]['piechart-config']["text-filter"] = "size";
+          data['charts'][i]['piechart-config']["label"] = "file";
+          data['charts'][i]['piechart-config']["sort-key"] = "doc_count";
+          data['charts'][i]['piechart-config']["display-key"] = "key";
+          data['charts'][i]['piechart-config']["sort-data"] = true;
+          data['charts'][i]['results-status'] = "complete";
+        }
+
         this.summary = data;
       });
 
@@ -158,13 +173,21 @@ module ngApp.cart.controllers {
 
     refresh(): void {
       const fileIds = this.CartService.getFileIds();
-      this.CoreService.setPageTitle("Cart", "(" + fileIds.length + ")");
+      var pageTitle = "";
+      if (this.cartConfig['page-title'].indexOf("|") != -1 ) {
+        pageTitle = this.cartConfig['page-title'].split("|")[0] + " (" + fileIds.length + ") | " + this.cartConfig['page-title'].split("|")[1];
+      } else {
+        pageTitle = this.cartConfig['page-title'] + " (" + fileIds.length + ")";
+      }
+
+      this.CoreService.setPageTitle(pageTitle);
       // in the event that our cart is empty
       if (fileIds.length < 1) {
-        this.files = {};
+        this.files = {'hits': [], 'pagination': {}}; 
         return;
       }
-      var filters = {'content': [{'content': {'field': 'files.file_id', 'value': fileIds}, 'op': 'in'}], 'op': 'and'};
+      var filters = {'content': [{'content': {'field': 'file.id', 'value': fileIds}, 'op': 'in'}], 'op': 'and'};
+      // TODO: important: this needs to be cleaned up
       var fileOptions = {
         filters: filters,
         fields: [
@@ -180,30 +203,33 @@ module ngApp.cart.controllers {
           'cases.project.name'
         ],
       };
-      this.FilesService.getFiles(fileOptions, 'POST').then((data: IFiles) => {
-        this.files = this.files || {};
+      this.FilesService.getFiles(fileOptions, 'POST').then((data: any) => {
+        this.files = this.files || {'hits': [], 'pagination': {}};
         if (!_.isEqual(this.files.hits, data.hits)) {
           this.files = data;
-          this.ParticipantsService.getParticipants({filters: filters, size: 0}, 'POST')
-            .then((data: IParticipants) => {
-              this.participantCount = data.pagination.total;
-            });
+          // DOLLEY - Removed this because 'data' has always been undefined and given an error in the browser console
+          // This also looks like it is not used. Removing it allows for pagination on the cart table to work. Leaving it for now.
+          // this.ParticipantsService.getParticipants({filters: filters, size: 0}, 'POST')
+          //   .then((data: any) => {
+          //     console.log('participants data: ', data);
+          //     this.participantCount = data.pagination.total;
+          //   });
         }
-      }).finally(() => this.getSummary() );
+      }).finally(() => this.getSummary());
     }
 
     getTotalSize(): number {
-      return _.reduce(this.files, function (sum: number, hit: IFile) {
+      return _.reduce(this.files.hits, function (sum: number, hit: any) { //NOTE: Resolved TS error. added '.hits'
         return sum + hit.file_size;
       }, 0);
     }
 
     getFileIds(): string[] {
-      return _.pluck(this.files, "file_id");
+      return _.map(this.files.hits, "file_id"); //NOTE: Resolved TS error. added '.hits'
     }
 
     getRelatedFileIds(): string[] {
-      return _.reduce(this.files, function (ids, file) {
+      return _.reduce(this.files.hits, function (ids, file) { //NOTE: Resolved TS error. added '.hits'
         return ids.concat(file.related_ids);
       }, []);
     }
@@ -219,11 +245,12 @@ module ngApp.cart.controllers {
         this.CartService.removeAll();
       }
       this.lastModified = this.CartService.lastModified;
-      this.files = {};
+      // this.files = {};
+      this.files = {'hits': [], 'pagination': {}};
     }
 
     getManifest(selectedOnly: boolean = false) {
-      this.FilesService.downloadManifest(_.pluck(this.CartService.getFiles(), "file_id"), (complete) => {
+      this.FilesService.downloadManifest(_.map(this.CartService.getFiles(), "file_id"), (complete) => {
         if(complete) {
           return true;
         }
@@ -249,23 +276,23 @@ module ngApp.cart.controllers {
     /* @ngInject */
     constructor(private CartService: ICartService) {}
 
-    addToCart(): void {
+    addToCart(file: any): void {
       if (this.CartService.getCartVacancySize() < 1) {
         this.CartService.sizeWarning();
         return;
       }
-      this.CartService.addFiles([this.file], true);
+      this.CartService.addFiles([this['file']], true);
     }
 
-    removeFromCart(): void {
-      this.CartService.remove([this.file]);
+    removeFromCart(file: any): void {
+      this.CartService.remove([this['file']]);
     }
   }
 
   class AddToCartAllCtrl {
     /* @ngInject */
     constructor(
-      public CartService: ICartService,
+      private CartService: ICartService, 
       private UserService: IUserService,
       public LocationService: ILocationService,
       public FilesService: IFilesService,
@@ -278,7 +305,8 @@ module ngApp.cart.controllers {
     removeAll(): void {
       // Query ES using the current filter and the file uuids in the Cart
       // If an id is in the result, then it is both in the Cart and in the current Search query
-      var filters = this.filter || this.LocationService.filters();
+      // var filters = this.filter || this.LocationService.filters();
+      var filters = this['filter'] || this.LocationService.filters(); //NOTE: Resolved TS error
       var size: number = this.CartService.getFiles().length;
 
       if (!filters.content) {
@@ -288,14 +316,14 @@ module ngApp.cart.controllers {
 
       filters.content.push({
         content: {
-          field: "files.file_id",
-          value: _.pluck(this.CartService.getFiles(), "file_id")
+          field: "file.id",
+          value: _.map(this.CartService.getFiles(), "id")
         },
         op: "in"
       });
 
       this.FilesService.getFiles({
-        fields: [ "file_id", "file_name" ],
+        fields: [ "id", "file_name" ],
         filters: filters,
         size: size,
         from: 0
@@ -305,7 +333,8 @@ module ngApp.cart.controllers {
     }
 
     getFiles() {
-      var filters = (this.filter ? JSON.parse(this.filter) : undefined) || this.LocationService.filters();
+      // var filters = (this.filter ? JSON.parse(this.filter) : undefined) || this.LocationService.filters();
+      var filters = (this['filter'] ? JSON.parse(this['filter']) : undefined) || this.LocationService.filters(); //NOTE Resolved TS error
       filters = this.UserService.addMyProjectsFilter(filters, "cases.project.project_id");
 
       return this.FilesService.getFiles({
@@ -317,7 +346,8 @@ module ngApp.cart.controllers {
         ],
         filters: filters,
         sort: "",
-        size: this.size,
+        // size: this.size,
+        size: this['size'], //NOTE: Resolved TS error
         from: 0
       });
     }
@@ -330,15 +360,16 @@ module ngApp.cart.controllers {
           this.CartService.addFiles(files, false);
         }
       } else {
-
-        if (this.size > this.CartService.getCartVacancySize()) {
+        // if (this.size > this.CartService.getCartVacancySize()) {
+        if (this['size'] > this.CartService.getCartVacancySize()) { //NOTE: Resolved TS error
           this.CartService.sizeWarning();
         } else {
 
           var addingMsgPromise = this.$timeout(() => {
             this.notify({
               message: "",
-              messageTemplate: "<span data-translate>Adding <strong>" + this.size + "</strong> files to cart</span>",
+              // messageTemplate: "<span data-translate>Adding <strong>" + this.size + "</strong> files to cart</span>",
+              messageTemplate: "<span data-translate>Adding <strong>" + this['size'] + "</strong> files to cart</span>", //NOTE: Resolved TS error
               container: "#notification",
               classes: "alert-info"
             });
@@ -358,7 +389,7 @@ module ngApp.cart.controllers {
         "cart.services",
         "core.services",
         "user.services",
-        "cart.table.model",
+        "search.files.table.service",
         "search.services"
       ])
       .controller("LoginToDownloadController", LoginToDownloadController )

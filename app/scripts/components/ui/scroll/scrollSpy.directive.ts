@@ -1,5 +1,5 @@
 module ngApp.components.ui.scrollSpy {
-  import IGDCWindowService = ngApp.models.IGDCWindowService;
+  import IGDCWindowService = ngApp.core.models.IGDCWindowService;
 
   interface IScrollSpyScope extends ng.IScope {
     spies: any;
@@ -84,4 +84,3 @@ module ngApp.components.ui.scrollSpy {
       .directive("scrollSpy", ScrollSpy)
       .directive("spy", Spy);
 }
-

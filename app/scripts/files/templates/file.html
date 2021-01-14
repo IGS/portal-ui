@@ -4,8 +4,11 @@
       <i class="fa fa-file-o"></i>
       {{ ::fc.file.file_id }}
       <span class="btn-group pull-right" style="margin-top: .3em">
-        <add-to-cart-single-labelled class="btn-bordered" file="fc.file"></add-to-cart-single-labelled>
-        <download-button class="btn-bordered" data-icon="fa-download" data-files=fc.file data-copy="Download" data-dlcopy="Downloading"></download-button>
+        <add-to-cart-single-labelled class="btn-bordered" file="fc.file" text="fc.filePageConfig['add-to-cart-btn-text']"></add-to-cart-single-labelled>
+
+        <!-- DOLLEY: Added data-ng-show prop to hide the button for 'Private data' -->
+        <download-button class="btn-bordered" data-icon="fa-download" data-files=fc.file data-copy="{{fc.filePageConfig['download-btn-text'] || 'Download' }}" data-dlcopy="Downloading" data-ng-show="(fc.file.file_access === 'open' && fc.filePageConfig['enable-download-btn'])"></download-button>
+        <download-metadata-button class="btn-bordered" data-icon="fa-download" data-files=fc.file data-filename="" data-text-normal="{{fc.filePageConfig['download-metadata-btn-text']}}" data-dlcopy="Downloading" data-ng-show="(fc.file.file_access === 'open' && fc.filePageConfig['enable-download-metadata-btn'])"></download-metadata-button>
         <bam-slicing-button class="btn-bordered" data-icon="fa-cutlery" data-files=fc.file data-copy="BAM Slicing" data-dlcopy="Slicing BAM" data-ng-if="fc.canBAMSlice()"></bam-slicing-button>
       </span>
     </h1>
@@ -16,76 +19,25 @@
         <div class="col-lg-7 col-md-7">
           <div class="panel panel-default">
             <div class="panel-heading clearfix">
-              <h3 class="panel-title pull-left" data-translate>File Properties</h3>
+              <h3 class="panel-title pull-left" >File Properties</h3>
             </div>
 
             <table id="properties-table"
                    class="table table-striped table-hover table-condensed table-bordered table-vertical">
               <tbody>
-              <tr>
-                <th scope="row" data-translate>Name</th>
-                <td>{{ ::fc.file.file_name }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Access</th>
-                <td>
-                  <i data-ng-if="fc.file.access !== 'open'" class="fa fa-lock"></i>
-                  <i data-ng-if="fc.file.access === 'open'" class="fa fa-unlock"></i>
-                  <span data-ng-if="fc.file.access === 'open'" data-translate>Open</span>
-                  <span data-ng-if="fc.file.access !== 'open'" data-translate>Controlled</span>
+              <tr data-ng-repeat="configRow in fc.filePageConfig['properties-table']" data-ng-switch on='configRow.property'>
+                <th scope="row">{{configRow.field}}</th>
+                
+                <td data-ng-switch-when="file_access">
+                  <i data-ng-if="fc.file[configRow.property] !== 'open'" class="fa fa-lock"></i>
+                  <i data-ng-if="fc.file[configRow.property] === 'open'" class="fa fa-unlock"></i>
+                  <span>{{ fc.file[configRow.property] | humanify }}</span>
                 </td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>UUID</th>
-                <td>{{ ::fc.file.file_id }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Submitter ID</th>
-                <td>{{ ::fc.file.submitter_id || '--'}}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Data format</th>
-                <td>{{ ::fc.file.data_format || '--' }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Size</th>
-                <td>{{ ::fc.file.file_size | size }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>MD5 Checksum</th>
-                <td>{{ ::fc.file.md5sum }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>State</th>
-                <td>{{ ::fc.file.state | humanify }}</td>
-              </tr>
-              <!--
-              <tr>
-                <th scope="row" data-translate>Archive</th>
-                <td data-ng-if="fc.file.archive">
-                  {{ ::fc.file.archive.submitter_id || '--' }}
-                  - rev {{ ::fc.file.archive.revision || '--'}}
-                  (<a data-ui-sref="search.files({ 'filters': {{
-                      [{ field: 'files.archive.archive_id', value: fc.file.archive.archive_id }] | makeFilter }}
-                      })">
-                    {{ fc.archiveCount }} files
-                  </a>)
+                <td data-ng-switch-when="file_size">{{ fc.file[configRow.property] | size }}</td>
+                <td data-ng-switch-default>
+                  {{ fc.file[configRow.property] || '--' }}
                 </td>
-                <td data-ng-if="!fc.file.archive">
-                  --
-                </td>
-              </tr>
-              -->
-              <tr>
-                <th scope="row" data-translate>Project ID</th>
-                <td>
-                  <span data-ng-repeat="p in fc.file.projects">
-                    {{ p }}
-                  </span>
-                  <span data-ng-if="fc.file.projects.length === 0">
-                    --
-                  </span>
-                </td>
+
               </tr>
               </tbody>
             </table>
@@ -95,142 +47,20 @@
         <div class="col-lg-5 col-md-5">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title" data-translate>Data Information</h3>
+              <h3 class="panel-title" >Data Information</h3>
             </div>
             <table id="data-information-table" class="table table-striped table-hover table-condensed table-bordered">
               <tbody>
-              <tr>
-                <th scope="row" data-translate>Data Category</th>
-                <td>{{ ::fc.file.data_category || '--' }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Data Type</th>
-                <td>{{ ::fc.file.data_type || '--' }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Experimental Strategy</th>
-                <td>{{ ::fc.file.experimental_strategy || '--' }}</td>
-              </tr>
-              <!--
-              <tr>
-                <th scope="row" data-translate>Platform</th>
-                <td>{{ ::fc.file.platform || '--' }}</td>
-              </tr>
-              tr>
-                <th scope="row" data-translate>Data Submitter</th>
-                <td>{{ ::fc.file.center.short_name || '--' }}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-translate>Tag</th>
+
+              <tr data-ng-repeat="configRow in fc.filePageConfig['data-information-table']" data-ng-switch on='configRow.property'>
+                <th scope="row">{{configRow.field}}</th>
                 <td>
-                  <span data-ng-if="!fc.file.tags">--</span>
-                  <span data-ng-if="fc.file.tags">{{ fc.file.tags.join(", ") }}</span>
+                  {{ fc.file[configRow.property] || '--' }}
                 </td>
-              </tr 
-              -->
+              </tr>
               </tbody>
             </table>
           </div>
-        </div>
-      </section>
-
-      <section class="row" id="participants">
-        <div class="col-lg-12 col-md-12">
-          <div class="panel panel-default">
-            <div class="panel-heading panel-with-filter">
-              <span class="panel-title">Preparation</span>
-
-              <span
-                class="input-group"
-                style="margin: 0 1.75rem 0 auto; width: 300px;"
-                data-ng-if="fc.file.associated_entities.length"
-              >
-                <!--
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text"
-                  class="form-control"
-                  style="width: 28rem;"
-                  placeholder="Type to filter cases."
-                  title="Search…"
-                  data-ng-model="fc.tableFilters.assocEntity">
-                -->
-              </span>
-            </div>
-
-            <div class="panel-body" data-ng-if="!fc.file.associated_entities.length">
-              <h4 class="list-group-item-heading">No Cases Found.</h4>
-            </div>
-
-            <div class="long-scrollable-table" data-ng-if="fc.file.associated_entities.length">
-              <div class="long-scrollable-table-container">
-                <table
-                  id="associated-cases-biospecimen-table"
-                  class="table table-striped table-hover table-condensed table-bordered"
-                  style="margin-bottom: 0;"
-                >
-                  <thead>
-                  <tr>
-                    <th class="sticky" scope="col" data-translate>
-                      ID
-                      <div>ID</div>
-                    </th>
-                    <th class="sticky" scope="col" data-translate>
-                      Type
-                      <div>Type</div>
-                    </th>
-                    <!--
-                    <th class="sticky" scope="col" data-translate>
-                      Case UUID
-                      <div>Case UUID</div>
-                    </th>
-                    <th class="sticky" scope="col" data-translate>
-                      Annotations
-                      <div>Annotations</div>
-                    </th>
-                    -->
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr data-ng-repeat="e in fc.file.associated_entities | filter:fc.tableFilters.assocEntity track by e.entity_id">
-                    <td class="id-cell">
-                        {{ ::e.entity_id }}
-                      <!--
-                      <a
-                        data-ng-if="e.entity_type !== 'case'"
-                        data-ui-sref="case({ caseId: e.case_id, bioId: e.entity_id, '#': 'biospecimen' })"
-                      >
-                        {{ ::e.entity_id }}
-                      </a>
-                      -->
-                    </td>
-                    <td>{{ ::e.entity_type | humanify }}</td>
-                    <!--
-                    <td class="id-cell">
-                      <a data-ui-sref="case({ caseId: e.case_id })">
-                        {{ ::e.case_id }}
-                      </a>
-                    </td>
-                    <td class="text-right">
-                      <a data-ui-sref="annotations({ 'filters':
-                           {{ [{field: 'annotation_id', value: e.annotations }] | makeFilter }} })"
-                         data-ng-if="e.annotations.length > 1">
-                        {{ e.annotations.length }}
-                      </a>
-                      <a data-ui-sref="annotation({ annotationId: e.annotations[0] })"
-                         data-ng-if="e.annotations.length === 1">
-                        {{ e.annotations.length }}
-                      </a>
-                      <span data-ng-if="!e.annotations.length">0</span>
-                    </td>
-                    -->
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
-
         </div>
       </section>
 
@@ -241,11 +71,11 @@
               <span class="panel-title">Tools Available for this Data</span>
             </div>
 
-            <div class="panel-body" data-ng-if="fc.file.data_category !== 'abundance_matrix'">
+            <div class="panel-body" data-ng-if="fc.file.file_node_type !== 'abundance_matrix'">
               <h4 class="list-group-item-heading">No tools compatible with this data type.</h4>
             </div>
 
-            <div class="long-scrollable-table" data-ng-if="fc.file.data_category === 'abundance_matrix'">
+            <div class="long-scrollable-table" data-ng-if="fc.file.file_node_type === 'abundance_matrix'">
               <div class="long-scrollable-table-container">
                 <table
                   class="table table-striped table-hover table-condensed table-bordered"
@@ -253,18 +83,18 @@
                 >
                   <thead>
                   <tr>
-                    <th class="sticky" scope="col" data-translate>
+                    <th class="sticky" scope="col" >
                       External Analysis Links
                       <div>External Analysis Links</div>
                     </th>
-                    <th class="sticky" scope="col" data-translate>
+                    <th class="sticky" scope="col" >
                       Tool
                       <div>Tool</div>
                     </th>
                   </tr>
                   </thead>
                   <tbody>
-                  <div data-ng-if="fc.file.data_category === 'abundance_matrix'">
+                  <div data-ng-if="fc.file.file_node_type === 'abundance_matrix'">
                     <tr>
                       <td>
                         <a data-ng-href="http://metaviz.cbcb.umd.edu/api/ihmp_redirect/?fid={{ ::fc.file.file_id }}">
@@ -304,19 +134,19 @@
                    data-ng-if="fc.file.analysis">
               <tbody>
               <tr>
-                <th data-translate scope="row">Analysis ID</th>
+                <th  scope="row">Analysis ID</th>
                 <td style="width: 64%">{{fc.file.analysis.analysis_id || '--'}}</td>
               </tr>
               <tr>
-                <th data-translate scope="row">Workflow Type</th>
+                <th  scope="row">Workflow Type</th>
                 <td>{{fc.file.analysis.workflow_type | humanify}}</td>
               </tr>
               <tr>
-                <th data-translate scope="row">Workflow Completion Date</th>
+                <th  scope="row">Workflow Completion Date</th>
                 <td>{{fc.file.analysis.updated_datetime || '--' | date:'yyyy-MM-dd'}}</td>
               </tr>
               <tr>
-                <th data-translate scope="row">Source Files</th>
+                <th  scope="row">Source Files</th>
                 <td
                   data-ng-if="fc.file.analysis.input_files.length > 1"
                   data-ng-bind-html="fc.makeSearchPageLink(fc.file.analysis.input_files)"
@@ -349,11 +179,11 @@
               </thead>
               <tbody>
               <tr>
-                <th scope="row" data-translate style="width: 22%">Genome Build</th>
+                <th scope="row"  style="width: 22%">Genome Build</th>
                 <td>GRCh38.p0</td>
               </tr>
               <tr>
-                <th scope="row" data-translate>Genome Name</th>
+                <th scope="row" >Genome Name</th>
                 <td>GRCh38.d1.vd1</td>
               </tr>
               </tbody>
@@ -400,27 +230,27 @@
                 >
                   <thead>
                     <tr>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Read Group ID
                         <div>Read Group ID</div>
                       </th>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Is Paired End
                         <div>Is Paired End</div>
                       </th>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Read Length
                         <div>Read Length</div>
                       </th>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Library Name
                         <div>Library Name</div>
                       </th>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Sequencing Center
                         <div>Sequencing Center</div>
                       </th>
-                      <th class="sticky" scope="col" data-translate>
+                      <th class="sticky" scope="col" >
                         Sequencing Date
                         <div>Sequencing Date</div>
                       </th>
@@ -460,12 +290,12 @@
                    data-ng-if="fc.file.metadata_files.length">
               <thead>
                 <tr>
-                  <th scope="col" data-translate>File Name</th>
-                  <th scope="col" data-translate>Data Category</th>
-                  <th scope="col" data-translate>Data Type</th>
-                  <th scope="col" data-translate>Data Format</th>
-                  <th scope="col" data-translate>File Size</th>
-                  <th scope="col" data-translate>Action</th>
+                  <th scope="col" >File Name</th>
+                  <th scope="col" >Data Category</th>
+                  <th scope="col" >Data Type</th>
+                  <th scope="col" >Data Format</th>
+                  <th scope="col" >File Size</th>
+                  <th scope="col" >Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -512,13 +342,13 @@
                      data-ng-if="fc.file.downstream_analyses.length">
                 <thead>
                   <tr>
-                    <th scope="col" data-translate>File Name</th>
-                    <th scope="col" data-translate>Data Category</th>
-                    <th scope="col" data-translate>Data Type</th>
-                    <th scope="col" data-translate>Data Format</th>
-                    <th scope="col" data-translate>Analysis workflow</th>
-                    <th scope="col" data-translate>File Size</th>
-                    <th scope="col" data-translate>Action</th>
+                    <th scope="col" >File Name</th>
+                    <th scope="col" >Data Category</th>
+                    <th scope="col" >Data Type</th>
+                    <th scope="col" >Data Format</th>
+                    <th scope="col" >Analysis workflow</th>
+                    <th scope="col" >File Size</th>
+                    <th scope="col" >Action</th>
                   </tr>
                 </thead>
                 <tbody>

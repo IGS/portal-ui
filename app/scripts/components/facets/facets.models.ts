@@ -10,6 +10,9 @@ module ngApp.components.facets.models {
     displayCount: number;
     add(facet: string, term: string, event: any): void;
     remove(facet: string, term: string, event: any): void;
+    clear(facet: string): void;
+    field: any;
+    sort: string;
   }
 
   export interface IFacetAttributes extends ng.IAttributes {
@@ -28,7 +31,9 @@ module ngApp.components.facets.models {
     field: any;
     title: string;
     upperBound: number;
+    upperBoundFinal: number;
     lowerBound: number;
+    lowerBoundFinal: number;
     ranges: {lower?: number; upper?: number; checked: boolean}[];
     max: number;
     min: number;
@@ -40,6 +45,7 @@ module ngApp.components.facets.models {
   export interface IDateFacetScope extends ng.IScope {
     name: string;
     opened: boolean;
+    date: any;
     dateOptions: Object;
   }
 

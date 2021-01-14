@@ -1,6 +1,7 @@
 module ngApp.components.tables.pagination.controllers {
   import ILocationService = ngApp.components.location.services.ILocationService;
-  import IPagination = ngApp.components.ui.pagination.models.IPagination;
+  // import IPagination = ngApp.components.ui.pagination.models.IPagination;
+  import IPagination = ngApp.components.tables.pagination.models.IPagination;
 
   interface IPagingController {
     setCount(event: any, size: number): void;

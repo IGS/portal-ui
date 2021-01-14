@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h4 data-translate>Error</h4>
+  <h4 >Error</h4>
 </div>
 <div class="modal-body text-danger">
-  <p data-translate>
-    The HMP service has encountered an error and will be restored as soon as possible.
+  <p >
+    {{ wc.warning || 'The website API service has encountered an error and will be restored as soon as possible.' }}
   </p>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" data-ng-click="wc.acceptWarning()" data-translate>OK</button>
+  <button class="btn btn-primary" data-ng-click="wc.acceptWarning()" >OK</button>
 </div>

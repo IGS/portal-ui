@@ -7,15 +7,15 @@ module ngApp.reports.services {
   }
 
   class ReportsService implements IReportsService {
-    private ds: restangular.IElement;
+    private ds: any;
 
     /* @ngInject */
-    constructor(Restangular: restangular.IService, private $q,
+    constructor(Restangular: Restangular.IService, private $q,
                 private ProjectsService: IProjectsService) {
       this.ds = Restangular.all("reports/data-download-statistics");
     }
 
-    getReports(params: Object = {}): ng.IPromise<IReports> {
+    getReports(params: any = {}): ng.IPromise<IReports> {
       if (params.fields) {
         params.fields = params.fields.join();
       }
@@ -38,7 +38,7 @@ module ngApp.reports.services {
       };
 
       var abort = this.$q.defer();
-        var prom: ng.IPromise<IFiles> = this.ds.withHttpConfig({
+        var prom: ng.IPromise<any> = this.ds.withHttpConfig({
           timeout: abort.promise
         })
         .get("", angular.extend(defaults, params)).then((response): IReports => {

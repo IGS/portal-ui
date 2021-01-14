@@ -9,15 +9,15 @@
     <span data-ng-if="showDefault">
       {{ prunedData.length | number }}
       <span data-ng-if="prunedData.length === 1">
-        {{ config.defaultText | translate | humanify }}
+        {{ config['default-text'] || humanify }}
       </span>
       <span data-ng-if="prunedData.length > 1">
-        {{ config.pluralDefaultText | translate | humanify }}
+        {{ config['plural-default-text'] || humanify }}
       </span>
     </span>
     <span data-ng-if="!showDefault">
-      {{ hoverKey | translate | humanify }} - {{ hoverCount | number }}
-      {{ 'Files' | translate }}<span data-ng-if="!config.hideFileSize">, {{ hoverSize | size }}</span>
+      {{ hoverKey || humanify }} - {{ hoverCount | number }}
+      <span data-ng-if="config['hover-count-label']">{{ config['hover-count-label'] }}</span><span data-ng-if="!config['hover-count-label']">{{ 'Files' }}</span><span data-ng-if="!config.hideFileSize">, {{ hoverSize | size }}</span>
     </span>
   </div>
 </div>

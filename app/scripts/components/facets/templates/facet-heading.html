@@ -1,4 +1,4 @@
-<div class="list-group-item-heading facet-title">
+<div class="list-group-item-heading facet-title-container">
     <h4 class="list-group-item-heading h4 facet-title"
         id="{{ ::$parent.title | lowercase | spaceReplace:'-' }}-facet-heading"
     >
@@ -6,24 +6,30 @@
         data-ng-click="fhc.toggle($event, 'collapsed')"
         data-ng-keypress="fhc.toggle($event, 'collapsed')"
         aria-expanded="{{ !$parent.collapsed }}"
-        aria-label="{{ ::$parent.value | translate }} Facet Collapse Toggle"
+        aria-label="{{ ::$parent.value }} Facet Collapse Toggle"
         role="button"
         id="{{ ::$parent.title | lowercase | spaceReplace:'-' }}-facet-label"
         for="{{ 'autocomplete-' + $parent.field }}"
       >
       <i class="fa" data-ng-class="{ 'fa-angle-down': !$parent.collapsed, 'fa-angle-right': $parent.collapsed }"></i>
-        {{ ::$parent.title | translate }}
+        {{ ::$parent.title }}
       </label>
     </h4>
-    <div>
-      <i class="fa fa-rotate-left"
+    <div class="facet-options-container">
+      <i class="fa fa-rotate-left resize-fa-reset"
         data-ng-if="hasActives"
         data-ng-click="clearFunction($parent.name)"
+        title="reset filter"
       ></i>
       <i class="fa fa-times"
         data-ng-if="$parent.removable"
         data-ng-click="removeFunction()"
+        title="remove filter"
       ></i>
+    </div>
+    <div class="sort-button-container">
+      <i class="fa fa-sort-amount-desc resize-fa-sort sort-terms-button" data-ng-show="sort==='alphabet'" data-ng-click="$parent.sort='count'" role="button" aria-hidden="true" title="sort by count"></i>
+      <i class="fa fa-sort-alpha-asc resize-fa-sort sort-terms-button" data-ng-show="sort==='count'" data-ng-click="$parent.sort='alphabet'" role="button"  aria-hidden="true" title="sort alphabetically"></i>
     </div>
   </div>
 

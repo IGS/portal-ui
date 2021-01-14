@@ -2,8 +2,10 @@ module ngApp.participants {
   "use strict";
 
   import IParticipantsService = ngApp.participants.services.IParticipantsService;
-  import IParticipant = ngApp.participants.models.IParticipant;
 
+
+  /* TODO: mschor: Need to get rid of all of these hard-coded fields (below) */
+  
   /* @ngInject */
   function participantsConfig($stateProvider: ng.ui.IStateProvider) {
     $stateProvider.state("case", {
@@ -11,8 +13,8 @@ module ngApp.participants {
       controller: "ParticipantController as pc",
       templateUrl: "participant/templates/participant.html",
       resolve: {
-        participant: ($stateParams: ng.ui.IStateParamsService, ParticipantsService: IParticipantsService): ng.IPromise<IParticipant> => {
-          if (! $stateParams.caseId) {
+        participant: ($stateParams: ng.ui.IStateParamsService, ParticipantsService: IParticipantsService): ng.IPromise<any> => {
+          if (! $stateParams['caseId']) {
             throw Error('Missing route parameter: caseId. Redirecting to 404 page.');
           }
           return ParticipantsService.getParticipant($stateParams["caseId"], {

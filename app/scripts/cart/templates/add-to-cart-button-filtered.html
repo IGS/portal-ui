@@ -12,39 +12,39 @@
         <span class="icon-btn-label">Case Actions</span>
     </button>
     <ul uib-dropdown-menu role="menu">
-        <li aria-label="{{ 'Add all related files' | translate }}"
+        <li aria-label="{{ 'Add all related files' }}"
             role="button"
             data-ng-class="{ disabled: !ctrl.files.length }">
             <a data-ng-click="ctrl.addRelatedFiles()" data-ng-if="ctrl.files.length">
                 <i class="fa fa-shopping-cart fa-stack"></i>
-                <span data-translate>Add all Sample files to the Cart</span> ({{ ctrl.files.length }})
+                <span >Add all Sample files to the Cart</span> ({{ ctrl.files.length }})
             </a>
             <a data-ng-click="ctrl.removeRelatedFiles()" data-ng-if="ctrl.inBoth.length">
                 <i class="fa fa-trash-o fa-stack"></i>
-                <span data-translate>Remove all Sample files from the Cart</span> ({{ ctrl.inBoth.length }})
+                <span >Remove all Sample files from the Cart</span> ({{ ctrl.inBoth.length }})
             </a>
             <a data-ng-if="!ctrl.files.length">
                 <span class="fa-stack">
                     <i class="fa fa-shopping-cart fa-stack-1x"></i>
                     <i class="fa fa-ban fa-stack-2x"></i>
                 </span>
-                <span data-translate data-ng-if="ctrl.retrievingFiles">Loading...</span>
-                <span data-translate data-ng-if="!ctrl.retrievingFiles">No files.</span>
+                <span  data-ng-if="ctrl.retrievingFiles">Loading...</span>
+                <span  data-ng-if="!ctrl.retrievingFiles">No files.</span>
             </a>
         </li>
-        <li aria-label="{{ 'Add filtered related files' | translate }}"
+        <li aria-label="{{ 'Add filtered related files' }}"
             data-ng-if="ctrl.areFiltersApplied"
             role="button" data-ng-class="{ disabled: !ctrl.filteredRelatedFiles.pagination.total }">
             <a data-ng-click="ctrl.addFilteredRelatedFiles(p)" data-ng-if="ctrl.filteredRelatedFiles.pagination.total">
                 <i class="fa fa-shopping-cart fa-stack"></i>
-                <span data-translate>Add filtered Sample files to the Cart</span> ({{ ctrl.filteredRelatedFiles.pagination.total }})
+                <span >Add filtered Sample files to the Cart</span> ({{ ctrl.filteredRelatedFiles.pagination.total }})
             </a>
             <a data-ng-if="!ctrl.filteredRelatedFiles.pagination.total">
                 <span class="fa-stack">
                     <i class="fa fa-shopping-cart fa-stack-1x"></i>
                     <i class="fa fa-ban fa-stack-2x"></i>
                 </span>
-                <span data-translate data-ng-if="ctrl.retrievingFiles">Loading...</span>
+                <span  data-ng-if="ctrl.retrievingFiles">Loading...</span>
             </a>
         </li>
     </ul>

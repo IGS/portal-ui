@@ -1,19 +1,25 @@
 <div class="home-container">
   <div class="showcase-container row-layout col-md-12 row">
     <div class="col-lg-6 col-md-7 quick-search-component">
-      <h1>Human Microbiome Project Data Portal</h1>
-      <!--<img width="500px" align="middle" src="images/iHMP_header.png">-->
+      <h1 data-ng-bind="hc.homeConfig['portal-name']"></h1>
+      <div data-ng-if="hc.homeConfig['project-external-link']" class="project-external-link-container">
+        <!-- <span>Data host for </span>
+        <a class="btn btn-primary" href="{{hc.homeConfig['project-external-link']}}">
+          {{ hc.homeConfig['project-name'] }}
+        </a> -->
+        <span>Project website: </span><a class="project-external-link" href="{{hc.homeConfig['project-external-link']}}">{{ hc.homeConfig['project-name'] }}</a>
+      </div>
       <div class="quick-search-container">
         <em>Get Started by Exploring:</em>
         <div class="search-button-container row">
           <div class="col-md-6">
             <a ui-sref="projects.table" tabindex="0" class="btn btn-primary btn-lg btn-projects">
-              <i class="icon-gdc-projects"></i>&nbsp; <span data-translate>Studies</span>
+              <i class="fa fa-flask"></i>&nbsp; <span >Studies</span>
             </a>
           </div>
           <div class="col-md-6">
             <a ui-sref="search.summary" tabindex="0" class="btn btn-primary btn-lg btn-data">
-              <i class="icon-gdc-data"> </i>&nbsp; <span data-translate>Data</span>
+              <i class="fa fa-bar-chart"> </i>&nbsp; <span >Data</span>
             </a>
           </div>
         </div>
@@ -23,23 +29,25 @@
         <em>Perform Advanced Search Queries, such as:</em>
         <table class="query-list-table" role="presentation">
           <tbody>
-            <tr data-ng-repeat="query in hc.getExampleSearchQueries()">
+            <tr data-ng-repeat="query in hc.exampleSearchQueries">
               <th scope="row" style="white-space: normal">
                 <ul>
-                  <li data-ng-bind="query.description"></li>
+                  <li data-ng-bind="query['description']"></li>
                 </ul>
               </th>
-              <td>
-                <a class="btn btn-primary" href="/search/c?filters={{query.filters}}">
-                  <span data-ng-if="query.caseCount >= 0" data-ng-bind="query.caseCount | number"></span>
-                  <span data-ng-if="query.caseCount === null"><i class="fa fa-spinner fa-spin"></i></span>
+              <td data-ng-if="query['has-cases-link']" 
+              colspan="{{ query['has-files-link'] ? 1 : 2 }}">
+                <a class="btn btn-primary" href="{{query['cases-link']}}">
+                  <span data-ng-if="query.case_count >= 0" data-ng-bind="query.case_count | number"></span>
+                  <span data-ng-if="query.case_count === null"><i class="fa fa-spinner fa-spin"></i></span>
                   Samples
                 </a>
               </td>
-              <td>
-                <a class="btn btn-primary" href="/search/f?filters={{query.filters}}">
-                  <span data-ng-if="query.fileCount >= 0" data-ng-bind="query.fileCount | number"></span>
-                  <span data-ng-if="query.fileCount === null"><i class="fa fa-spinner fa-spin"></i></span>
+              <td data-ng-if="query['has-files-link']" 
+              colspan="{{ query['has-cases-link'] ? 1 : 2 }}">
+                <a class="btn btn-primary" href="{{query['files-link']}}">
+                  <span data-ng-if="query.file_count >= 0" data-ng-bind="query.file_count | number"></span>
+                  <span data-ng-if="query.file_count === null"><i class="fa fa-spinner fa-spin"></i></span>
                   Files
                 </a>
               </td>
@@ -51,7 +59,7 @@
     <div class="col-lg-6 col-md-5 browser-vis component">
       <div class="filter-container">
         <div class="filter-bubble">
-          <a ui-sref="projects.table" title="Go to the HMP Projects Page">Samples by Primary Site</a>
+          <a ui-sref="projects.table" title="{{hc.homeConfig['projects-table-title']}}">{{hc.homeConfig['projects-table-title-header']}}</a>
           <div class="arrow"></div>
         </div>
       </div>
@@ -72,230 +80,15 @@
             display: flex;
             flex-direction: column;">
           <h3 style="margin:0 0 1rem 0; color: #333 !important">Data Portal Summary</h3>
-          <a href="http://hmpdacc.org/resources/osdf.php" target="_blank">
-            <em style="font-size:1.3rem;text-transform: none">
-              Data Release <span data-ng-bind-placholder="">1.1</span> -
-              <span style="margin-right: 1rem">September 26, 2017</span>
-            </em>
-          </a>
         </div>
-        <div class="data-stats-block">
-          <div class="stats-block-header">Studies</div>
+        <div class="data-stats-block" ng-repeat="stat in hc.homeConfig['summary-stat']">
+          <div class="stats-block-header">{{ stat['title'] }}</div>
           <div class="stats-block-body">
-            <i class="icon-gdc-projects project-icon"></i>
-            <span style="color: #333" data-ng-bind="hc.projectData.pagination.unique_total|number"></span>
-          </div>
-        </div>
-        <div class="data-stats-block">
-          <div class="stats-block-header">Primary Site</div>
-          <div class="stats-block-body">
-            <span class="icon-gdc-cancer-types project-icon">
-              <span class="path1"></span><span class="path2"></span><span class="path3" style="color: #fff;"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span>
-            </span>
-            <span style="color: #333" data-ng-bind="hc.projectData.aggregations.primary_site.buckets.length|number"></span>
-          </div>
-        </div>
-        <div class="data-stats-block">
-          <div class="stats-block-header">Samples</div>
-          <div class="stats-block-body">
-            <i class="icon-gdc-cases data-icon"></i>
-            <span style="color: #333" data-ng-bind="hc.caseData.pagination.total|number"></span>
-          </div>
-        </div>
-        <div class="data-stats-block">
-          <div class="stats-block-header">Files</div>
-          <div class="stats-block-body">
-            <i class="fa fa-file-o data-icon"></i>
-            <span style="color: #333" data-ng-bind="hc.fileData.pagination.total|number"></span>
+            <span ng-bind-html="stat['icon']"></span>
+            <span class="stat-figure" style="color: #333" data-ng-bind="{{ stat['data'] }}|number"></span>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-<!--
-  <div class="table-row-container row-layout row">
-    <div class="table-container component col-md-12">
-
-      <div class="info-table col-lg-4 col-md-6 col-sm-12 gdc-infras">
-        <div class="panel panel-default">
-          <div class="panel-heading clearfix">
-            <h3 class="panel-title table-heading">Infrastructure</h3>
-            <p>
-              <em>
-                Data is continuously being processed and harmonized.<br />View system statistics:
-              </em>
-            </p>
-          </div>
-          <table class="table-responsive table table-striped table-hover table-condensed">
-            <tbody>
-              <tr>
-                <th scope="row">Compute Infrastructure</th>
-                <td>12,800 Cores</td>
-                <td>87.96 TB RAM</td>
-              </tr>
-              <tr>
-                <th scope="row">Storage Infrastructure</th>
-                <td>
-                  4.98 PB Used
-                </td>
-                <td>5.42 PB Total</td>
-              </tr>
-              <tr>
-                <th scope="row" colspan="3"><a href="/reports/data-download-statistics">View Data Download Statistics Report <i class="fa fa-angle-double-right"></i></a></th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="info-table col-lg-4 col-md-6 col-sm-12 gdc-docs">
-        <div class="panel panel-default">
-          <div class="panel-heading clearfix">
-            <h3 class="panel-title table-heading">Documentation</h3>
-
-              <em>
-                Learn how to use the HMP Data Portal to its full potential with common
-                topics such as:
-              </em>
-
-          </div>
-          <table class="table-responsive table table-striped table-hover table-condensed">
-            <tbody>
-            <tr>
-              <td>
-                <a href="http://hmpdacc.org/resources/osdf.php" target="_blank">Browse Data using Facet Search</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="http://hmpdacc.org/resources/osdf.php" target="_blank">Search Data with Advanced Search Technology</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="http://hmpdacc.org/resources/osdf.php" target="_blank">Project Based Data Availability</a>
-                </li>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="http://hmpdacc.org/resources/osdf.php" target="_blank">Controlled Access Data</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="http://hmpdacc.org/resources/osdf.php" target="_blank"><strong>Visit the Documentation Website <i class="fa fa-angle-double-right"></i></strong></a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="info-table col-lg-4 col-md-12 col-sm-12 gdc-apps">
-        <div class="panel panel-default">
-          <div class="panel-heading clearfix">
-            <h3 class="panel-title table-heading">Applications</h3>
-
-              <em>
-                The HMP Data Portal is a robust data-driven platform that allows cancer researchers and
-                bioinformaticians to search and download cancer data for analysis. Applications include:
-              </em>
-
-          </div>
-          <table class="table-responsive table table-striped table-hover table-condensed">
-            <tbody>
-              <tr>
-                <td>
-                  <div data-uib-tooltip="Data Portal">
-                    <a href="#" title="Data Portal">
-                      <img width="35px"
-                        src="images/GDC-App-data-portal-blue.svg" class="icon icon-gdc-cbio-portal home" alt="GDC Data Portal" />
-                        <p>Data Portal</p>
-                    </a>
-                  </div>
-                </td>
-                <td>
-                  <div data-uib-tooltip="GDC Website">
-                    <a href="http://gdc.nci.nih.gov/" target="_blank" title="GDC Website">
-                      <img width="35px"
-                        src="images/GDC-App-website-blue.svg" class="icon icon-gdc-cbio-portal home" alt="GDC Website" />
-                      <p>Website</p>
-                    </a>
-                  </div>
-                </td>
-                <td>
-                   <div data-uib-tooltip="GDC Data Transfer Tool">
-                     <a href="http://gdc.nci.nih.gov/access-data/gdc-data-transfer-tool" target="_blank" title="GDC Data Transfer Tool">
-                        <span class="icon icon-gdc-data-transer-tool">
-                          <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span>
-                        </span>
-                        <p>Data Transfer Tool</p>
-                     </a>
-                   </div>
-                 </td>
-                 <td>
-                   <div data-uib-tooltip="GDC API">
-                     <a href="http://gdc.nci.nih.gov/developers/gdc-application-programming-interface-api" target="_blank" title="GDC API">
-                        <span class="icon icon-gdc-portal-api">
-                          <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span>
-                        </span>
-                        <p>API</p>
-                     </a>
-                   </div>
-                 </td>
-            </tr>
-            <tr>
-              <td>
-                <div data-uib-tooltip="GDC Submission Portal">
-                  <a href="http://gdc-portal.nci.nih.gov/submission/" target="_blank" title="GDC Submission Portal">
-                     <span class="icon icon-gdc-submission-portal">
-                      <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span>
-                    </span>
-                    <p>Data Submission Portal</p>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div data-uib-tooltip="GDC Docs">
-                  <a href="http://gdc-docs.nci.nih.gov/ " target="_blank" title="GDC Docs">
-                    <span class="icon icon-gdc-docs">
-                      <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span><span class="path11"></span><span class="path12"></span><span class="path13"></span><span class="path14"></span>
-                    </span>
-                    <p>Documentation</p>
-                  </a>
-                </div>
-               </td>
-               <td>
-                <div data-uib-tooltip="GDC Legacy Archive">
-                  <a href="http://gdc-portal.nci.nih.gov/legacy-archive" target="_blank" title="GDC Legacy Archive">
-                    <span class="icon icon-gdc-legacy-archive">
-                      <span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span>
-                    </span>
-                    <p>Legacy Archive</p>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div data-uib-tooltip="GDC cBio Portal">
-                  <a href="http://gdc-cbioportal.nci.nih.gov/" title="GDC cBio Portal" target="_blank" class="menu-item">
-                      <img width="35px"
-                        src="images/icon-cBioPortal.svg" class="icon icon-gdc-cbio-portal home" alt="GDC cBio Portal" />
-                      <p>cBio Portal</p>
-                  </a>
-                </div>
-              </td>
-
-              <td>&nbsp;</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div>
--->
-
 </div>

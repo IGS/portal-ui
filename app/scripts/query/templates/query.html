@@ -4,7 +4,7 @@
 
       <search-bar></search-bar>
 
-      <h3 class="col-lg-9 col-md-8" data-ng-if="!qc.participants.hits.length && !qc.files.hits.length && !qc.participantsLoading && !qc.filesLoading" data-translate>
+      <h3 class="col-lg-9 col-md-8" data-ng-if="!qc.participants.hits.length && !qc.files.hits.length && !qc.participantsLoading && !qc.filesLoading" >
         No results found using those filters.
       </h3>
 
@@ -19,7 +19,7 @@
                   data-ng-href="{{
                   qc.$state.href('query.summary', qc.LocationService.search().filters
                   )}}">
-                {{ 'Summary' | translate }}
+                {{ 'Summary' }}
               </a>
             </li>
             <li role="presentation"
@@ -30,7 +30,7 @@
                   data-ng-href="{{
                   qc.$state.href('query.participants', qc.LocationService.search().filters
                   )}}">
-                {{ 'Samples' | translate }} ({{qc.participants.pagination.total| number:0}})
+                {{ 'Samples' }} ({{qc.participants.pagination.total| number:0}})
               </a>
             </li>
             <li role="presentation"
@@ -41,13 +41,13 @@
                   data-ng-href="{{
                   qc.$state.href('query.files', qc.LocationService.search().filters
                   )}}">
-                {{ 'Files' | translate }} ({{qc.files.pagination.total| number:0}})
+                {{ 'Files' }} ({{qc.files.pagination.total| number:0}})
               </a>
             </li>
           </ul>
 <!--
           <a ui-sref="annotations" style="margin-top: auto; margin-bottom: auto; margin-left: auto">
-            <span data-translate>Browse Annotations</span>
+            <span >Browse Annotations</span>
           </a>
 -->
         </div>

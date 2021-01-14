@@ -3,18 +3,20 @@
     <thead>
       <tr>
         <td></td>
-        <th scope="col" data-translate>Files</th>
-        <th scope="col" data-translate data-ng-if="config.showParticipant">Cases</th>
-        <th scope="col" data-translate data-ng-if="!config.hideFileSize">File Size</th>
+        <th scope="col" data-ng-if="config.showFiles">Files</th>
+        <th scope="col"  data-ng-if="config.showParticipant">Samples</th>
+        <th scope="col"  data-ng-if="!config.hideFileSize">File Size</th>
       </tr>
     </thead>
     <tbody>
       <tr data-ng-repeat="item in displayedData track by $index">
         <th scope="row">
           <div class="chart-color" data-ng-style="{ 'background-color': item.color }"></div>
-          {{ item.data[config.displayKey] | humanify }}
+          {{ item.data[config['display-key']] | humanify }}
         </th>
-        <td class="text-right">{{ item.data[config.sortKey] | number }}</td>
+        <td class="text-right" data-ng-if="config.showFiles">
+          {{ item.data[config['sort-key']] | number }}
+        </td>
         <td class="text-right" data-ng-if="config.showParticipant">
           {{ item.data.case_count | number }}
         </td>

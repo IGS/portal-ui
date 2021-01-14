@@ -2,440 +2,397 @@ var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 $.ngAnnotate = require('gulp-ng-annotate');
 var del = require('del');
-var runSequence = require('run-sequence');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
-var pagespeed = require('psi');
+var log = require('fancy-log');
 var fs = require('graceful-fs');
-var packageJSON = require("./package.json");
-var modRewrite = require('connect-modrewrite');
-var mkdirp = require("mkdirp");
+var packageJSON = require('./package.json');
+var mkdirp = require('mkdirp');
+var randomString = require('random-string');
+var eslint = require('gulp-eslint');
+var format = require('string-format');
+
+format.extend(String.prototype);
 
 var env = {
-  api: process.env.GDC_API || "http://localhost:5000",
-  auth: process.env.GDC_AUTH || "http://localhost:5000/status",
-  base: process.env.GDC_BASE || "/",
-  port: process.env.GDC_PORT || 3000,
-  fake_auth: process.env.GDC_FAKE_AUTH || false,
+    api: '/api',
+    auth: '/api/status',
+    base: '/',
+    port: 8080,
+    fake_auth: true
 };
 
-var AUTOPREFIXER_BROWSERS = [
-  'ie >= 10',
-  'ie_mob >= 10',
-  'ff >= 30',
-  'chrome >= 34',
-  'safari >= 7',
-  'opera >= 23',
-  'ios >= 7',
-  'android >= 4.4',
-  'bb >= 10'
-];
+var production = false;
+// var production = true;
+if (process.env.NODE_ENV === 'production') {
+    production = true;
+}
 
-var production = true;// process.env.NODE_ENV === "production";
-$.util.log('Environment', $.util.colors.blue(production ? 'Production' : 'Development'));
+log('Environment', production ? 'Production' : 'Development');
 
 // <paths>
 var paths = {
-  "src": "./src",
-  "dev": "./dist",
-  "stage": "./dist",
-  "bower": "./bower_components/**/*.{js,css,map,eot,svg,ttf,woff,woff2}",
-  js: {},
-  html: {}
+    'src': './src',
+    'ddest': './dist',
+    js: {},
+    css: {},
+    html: {}
 };
-paths.ddest = production ? paths.stage : paths.dev;
-paths.js.src = paths.src + "/app/**/*";
-paths.js.dest = paths.ddest + "/js";
-paths.vendor = paths.ddest + "/libs";
-paths.html.src = paths.src + "/index.html";
-paths.html.dest = paths.dest + "/index.html";
+
+paths.css.deps = './css';
+paths.css.dest = paths.ddest + '/css/lib';
+paths.js.src = paths.src + '/app/**/*';
+paths.js.deps = './js';
+paths.js.dest = paths.ddest + '/js/lib';
+paths.vendor = paths.ddest + '/libs';
+paths.html.src = paths.src + '/index.html';
+paths.html.dest = paths.dest + '/index.html';
 // </paths>
 
-gulp.task('logs', function () {
-  require('conventional-changelog')({
-    repository: packageJSON.repository,
-    version: packageJSON.version,
-    issueLink: function (id) {
-      return '[PGDC-' + id + '](https://jira.opensciencedatacloud.org/browse/PGDC-' + id + ')'
-    }
-    //,from: "8b8e5953153997e8cf53c68237fadd0e7c0cacdd"
-  }, function (err, log) {
-    fs.writeFile('CHANGELOG.md', log);
-  });
+gulp.task('logs', function() {
+    var cl = require('conventional-changelog');
+    var myFile = fs.createWriteStream('CHANGELOG.md');
+    return cl({
+        repository: packageJSON.repository,
+        version: packageJSON.version
+    }).pipe(myFile);
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
-
-gulp.task('i18n:pot', function () {
-  return gulp.src(['app/scripts/**/*.html', 'app/scripts/**/*.js'])
-      .pipe($.angularGettext.extract('template.pot'))
-      .pipe(gulp.dest('translations/'));
+gulp.task('clean', function() {
+    return del(['.tmp/**', 'dist/**'], {force: true});
 });
 
-gulp.task('i18n:translations', ['i18n:pot'], function () {
-  return gulp.src('translations/**/*.po')
-      .pipe($.angularGettext.compile({
-        format: 'javascript',
-        defaultLanguage: 'en'
-      }))
-      .pipe(gulp.dest('dist/translations/'));
-});
+// This is a function that is used to format the output of the use of the
+// gulp-sizediff module. Which, in this gulpfile, is invoked with $.sizediff()
+// because of the use of the gulp-load-plugins module, which puts everything
+// under $.
+var sizeDiffFormat = function(data) {
+    return ': Before: ' + data.startSize + ', After: ' + data.endSize +
+        ' (' + Math.round(data.diffPercent * 100) + '% of original)' +
+        '. Total bytes saved: ' + data.diff;
+};
 
-gulp.task('i18n:build', ['i18n:translations'], function () {
-  var f = production ? 'translations.min.js' : 'translations.js';
-
-  return gulp.src('dist/translations/**/*.js')
-      .pipe($.concat(f))
-      .pipe(gulp.dest('dist/js'));
-});
-
-// No file gets built in the case no translations exist.
-// Build one to prevent 404s in browser.
-gulp.task('i18n:exists', function () {
-  var f = production ? "translations.min.js" : "translations.js";
-
-  fs.readFile("dist/js/" + f, function (err) {
-    if (err) {
-      mkdirp("dist/js", function (err) {
-        if (err) {
-          throw err;
-        }
-
-        fs.writeFile("dist/js/" + f, "");
-      });
-    }
-  });
-});
-
-gulp.task('i18n:clean', del.bind(null, ['dist/translations', 'dist/js/translations.js', 'dist/js/translations.min.js']));
-
-gulp.task('i18n', function (cb) {
-  runSequence('i18n:clean', ['i18n:build', 'i18n:exists'], cb);
-});
-
-// Optimize Images
-gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
-//      .pipe($.imagemin({
-//        progressive: true,
-//        interlaced: true
-//      }))
-      .pipe(gulp.dest('dist/images'))
-      .pipe($.size({title: 'images'}));
-});
-
-gulp.task("config", function () {
-  var f = production ? "config.min.js" : "config.js";
-
-  fs.readFile("app/config.js", "UTF-8", function (err, content) {
-    if (err) {
-      throw err;
-    }
-
-    $.git.exec({args: "rev-parse --short HEAD"}, function (err, stdout) {
-      if (err) {
-        throw err;
-      }
-
-      content = content.replace(/__VERSION__/g, packageJSON.version);
-      content = content.replace(/__COMMIT__/g, stdout.replace(/[\r\n]/, ""));
-      content = content.replace(/__API__/, env.api);
-      content = content.replace(/__AUTH__/g, env.auth);
-      content = content.replace(/__PRODUCTION__/, production);
-      content = content.replace(/__FAKE_AUTH__/, env.fake_auth);
-
-      // Ensures path is in place, as I've had occurances where it may not be.
-      mkdirp("dist/js", function (err) {
-        if (err) {
-          throw err;
-        }
-
-        fs.writeFileSync("dist/js/" + f, content);
-      });
+// Optimize images
+function images() {
+    return new Promise(function(resolve, reject) {
+        gulp.src('app/images/**/*')
+            .pipe($.sizediff.start())
+            // Removes the viewBox from SVG regardless of parameter passed
+            // Removed for NeMO (header logo)
+            /*.pipe($.imagemin({
+                progressive: true,
+                interlaced: true
+            }))*/
+            .pipe($.sizediff.stop({title: 'images', formatFn: sizeDiffFormat}))
+            .pipe(gulp.dest('dist/images'))
+            .on('end', resolve)
+            .on('error', reject);
     });
-  });
-});
+}
 
-// Copy Web Fonts To Dist
-gulp.task('fonts', function () {
-  return gulp.src(['app/fonts/**'])
-      .pipe(gulp.dest('dist/fonts'))
-      .pipe($.size({title: 'fonts'}));
-});
+function fonts() {
+    return new Promise(function(resolve, reject) {
+        gulp.src(['app/fonts/**'])
+            .pipe($.size({title: 'fonts'}))
+            .pipe(gulp.dest('dist/fonts'))
+            .on('end', resolve)
+            .on('error', reject);
+    });
+}
 
-// Copy External non Bower Libraries To Dist
-gulp.task('vendor', function () {
-  return gulp.src(['app/vendor/**'])
-      .pipe(gulp.dest('dist/libs'))
-      .pipe($.size({title: 'vendor'}));
-});
+// Copy external non-yarn managed libraries to dist
+function vendor() {
+    return new Promise(function(resolve, reject) {
+        gulp.src(['app/vendor/**'])
+            .pipe($.size({title: 'vendor'}))
+            .pipe(gulp.dest('dist/libs'))
+            .on('end', resolve)
+            .on('error', reject);
+    });
+}
 
 // Compile and Automatically Prefix Stylesheets
-gulp.task('styles', function () {
-  var f = production ? 'styles.min.css' : 'styles.css';
+//gulp.task('styles', function() {
+function styles() {
+    return new Promise(function(resolve, reject) {
+        var filename = production ? 'styles.min.css' : 'styles.css';
 
-  return gulp.src('app/styles/app.less')
-      .pipe($.changed('styles', {extension: '.less'}))
-      .pipe($.less().on('error', $.util.log))
-      .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
-      .pipe($.concat(f))
-      //.pipe($.if(production, $.csso()))
-    // Concatenate And Minify Styles
-      .pipe(gulp.dest('dist/css'))
-      .pipe($.size({title: 'styles'}));
+        gulp.src('app/styles/app.less')
+            .pipe($.changed('styles', {extension: '.less'}))
+            .pipe($.less().on('error', log))
+            .pipe($.autoprefixer({
+                cascade: false
+            })
+            )
+            .pipe($.sizediff.start())
+            // Concatenate And Minify Styles
+            .pipe($.concat(filename))
+            .pipe($.if(production, $.csso()))
+            .pipe($.sizediff.stop({title: 'styles', formatFn: sizeDiffFormat}))
+            .pipe(gulp.dest('dist/css'))
+            .on('end', resolve)
+            .on('error', reject);
+    });
+}
+
+// NOTE: When replacing this task, the replacement will instead take assets from
+// js/components, css/components and fonts/components, and do essentially the
+// same thing into dist/libs
+gulp.task('frontend_js', function() {
+    var stream = gulp.src(paths.js.deps + '/components/**/*');
+
+    return stream
+        .pipe(gulp.dest(paths.js.dest));
 });
 
-gulp.task('js:bower', function () {
-  var stream = gulp.src(paths.bower);
+gulp.task('frontend_css', function() {
+    var stream = gulp.src(paths.css.deps + '/components/**/*');
 
-  if (production) {
-    var filter = $.filter('**/*.min.{js,css,map}');
+    var f = $.filter(
+        ['**', '!**/fonts', '!**/fonts/**'],
+        {restore: true, passthrough: false}
+    );
 
     stream
-        .pipe(filter)
-        .pipe($.foreach(function (stream, file) {
-          if (file.relative.indexOf(".js")) {
-            var fileName = file.relative.substr(file.relative.lastIndexOf("/") + 1);
-            fileName = fileName.substr(0, fileName.lastIndexOf(".min") + 4) + ".js.map";
+        // Filter the non-font files
+        .pipe(f)
+        .pipe(gulp.dest('./dist/css/lib'));
 
-            var path = file.relative.substr(0, file.relative.lastIndexOf("/") + 1) + fileName;
-            return stream
-                .pipe($.replace(fileName, "/libs/" + path));
-          }
+    // Use the filtered files (which are fonts) as a gulp file source
+    f.restore
+        .pipe(gulp.dest('./dist/css'));
 
-          return stream;
+    return stream;
+});
+
+var frontend = gulp.series('frontend_js', 'frontend_css');
+
+gulp.task('frontend', frontend);
+
+// <ng-templates>
+gulp.task('ng_templates', function() {
+    return ng_templates();
+});
+
+var ng_templates = function() {
+    var f = production ? 'templates.min.js' : 'templates.js';
+
+    return gulp.src('app/scripts/**/templates/*.html')
+        .pipe($.htmlmin({
+            collapseWhitespace: true,
+            customAttrCollapse: /data-|d/,
+            removeRedundantAttributes: true,
+            removeComments: true }
+        ))
+        .pipe($.ngHtml2js({
+            moduleName: function(file) {
+                var path = file.path.split('/');
+                var folder = path[path.length - 2];
+                return folder.replace(/-[a-z]/g, function(match) {
+                    return match.substr(1).toUpperCase() + 'templates';
+                });
+            }
         }))
-        .pipe($.rev())
-        .pipe(gulp.dest(paths.vendor))
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest(paths.vendor))
-        .pipe(filter.restore());
-  }
+        .pipe($.concat(f))
+        .pipe($.if(production, $.uglify()))
+        .pipe(gulp.dest('dist/js'))
+        .pipe($.size({title: 'ng_templates'}));
+};
+// </ng-templates>
 
-  return stream.pipe(gulp.dest('dist/libs'))
-      .pipe($.size({title: 'js:bower'}));
-});
+var html_replacement = function() {
+    var minified = production ? '.min' : '';
 
-// Scan Your HTML For Assets & Optimize Them
-gulp.task('rev', ['html'], function () {
-  var stream = gulp.src('dist/index.html');
-
-  if (production) {
-    var manifest = paths.vendor + "/rev-manifest.json";
-    var vendorFiles = fs.existsSync(manifest) ? require(manifest) : [];
-    var assets = $.useref.assets({searchPath: 'dist'});
-
-    for (var file in vendorFiles) {
-      if (vendorFiles.hasOwnProperty(file)) {
-        stream = stream.pipe($.replace(file, vendorFiles[file]));
-      }
-    }
-
-    stream.pipe(assets)
-        .pipe($.rev())
-        .pipe(assets.restore())
-        .pipe($.useref())
-        .pipe($.revReplace())
+    return gulp.src('app/index.html')
+        .pipe($.replace('__BASE__', env.base))
+        .pipe($.replace('__MINIFIED__', minified))
         .pipe(gulp.dest('dist'))
-        .pipe($.gzip())
-        .pipe(gulp.dest('dist'));
-  }
+        .pipe($.size({title: 'html'}));
+};
 
-  return stream
-      .pipe(gulp.dest('dist'))
-      .pipe($.size({title: 'rev'}));
-});
+var html = gulp.series(html_replacement, 'frontend', 'ng_templates');
+
+gulp.task('html', html);
 
 // Scan Your HTML For Assets & Optimize Them
-gulp.task('html', ['js:bower', 'ng:templates'], function () {
-  var stream = gulp.src('app/index.html');
+gulp.task('rev', gulp.series('html', function() {
+    var stream = gulp.src('dist/index.html');
 
-  if (production) {
-    stream
-        .pipe($.replace('.js', '.min.js'))
-        .pipe($.replace('d3-tip/index.min.js', 'd3-tip/index.js'))
-        .pipe($.replace('moment/moment.min.js', 'moment/min/moment.min.js'))
-        .pipe($.replace('analytics.min.js', 'analytics.js'))
-        .pipe($.replace('FileSaver.min.min.js', 'FileSaver.min.js'))
-        .pipe($.replace('.css', '.min.css'))
-        .pipe($.replace('src/css/bootcards-desktop.min.css', 'src/css/bootcards-desktop.css'))
-        .pipe($.replace('ngprogress-lite.min.css', 'ngprogress-lite.css'));
-  }
-  return stream
-      .pipe($.replace('__BASE__', env.base))
-      .pipe(gulp.dest('dist'))
-      .pipe($.size({title: 'html'}));
-});
+    if (production) {
+        var manifest = paths.vendor + '/rev-manifest.json';
+        var vendorFiles = fs.existsSync(manifest) ? require(manifest) : [];
+        //var assets = $.useref.assets({searchPath: 'dist'});
 
-// <tests>
-gulp.task('test', ['clean', 'ts:compile', 'ng:templates'], function () {
-  runSequence('karma:once')
-});
+        for (var file in vendorFiles) {
+            if (vendorFiles.hasOwnProperty(file)) {
+                stream = stream.pipe($.replace(file, vendorFiles[file]));
+            }
+        }
 
-gulp.task('plato', function () {
-  return gulp.src('.tmp/scripts/**/*.js')
-      .pipe($.plato('report'));
-});
-
-gulp.task('karma:once', function () {
-  // Be sure to return the stream
-  return gulp.src('app/scripts/*.js')
-      .pipe($.karma({
-        configFile: 'karma.conf.js',
-        action: 'run'
-      }))
-      .on('error', function (err) {
-        // Make sure failed tests cause gulp to exit non-zero
-        throw err;
-      });
-});
-
-gulp.task('karma:watch', function () {
-  return gulp.src('app/scripts/*.js')
-      .pipe($.karma({
-        configFile: 'karma.conf.js',
-        action: 'watch'
-      }));
-});
-
-gulp.task('webdriver', $.protractor.webdriver_update);
-
-gulp.task('protractor', ['webdriver'], function () {
-  return gulp.src('app/tests/**/*.spec.js')
-      .pipe($.protractor.protractor({configFile: 'protractor.conf.js'}));
-});
-// </tests>
+        return stream
+            //.pipe($.rev())
+            // .pipe($.useref())
+            //.pipe($.revReplace())
+            //.pipe(gulp.dest('dist'))
+            .pipe($.gzip())
+            .pipe(gulp.dest('dist'));
+    } else {
+        return stream
+            .pipe(gulp.dest('dist'))
+            .pipe($.size({title: 'rev'}));
+    }
+}));
 
 // <typescript>
-var tsProject = $.typescript.createProject({
-    "target": "ES3",
-		"module": "commonjs",
-		"declaration": true,
-		"noExternalResolve": false
-});
+var tsProject = $.typescript.createProject('app/scripts/tsconfig.json');
 
-gulp.task('ts:compile', function () {
-  var f = production ? 'app.min.js' : 'app.js';
-  var tsResult = gulp.src('app/**/*.ts')
-      .pipe($.typescript(tsProject));
+var ts_compile = function () {
+    var f = production ? 'app.min.js' : 'app.js';
+    var api_base = production ? '/api' : 'http://localhost:5000';
 
-  tsResult.dts.pipe(gulp.dest('dist/dts'));
-  tsResult.js.pipe(gulp.dest('.tmp'));
+    var tsResult = gulp.src('app/**/*.ts')
+        .pipe(tsProject());
 
-  return tsResult.js
-      .pipe($.sourcemaps.init())
-      .pipe($.concat(f))
-      .pipe($.ngAnnotate())
-      .pipe($.if(production, $.uglify()))
-      .pipe($.wrap({src: './iife.txt'}))
-      .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('dist/js'))
-      .pipe($.size({title: 'typescript'}));
+    tsResult.dts.pipe(gulp.dest('dist/dts'));
+    tsResult.js.pipe(gulp.dest('.tmp'));
+
+    return tsResult.js
+        .pipe($.if(! production, $.sourcemaps.init()))
+        .pipe($.concat(f))
+        .pipe($.replace('__API_BASE__', api_base))
+        .pipe($.ngAnnotate())
+        .pipe($.if(production, $.uglify()))
+        .pipe($.wrap({src: './iife.txt'}))
+        .pipe($.if(! production, $.sourcemaps.write()))
+        .pipe(gulp.dest('dist/js'))
+        .pipe($.size({title: 'typescript'}));
+};
+
+gulp.task('ts_compile', function() {
+    return ts_compile();
 });
 // </typescript>
 
-// <ng-templates>
-gulp.task('ng:templates', function () {
-  var f = production ? 'templates.min.js' : 'templates.js';
-
-  return gulp.src('app/scripts/**/templates/*.html')
-      .pipe($.minifyHtml({
-        empty: true,
-        spare: true,
-        quotes: true
-      }))
-      .pipe($.ngHtml2js({
-        moduleName: function (file) {
-          var path = file.path.split('/'),
-              folder = path[path.length - 2];
-          return folder.replace(/-[a-z]/g, function (match) {
-            return match.substr(1).toUpperCase() + 'templates';
-          });
-        }
-      }))
-      .pipe($.concat(f))
-      .pipe($.if(production, $.uglify()))
-      .pipe(gulp.dest('dist/js'))
-      .pipe($.size({title: 'ng:templates'}));
-});
-// </ng-templates>
-
-// Watch Files For Changes & Reload
-gulp.task('serve:web', function (cb) {
-  var bsOpts = {
-    open: false,
-    notify: false,
-    ghostMode: false,
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
-    server: {
-      middleware: [
-        modRewrite(['!\\.html|\\images|\\.js|\\.css|\\.png|\\.jpg|\\.woff|\\.ttf|\\.svg /index.html [L]'])
-      ],
-      baseDir: 'dist'
-    },
-    port: env.port,
-    host: "localhost"
-//    open: "external"
-  };
-//    bsOpts.tunnel = production ? 'oicrgdcdev' : false;
-
-  browserSync(bsOpts);
-
-  if (!production) {
-    gulp.watch(['app/**/*.html'], ['html', reload]);
-    gulp.watch(['app/**/*.{less,css}'], ['styles', reload]);
-    gulp.watch(['app/scripts/**/*.ts'], ['ts:compile', reload]);
-    gulp.watch(['app/scripts/**/*.html'], ['ng:templates', reload]);
-    gulp.watch(['app/images/**/*'], ['images', reload]);
-  }
+gulp.task('test', gulp.series('clean', 'ts_compile', 'ng_templates'), function(done) {
+    console.log('TO BE IMPLEMENTED');
+    done();
 });
 
-gulp.task('pegjs', function () {
-  var PEG = require('pegjs');
-  var input = fs.readFileSync("gql.pegjs", {encoding: 'utf8'});
-  var parser = PEG.buildParser(input, {output: "source"});
-  mkdirp("dist/js", function (err) {
-    if (err) {
-      throw err;
-    }
-    var out = production ? "dist/js/gql.min.js" : "dist/js/gql.js";
-    fs.writeFileSync(out, "window.gql = " + parser);
-    if (production) {
-      gulp.src(out)
-        .pipe($.uglify())
-        .pipe(gulp.dest('dist/js'))
-        .pipe($.size({title: 'GQL'}));
+gulp.task('server', function() {
+    var express = require('express');
+    var path = require('path');
+    var app = express();
+    var port = env.port;
+    var localpath = 'dist';
+
+    // Watch for changes, and relaunch gulp tasks as necesary...
+    if (! production) {
+        devel_watcher();
     }
 
-  });
+    console.log('Configured Access URLs:');
+    console.log('-------------------------------------');
+    console.log('UI: http://localhost:{}{}'.format(port, env.base));
+    console.log('-------------------------------------');
+    console.log('API {}:'.format(env.api));
+    console.log('-------------------------------------');
+    console.log('Serving files at {} from dir: {}\n\n'.format(env.base, localpath));
+
+    app.use('/', express.static(path.join(__dirname, localpath)));
+
+    // Needed for browser refresh to work
+    app.get('*', function(request, response, next) {
+        response.sendfile(__dirname + '/dist/index.html');
+    });
+    app.listen(port);
 });
 
-gulp.task('serve', function (cb) {
-  runSequence('default', ['karma:watch',
-   'serve:web'], cb);
-});
-
-// Build Production Files, the Default Task
-gulp.task('default', ['clean'], function (cb) {
-  runSequence('styles', ['rev', 'images', 'fonts', 'vendor', 'ts:compile', 'i18n', 'config', 'pegjs'], cb);
-});
-
-// Run PageSpeed Insights
-// Update `url` below to the public URL for your site
-//gulp.task('pagespeed', pagespeed.bind(null, {
-  // By default, we use the PageSpeed Insights
-  // free (no API key) tier. You can use a Google
-  // Developer API key if you have one. See
-  // http://goo.gl/RkN0vE for info key: 'YOUR_API_KEY'
-//  url: 'https://oicrgdcdev.localtunnel.me',
-//  strategy: 'mobile'
-//}));
-
-// Load custom tasks from the `tasks` directory
-try {
-  require('require-dir')('tasks');
-} catch (err) {
+function devel_watcher() {
+    gulp.watch(['app/**/*.html'], function(event) {
+        console.log('Detected an HTML change. ' +
+                    'Re-running the "html" task and reloading.');
+        html();
+    });
+    gulp.watch(['app/**/*.{less,css}'], function(event) {
+        console.log('Detected a less or css change. ' +
+                    'Re-running the "styles" task and reloading.');
+        styles();
+    });
+    gulp.watch(['app/scripts/**/*.ts'], function(event) {
+        console.log('Detected a typescript change. ' +
+                    'Re-running the "ts_compile" task and reloading.');
+        ts_compile();
+    });
+    gulp.watch(['app/scripts/**/*.html'], function(event) {
+        console.log('Detected an angular template change. ' +
+                    'Re-running the "ng_templates" task and reloading.');
+        ng_templates();
+    });
+    gulp.watch(['app/images/**/*'], function(event) {
+        console.log('Detected an images change. ' +
+                    'Re-running the "images" task and reloading.');
+        images();
+    });
 }
+
+function pegjs() {
+    var PEG = require('pegjs');
+    var input = fs.readFileSync('gql.pegjs', {encoding: 'utf8'});
+    var parser = PEG.generate(input, {output: 'source'});
+
+    return new Promise(function(resolve, reject) {
+        var out = production ? 'gql.min.js' : 'gql.js';
+        fs.writeFileSync(out, 'window.gql = ' + parser);
+
+        gulp.src(out)
+            // Minify the gql javascript file if we're in 'production'. Also,
+            // if we DO minify, then produce the stats of how much savings
+            // we got. Therefore, we have 'if' conditions around the sizediff
+            // invocations.
+            .pipe($.if(production, $.sizediff.start()))
+            .pipe($.if(production, $.uglify()))
+            .pipe($.if(production, $.sizediff.stop({title: 'pegjs', formatFn: sizeDiffFormat})))
+            .pipe(gulp.dest('dist/js/'))
+            .on('end', resolve)
+            .on('error', reject);
+    });
+}
+
+// Run the eslint tool on javascript assets (that are not 3rd party or
+// already minified) and report results.
+gulp.task('eslint', function() {
+    var stream = gulp.src([
+        '**/*.js',
+        '!dist/**',
+        '!**/*.min.js',
+        '!js/components/**',
+        '!node_modules/**'
+    ]);
+
+    return stream
+        .pipe(eslint())
+        .pipe(eslint.result(function(result) {
+            // Called for each ESLint result.
+            if (result.messages.length !== 0) {
+                console.log('ESLint result: ' + result.filePath);
+                console.log('# Messages: ' + result.messages.length);
+                console.log('# Warnings: ' + result.warningCount);
+                console.log('# Errors: ' + result.errorCount);
+            }
+        }));
+});
+
+gulp.task('build', gulp.series('clean', styles,
+    gulp.series(
+        gulp.parallel(
+            'rev', fonts, vendor,
+            pegjs, 'ts_compile', images
+        ),
+        function parallelDone (done) {
+            done();
+        }
+    ),
+    function allDone (done) {
+        done();
+    }
+));
+
+gulp.task('default', gulp.series('build'));

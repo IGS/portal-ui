@@ -1,56 +1,74 @@
-<div class="row search-bar">
-  <div class="col-lg-12">
-    <div class="panel panel-default">
-      <div class="search-bar-header clearfix">
-<!--
-        <div data-ng-if="!sb.gql.filters && !!sb.Error" class="text-danger">
-          <i class="fa fa-exclamation-circle"></i>
-            <span data-ng-hide="showErrors">Invalid Query</span></span>
-            <span data-ng-show="showErrors">{{sb.Error.human}}</span>
-              (<a href="" data-ng-click="showErrors = !showErrors">{{showErrors ? "hide" : "see"}} errors</a>)
-        </div>
--->
-        <div class="text-success">
-          <label for="gql"><i class="fa fa-check-circle"></i> Valid Query</label>
-        </div>
-        <a class="btn-search-query-help btn btn-default"
-           target="_blank"
-           href="https://github.com/jmatsumura/ihmp_portal_api#advanced-search"
-           data-translate>
-          <i class="fa fa-question"></i>
-          <span class="icon-btn-label">Help</span>
-        </a>
-        <a class="btn btn-search-query btn-primary" data-ui-sref="search.summary"
-           data-translate>
+<div>
+  <div class="row search-bar-nav-container">
+    <div class="col-lg-12">
+      <div class="col-lg-4 search-bar-nav">
+        <a class="btn-search-query-help btn btn-default" data-ng-if="sb.pageConfig['enable-documentation-link']"
+                      target="_blank"
+                      href="{{sb.pageConfig['documentation-link']}}"
+                      >
+                      <i class="fa fa-question"></i>
+                      <span class="icon-btn-label">Help</span>
+                    </a>
+        <a class="btn btn-search-query btn-primary" data-ui-sref="search.summary">
           <i class="fa fa-reply-all"></i> Back to Facet Search
         </a>
       </div>
-      <gql data-gql="sb.gql" data-query="sb.query"></gql>
-      <div class="panel-footer text-right">
-        <button
-          style="float: left"
-          class="btn btn-primary "
-          data-ng-if="hc.UserService.currentUser"
-          data-ng-click="sb.saveQuery()">
-          <i class="fa fa-sticky-note-o"></i> Save Query
-        </button>
-        <a style="margin-top: 5px; margin-left: 15px; float: left;"
-                data-ng-click="sb.showHistory()"
-                data-ng-if="hc.UserService.currentUser"
-                aria-label="{{ 'Show History' | translate }}">
-          View Saved History
-        </a>
-        <a style="margin-right: 15px"
-                data-ng-click="sb.resetQuery()"
-                aria-label="{{ 'Clear Query' | translate }}">
-          Reset
-        </a>
-        <button
-          class="btn btn-primary "
-          data-ng-click="sb.sendQuery()">
-          <i class="fa fa-search"></i> Submit Query
-        </button>
+    </div>
+  </div>
+  <div class="row search-bar">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
 
+        <div class="search-bar-header clearfix">
+          <div data-ng-class="{'col-lg-12':sb.query.length === 0, 'col-lg-11':sb.query.length > 0}">
+            <i class="input-icon text-danger fa fa-exclamation-circle" data-toggle="tooltip" data-ng-if="!sb.validQuery" title="Invalid Query"></i>
+            <i class="input-icon text-success fa fa-check-circle" data-toggle="tooltip" data-ng-if="sb.validQuery" title="Valid Query"></i>
+                   
+            <gql data-gql="sb.gql" data-query="sb.query"></gql>
+          </div>
+          <div data-ng-show="sb.query.length > 0" data-ng-hide="sb.query.length === 0" class="col-lg-1">
+            <a class="btn btn-danger pull-right" data-ng-click="sb.resetQuery()" aria-label="{{ 'Clear Query' }}">
+              Reset
+            </a>
+          </div>
+          
+        </div>
+
+        <div class="panel-body search-bar-body" data-ng-show="sb.showError" data-ng-hide="!sb.showError">
+          <div data-ng-if="!sb.validQuery" class="text-danger">
+            <span data-ng-show="sb.showError" class="text-danger">Invalid Query {{ sb.error.human }}</span>
+          </div>
+          <div data-ng-if="!sb.validQuery" class="text-danger">
+            <span data-ng-show="sb.showError" class="text-danger">
+              <span data-ng-bind-html="sb.error.queryErrorLocation"></span>
+            </span>
+          </div>
+        </div>
+        
+        <div class="panel-footer text-right">
+          <!-- DOLLEY: Temporarily removed for quicker restoration of Advanced Query. -->
+          <!--         Transition into LocalStorage(?)-->
+          <!-- <button
+            style="float: left"
+            class="btn btn-primary "
+            data-ng-if="hc.UserService.currentUser"
+            data-ng-click="sb.saveQuery()">
+            <i class="fa fa-sticky-note-o"></i> Save Query
+          </button> -->
+          <!-- <a style="margin-top: 5px; margin-left: 15px; float: left;"
+                  data-ng-click="sb.showHistory()"
+                  data-ng-if="hc.UserService.currentUser"
+                  aria-label="{{ 'Show History' }}">
+            View Saved History
+          </a> -->
+
+          <button
+            class="btn btn-primary "
+            data-ng-click="sb.sendQuery()">
+            <i class="fa fa-search"></i> Submit Query
+          </button>
+
+        </div>
       </div>
     </div>
   </div>

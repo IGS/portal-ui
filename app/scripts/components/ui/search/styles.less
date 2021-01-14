@@ -1,7 +1,25 @@
+.search-bar-nav-container {
+  padding-bottom: 1rem;
+
+  .search-bar-nav {
+    float: right;
+
+    .btn-search-query {
+      float: right;
+    }
+
+    .btn-search-query-help {
+      float: right;
+      margin-left: 1rem;
+      color: inherit;
+    }
+  }
+}
+
 .search-bar {
 
   .search-bar-header {
-    padding: 1rem 1rem;
+    padding: 10px 15px;
 
     > div {
       display: inline-block;
@@ -13,29 +31,34 @@
     label {
       margin: 0rem 0rem;
     }
+  }
 
-    .btn-search-query {
-      float: right;
-    }
-
-    .btn-search-query-help {
-      float: right;
-      margin: 0rem 1rem;
-      color: inherit;
-    }
+  .search-bar-body {
+    border-top: 1px solid #ddd;
   }
 
   button {
-    margin-right: 5px;
+    // margin-right: 5px;
 
     &:first-child {
       margin-left: 0;
     }
   }
 
-  textarea {
-    -moz-tab-size : 4;
-    -o-tab-size : 4;
-    tab-size : 4;
+  // DOLLEY - element was changed to <input>
+  // textarea {
+  //   -moz-tab-size : 4;
+  //   -o-tab-size : 4;
+  //   tab-size : 4;
+  // }
+
+  .error-location {
+    vertical-align:text-bottom;
+    font-size:100%;
+  }
+
+  .input-icon {
+    position: absolute; 
+    padding-top: 10px;
   }
 }

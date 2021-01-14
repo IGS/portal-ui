@@ -12,7 +12,8 @@ module ngApp.components.githut.controllers {
   class GitHutController implements IGitHutController {
 
     /* @ngInject */
-    constructor(private $scope: IGitHutScope, private $window: ng.IWindowService, private $filter: ng.IFilterService) {
+    // constructor(private $scope: IGitHutScope, private $window: ng.IWindowService, private $filter: ng.IFilterService) {
+    constructor(private $scope: IGitHutScope, private $window: ng.IWindowService, private $filter: ngApp.components.ui.string.ICustomFilterService) {
       this.draw();
 
       $scope.$watch("data", () => {
@@ -24,7 +25,8 @@ module ngApp.components.githut.controllers {
       var data = this.$scope.data,
           options = this.$scope.config;
 
-      var LHR = this.$window.$(options.container);
+      // var LHR = this.$window.$(options.container);
+      var LHR = angular.element(options.container); //NOTE: modified to resolve TS error property '$' does not exist of type IWindowService
 
       LHR.addClass(options.containerClass);
       LHR.empty();
@@ -48,7 +50,7 @@ module ngApp.components.githut.controllers {
       var scale_type = options.scale || "linear";
       var nested_data = d3.nest()
           .key(function(d) {
-            return d.project_id;
+            return d['project_id'];
           })
           .rollup(function(leaves) {
             var r = {};
@@ -56,12 +58,12 @@ module ngApp.components.githut.controllers {
               r[col] = d3.sum(leaves, function(o) {
                 return o[col];
               });
-              r.project_id = leaves[0]["project_id"];
-              r.file_count = leaves[0]["file_count"];
-              r.case_count = leaves[0]["case_count"];
-              r.primary_site = leaves[0]["primary_site"];
-              r.file_size = leaves[0]["file_size"];
-              r.name = leaves[0]["name"];
+              r['project_id'] = leaves[0]["project_id"]; //NOTE: r.thing is now r['thing'] to resolve TS error
+              r['file_count'] = leaves[0]["file_count"];
+              r['case_count'] = leaves[0]["case_count"];
+              r['primary_site'] = leaves[0]["primary_site"];
+              r['file_size'] = leaves[0]["file_size"];
+              r['name'] = leaves[0]["name"];
             });
 
             return r;
@@ -184,20 +186,22 @@ module ngApp.components.githut.controllers {
           });
 
       var line = d3.svg.line()
-          .x(function(d, i) { return d.x; })
+          .x(function(d, i) { return d['x']; })
           .y(function(d, i) {
-            if (d.y === 0) {
-              return yscales[options.use[d.col] || d.col].range()[0];
+            if (d['y'] === 0) {
+              return yscales[options.use[d['col']] || d['col']].range()[0];
             } else {
-              return yscales[options.use[d.col] || d.col](d.y);
+              return yscales[options.use[d['col']] || d['col']](d['y']);
             }
           });
 
       var drawn_primary_sites = [];
 
-      this.$window.$(this.$window).off("resize");
+      // this.$window.$(this.$window).off("resize");
+      angular.element(this.$window).off("resize"); //NOTE: modified to resolve TS error property '$' does not exist of type IWindowService
 
-      this.$window.$(this.$window).on("resize", _.debounce(() => {
+      // this.$window.$(this.$window).on("resize", _.debounce(() => {
+      angular.element(this.$window).on("resize", _.debounce(() => { //NOTE: modified to resolve TS error property '$' does not exist of type IWindowService
         this.draw();
       }, 150));
 
@@ -209,12 +213,12 @@ module ngApp.components.githut.controllers {
             extents[d] = d3.extent(nested_data, function(o) {
               return o.values[d];
 
-              // the following code block is unreachable
-              if (options.dimensions.indexOf(d) > -1) {
-                return o.values[d];
-              } else {
-                return o.values[d]/o.values[options.ref];
-              }
+              // the following code block is unreachable //NOTE This is an issue from original portal writers
+              // if (options.dimensions.indexOf(d) > -1) {
+              //   return o.values[d];
+              // } else {
+              //   return o.values[d]/o.values[options.ref];
+              // }
             });
           });
           return extents;
@@ -260,7 +264,7 @@ module ngApp.components.githut.controllers {
               extents[d][0] = 0.01;
             }
 
-            var primary_sites = _.map(data, (item) => {
+            var primary_sites = _.map(data, (item: any) => {
               return item.primary_site;
             });
 
@@ -287,7 +291,7 @@ module ngApp.components.githut.controllers {
           .append("g")
           .attr("class", "column")
           .attr("transform",function(d){
-            var x = xscale(d.id);
+            var x = xscale(d['id']);
             return "translate(" + x + "," + 0 + ")";
           });
 
@@ -296,20 +300,23 @@ module ngApp.components.githut.controllers {
           .attr("x", 0)
           .attr("y", 0);
 
-        var tip = d3.tip()
+
+
+        // var tip = d3.tip() //NOTE may be resolved with version upgrade: https://stackoverflow.com/a/45284947
+        var tip = (<any>d3).tip() //NOTE Resolves TS error 'tip' doesnt exist on 'Base'
                     .attr("class", "tooltip")
                     .offset([-5, 0])
                     .html(function(d) {
                             return $filter("humanify")(d.tool_tip_text || d.id);
                           });
 
-        title.filter((d) => { return d.is_subtype; })
+        title.filter((d) => { return d['is_subtype']; })
           .call(tip)
           .on('mouseover', tip.show)
           .on('mouseout', tip.hide);
 
         title.filter(function(d){
-          return d.id===options.title_column;
+          return d['id']===options.title_column;
         })
         .classed("first",true)
         .attr("transform","translate(-10,0)");
@@ -325,7 +332,7 @@ module ngApp.components.githut.controllers {
           // Magic numbers
           return i * 15 + (-5 - padding.top);
         })
-        .text(function(d){
+        .text(function(d:string){
           return d;
         });
 
@@ -356,7 +363,7 @@ module ngApp.components.githut.controllers {
         }
 
         var axis = column
-          .filter(function(col){
+          .filter(function(col: any){
             return options.scale_map[col] == "ordinal" && col != options.title_column;
           })
           .append("g")
@@ -368,11 +375,11 @@ module ngApp.components.githut.controllers {
           });
 
         axis.append("line")
-          .attr("x1", function(d) {
+          .attr("x1", function(d: any) {
             return -(width_scales[d].range()[1] / 2);
           })
           .attr("y1", 0)
-          .attr("x2", function(d) {
+          .attr("x2", function(d: any) {
             return width_scales[d].range()[1] / 2;
           })
           .attr("y2", 0);
@@ -425,7 +432,7 @@ module ngApp.components.githut.controllers {
         columns.selectAll("g.axis")
           .selectAll("g.tick")
           .data(function(d) {
-            var ticks = [0, width_scales[d].domain()[1]]
+            var ticks: any = [0, width_scales[d].domain()[1]]
                 .map(function(v,i){
                   return {
                     value: i === 0 ? 0 : v,
@@ -435,7 +442,7 @@ module ngApp.components.githut.controllers {
                   }
                 });
 
-            return ticks.concat(ticks.map(function(d) {
+            return ticks.concat(ticks.map(function(d: any) {
               return {
                 value: d.value,
                 x: -d.x
@@ -443,7 +450,7 @@ module ngApp.components.githut.controllers {
             }));
           })
           .select("text")
-          .text(function(d) {
+          .text(function(d: any) {
             return d3.format("s")(d.value);
           })
       }
@@ -460,14 +467,14 @@ module ngApp.components.githut.controllers {
           .call(createLangLabel);
       }
 
-      function updateMarkers(duration) {
+      function updateMarkers(duration: any) {
         var marker = languages_group
           .selectAll(".lang").select("g.markers")
           .selectAll("g.marker")
           .data(function(d){
-            return options.columns.filter(function(col) {
+            return options.columns.filter(function (col: any) {
                 return col != options.title_column;
-            }).map(function(col){
+            }).map(function(col: any){
               return {
                 lang: d.key,
                 column: col,
@@ -476,7 +483,7 @@ module ngApp.components.githut.controllers {
                 href: options.urlMap ? options.urlMap[col] : undefined
               }
             });
-          }, function(d) {
+          }, function(d: any) {
             return d.lang + "_" + d.column;
           });
 
@@ -555,10 +562,12 @@ module ngApp.components.githut.controllers {
 
                 var val = {
                   x: xscale(col),
+                  y: null, //NOTE added to resolve TS error 'y' does not exist on val
                   col: col
                 };
                 var val2 = {
                   x: xscale(col),
+                  y: null, //NOTE added to resolve TS error 'y' does not exist on val
                   col: col
                 };
 
@@ -579,7 +588,7 @@ module ngApp.components.githut.controllers {
 
                   return [val, val2];
                 } else {
-                  var y = d.values[use] / ((options.dimensions.indexOf(use) > -1) ? 1 : d.values[options.ref]);
+                  var y: any = d.values[use] / ((options.dimensions.indexOf(use) > -1) ? 1 : d.values[options.ref]);
                   val.y = y;
                   val2.y = y;
 
@@ -650,18 +659,18 @@ module ngApp.components.githut.controllers {
         var new_label = labels.enter()
           .append("g")
           .attr("class", "label")
-          .classed("primary_site", function(d) {
+          .classed("primary_site", function(d: any) {
             return d.column === "primary_site";
           });
 
         new_label
-          .filter(function(d) {
+          .filter(function(d: any) {
             return d.column !== "primary_site" && d.column !== options.title_column;
           })
           .append("path");
 
         new_label
-          .filter(function(d){
+          .filter(function(d: any){
             return d.column !== "primary_site" && d.column !== options.title_column;
           })
           .append("text")
@@ -669,7 +678,7 @@ module ngApp.components.githut.controllers {
             .attr("y",4);
 
         new_label
-          .filter(function(d){
+          .filter(function(d: any){
             return d.column ==="primary_site";
           })
           .append("text")
@@ -681,7 +690,7 @@ module ngApp.components.githut.controllers {
           .attr("class", "ix")
           .attr("y", -8)
           .attr("height", 15)
-          .on("click", function(z, i, m) {
+          .on("click", function(z: any, i) {
             if (z.href && z.value) {
               z.href(z);
             }
@@ -698,7 +707,7 @@ module ngApp.components.githut.controllers {
 
         labels
           .select("text")
-          .attr("x", function(d) {
+          .attr("x", function(d: any) {
             if (d.column === "primary_site") {
               return -10
             } else {
@@ -706,14 +715,14 @@ module ngApp.components.githut.controllers {
             }
           })
           .attr("transform","translate("+labelAdjust+",0)")
-          .style("text-anchor",function(d){
+          .style("text-anchor",function(d: any){
             if (d.column === "primary_site") {
               return "start";
             } else {
               return "middle";
             }
           })
-          .text(function(d){
+          .text(function(d: any){
             function id(a){
               return a;
             }
@@ -722,7 +731,7 @@ module ngApp.components.githut.controllers {
 
             var filter = options.filters[d.column] || undefined;
 
-            if (d.column === "primary_site" && _.contains(drawn_primary_sites, d.value)) {
+            if (d.column === "primary_site" && _.includes(drawn_primary_sites, d.value)) {
               return "";
             }
             if (d.column === "primary_site") {
@@ -745,21 +754,21 @@ module ngApp.components.githut.controllers {
               return filter(t);
             }
 
-            // the following code block is unreachable
-            if (d.column === "primary_site") {
-              return d.value;
-            } else if (d.column === "Simple nucleotide variation") {
-              return d.value;
-            } else if(options.formats[d.column]) {
-              return d3.format(options.formats[d.column])(d.value);
-            } else if(options.dimensions.indexOf(d.column) > -1) {
-              return d3.format(d.value>100?",.0f":",.2f")(d.value);
-            } else {
-              var y = d.valuefd.ref;
-              return d3.format(y > 100 ? ",.0f" : ",.2f")(y);
-            }
+            // the following code block is unreachable //NOTE: this was already noted by original Portal writers
+            // if (d.column === "primary_site") {
+            //   return d.value;
+            // } else if (d.column === "Simple nucleotide variation") {
+            //   return d.value;
+            // } else if(options.formats[d.column]) {
+            //   return d3.format(options.formats[d.column])(d.value);
+            // } else if(options.dimensions.indexOf(d.column) > -1) {
+            //   return d3.format(d.value>100?",.0f":",.2f")(d.value);
+            // } else {
+            //   var y = d.valuefd.ref;
+            //   return d3.format(y > 100 ? ",.0f" : ",.2f")(y);
+            // }
           })
-          .each(function(d) {
+          .each(function(d: any) {
             if (d.column === "primary_site") {
               d.marker_width = 10;
             } else {
@@ -774,7 +783,7 @@ module ngApp.components.githut.controllers {
         labels
           .select("path")
           .attr("class", "label")
-          .attr("d", function(d) {
+          .attr("d", function(d: any) {
             var dw = 10,
                 w = d.text_width + dw;
 
@@ -785,7 +794,7 @@ module ngApp.components.githut.controllers {
 
         labels
           .select("rect.ix")
-            .attr("x", function(d) {
+            .attr("x", function(d: any) {
               if (d.column == options.title_column) {
                 return -(padding.left + margins.left);
               }
@@ -795,7 +804,7 @@ module ngApp.components.githut.controllers {
                 return d.text_width/2;
               }
             })
-            .attr("width", function(d) {
+            .attr("width", function(d: any) {
               if (d.column === options.title_column) {
                 return (padding.left + margins.left);
               } else {
@@ -804,7 +813,7 @@ module ngApp.components.githut.controllers {
             });
 
         labels
-          .attr("transform", function(d) {
+          .attr("transform", function (d: any) {
 
             var x = xscale(d.column),
                 y = yscales[d.column](d.value);
@@ -825,31 +834,32 @@ module ngApp.components.githut.controllers {
           });
 
         labels
-          .filter(function(d) {
+          .filter(function(d: any) {
             return d.column === "primary_site";
           })
-          .on("mouseover", function(d) {
+          .on("mouseover", function(d: any) {
             labels_group
             .selectAll(".labels")
-            .classed("hover", function(l) {
+            .classed("hover", function(l: any) {
               return l.values.primary_site == d.value;
             });
 
             languages_group
             .selectAll(".lang")
-            .classed("hover", function(l) {
+            .classed("hover", function(l: any) {
                 return l.values.primary_site == d.value;
             });
           });
 
-        var projectTip = d3.tip()
+        // var projectTip = d3.tip()
+        var projectTip = (<any>d3).tip() //NOTE Resolves TS error 'tip' doesnt exist on 'Base'
                     .attr("class", "tooltip")
                     .offset([-5, 0])
                     .html(function(d) {
-                      return _.find(nested_data, {key: d.lang}).values.name;
+                      return _.find(nested_data, {key: d.lang})['values'].name;
                     });
 
-          labels.filter((d) => {
+          labels.filter((d: any) => {
               return d.column === "project_id";
           })
           .call(projectTip)
@@ -860,13 +870,13 @@ module ngApp.components.githut.controllers {
         // Mouseover trigger for highlighting all paths that cross through
         // a label that isn't primary site or project id
         labels
-        .filter(function(d) {
+        .filter(function(d: any) {
           return d.column !== "primary_site" && d.column !== "project_id";
         })
-        .on("mouseover", function(d) {
+        .on("mouseover", function(d: any) {
           labels_group
           .selectAll(".labels")
-          .classed("hover", function(l) {
+          .classed("hover", function(l: any) {
             var ret = l.values[d.column] === d.value;
 
             // Don't forget to ensure the connecting lines themselves

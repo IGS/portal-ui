@@ -2,7 +2,6 @@ module ngApp.files {
   "use strict";
 
   import IFilesService = ngApp.files.services.IFilesService;
-  import IFile = ngApp.files.models.IFile;
 
   /* @ngInject */
   function filesConfig($stateProvider: ng.ui.IStateProvider) {
@@ -11,8 +10,8 @@ module ngApp.files {
       controller: "FileController as fc",
       templateUrl: "files/templates/file.html",
       resolve: {
-        file: ($stateParams: ng.ui.IStateParamsService, FilesService: IFilesService): ng.IPromise<IFile> => {
-          if (! $stateParams.fileId) {
+        file: ($stateParams: ng.ui.IStateParamsService, FilesService: IFilesService): ng.IPromise<any> => {
+          if (! $stateParams['fileId']) {
             throw Error('Missing route parameter: fileId. Redirecting to 404 page.');
           }
           return FilesService.getFile($stateParams["fileId"], {
@@ -74,7 +73,8 @@ module ngApp.files {
       .module("ngApp.files", [
         "files.controller",
         "files.directives",
-        "ui.router.state"
+        "ui.router.state",
+        "clipboard.directive"
       ])
       .config(filesConfig);
 }

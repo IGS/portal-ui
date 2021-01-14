@@ -1,10 +1,10 @@
-@HOME_BLUE: #4d4d4d;
+/*@HOME_BLUE: #4d4d4d;
 @HOME_DARK_GRAY: #4d4d4d;
-@HOME_EM_COLOUR: #f5f5f5;
+@HOME_EM_COLOR: #f5f5f5;
 @HOME_GRAY: #f5f5f5;
 
-@DATA_COLOUR: #3fb0b1;
-@PROJECT_COLOUR: #c0d080;
+@DATA_COLOR: #3fb0b1;
+@PROJECT_COLOR: #c0d080;*/
 
 @HOME_PLACEHOLDER_FONT_SIZE: 1.2rem;
 
@@ -62,6 +62,12 @@
       white-space: nowrap;
       margin: 0.25rem;
       flex: 1;
+
+      i {
+        font-size: 2em !important;
+        margin-right: 0 !important;
+        margin-bottom: 0.25em;
+      }
     }
 
     a {
@@ -86,7 +92,7 @@
 
 
   .btn-primary {
-    background-color: @DATA_COLOUR;
+    background-color: @DATA_COLOR;
 
     &:hover {
       background-color: #257e93;
@@ -94,7 +100,7 @@
   }
 
   .data-icon {
-    color: @DATA_COLOUR;
+    color: @DATA_COLOR;
   }
 
   .btn.btn-lg {
@@ -117,32 +123,32 @@
   }
 
   .btn-projects {
-    background-color: @PROJECT_COLOUR;
+    background-color: @PROJECT_COLOR;
   }
 
   .btn.btn-projects:hover {
-    background-color: #019978;
+    background-color: @PROJECT_COLOR_HOVER;
   }
 
   .data-icon {
-    color: @DATA_COLOUR !important;
+    color: @DATA_COLOR !important;
   }
 
   .project-icon {
-    color: @PROJECT_COLOUR !important;
+    color: @PROJECT_COLOR !important;
   }
 
   .icon-gdc-cancer-types {
 
     .path1:before {
       content: "\e94d";
-      color: @PROJECT_COLOUR;
+      color: @PROJECT_COLOR;
     }
 
     .path2:before {
       content: "\e94e";
       margin-left: -0.94921875em;
-      color: @PROJECT_COLOUR;
+      color: @PROJECT_COLOR;
     }
   }
 
@@ -155,7 +161,7 @@
     }
 
     .marked-bar-chart-marker {
-      fill: #c0d080;
+      fill: @PROJECT_COLOR;
     }
 
     .chart-title-container {
@@ -224,7 +230,7 @@
   }
 
   .btn-primary:hover {
-    background: #43a2d5;
+    background: @DATA_COLOR_HOVER;
   }
 
 
@@ -278,14 +284,14 @@
   // Row 1: Quick search
   .quick-search-component {
     margin: 0 0;
-    color: #fff;
+    color: @QUICK_SEARCH_TEXT_COLOR;
     background: @HOME_BLUE;
     // This prevents headers from creating a white gap between the nav and
     // the container in narrower screens
     padding-top: 1px;
 
     em {
-      color: @HOME_EM_COLOUR;
+      color: @QUICK_SEARCH_TEXT_EM_COLOR;
     }
 
     .quick-search-container {
@@ -309,7 +315,7 @@
     }
 
     h1, h3{
-      color: #fff !important;
+      color: @HOME_PORTAL_HEADING_TEXT_COLOR !important;
     }
 
     h1 {
@@ -345,12 +351,12 @@
 
         td {
           padding-right: 1rem;
-          border-bottom: solid 2px #c0d080;
+          border-bottom: solid 2px @TRIM_COLOR;
         }
 
         th {
           padding-right: 1rem;
-          border-bottom: solid 2px #c0d080;
+          border-bottom: solid 2px @TRIM_COLOR;
           font-weight: normal;
         }
 

@@ -28,6 +28,11 @@ module ngApp.reports.controllers {
     dataNest(key: string): any;
   }
 
+  export interface IScope extends ng.IScope {
+    githutData: any;
+    githutConfig: any;
+  }
+
   class ReportsController implements IReportsController {
     byProject: [ID3Entry];
     byDisease: [ID3Entry];
@@ -40,14 +45,25 @@ module ngApp.reports.controllers {
     byLocation: [ID3Entry];
 
     /* @ngInject */
-    constructor(public reports: IReports, private CoreService: ICoreService,
-                public $scope: ng.IScope, private $timeout: ng.ITimeoutService,
-                private ReportsGithutColumns, private ReportsGithut, public reportServiceExpand: string[]) {
+    constructor(
+      public reports: IReports,
+      private CoreService: ICoreService,
+      // public $scope: ng.IScope, //Replaced by below
+      public $scope: IScope, //Note this & IScope added to correct TS error on githutData and githutConfig
+      private $timeout: ng.ITimeoutService,
+      private ReportsGithutColumns,
+      private ReportsGithut,
+      public reportServiceExpand: string[]) {
 
         CoreService.setPageTitle("Reports");
 
         if (reports.hits.length) {
-          var dataNoZeros = reports.hits.filter(hit => hit.count && hit.size)
+          //var dataNoZeros = reports.hits.filter(hit => hit.count && hit.size)
+          var dataNoZeros = reports.hits.filter( (hit: IReport) => { //NOTE: Addresses TS error caused by above line.
+            if (hit.count && hit.size) {
+              return true;
+            }
+          });
           this.byProject = this.dataNest("project_id").entries(dataNoZeros);
           this.byDisease = this.dataNest("disease_type").entries(dataNoZeros);
           this.byProgram = this.dataNest("program").entries(dataNoZeros);
@@ -71,12 +87,12 @@ module ngApp.reports.controllers {
         .key(d => d[key])
         .rollup(d => {
           return {
-            file_count: d3.sum(d.map(x => x.count)),
-            file_size: d3.sum(d.map(x => x.size)),
-            project_name: d[0].disease_type
+            file_count: d3.sum(d.map(x => x['count'])),
+            file_size: d3.sum(d.map(x => x['size'])),
+            project_name: d[0]['disease_type']
           }
         })
-        .sortValues((a,b) => a.file_count - b.file_count);
+        .sortValues((a,b) => a['file_count'] - b['file_count']);
     }
 
     reduceBy(data: any, key: string): any {

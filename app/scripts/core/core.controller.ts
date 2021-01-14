@@ -8,12 +8,14 @@ module ngApp.core.controllers {
     loading: boolean;
   }
 
+  declare var bowser: any; //NOTE resolves TS error cannot find 'bowser'
+
   class CoreController implements ICoreController {
     showWarning: boolean = false;
     loading: boolean;
     loading5s: boolean;
     loading8s: boolean;
-    loadingTimers: Promise<any>[];
+    loadingTimers: ng.IPromise<any>[];
     loweredBody: boolean;
 
     /* @ngInject */
@@ -27,8 +29,10 @@ module ngApp.core.controllers {
       UserService: IUserService,
       private $uibModal: any,
       private $uibModalStack,
-      private $timeout
+      private $timeout,
+      private config: any
     ) {
+      this.config = $rootScope.config;
       this.loweredBody = false;
       this.$rootScope.$on('hideBanner', () => this.loweredBody = false);
 
@@ -56,7 +60,7 @@ module ngApp.core.controllers {
       });
 
       // display login failed warning
-      if(_.get($location.search(), 'error') === 'You are not authorized to gdc services') {
+      if((<any>_).get($location.search(), 'error') === 'You are not authorized to gdc services') {
         this.$timeout(() => {
           if (!this.$uibModalStack.getTop()) {
             var loginWarningModal = this.$uibModal.open({
@@ -78,7 +82,7 @@ module ngApp.core.controllers {
       }
 
       if (!$cookies.get("browser-checked")) {
-        if (bowser.msie && bowser.version <= 9) {
+        if (bowser.msie && bowser.version <= 9) { //NOTE: TS error Cannot find name 'bowser'
           this.$timeout(() => {
             if (!this.$uibModalStack.getTop()) {
               var bowserWarningModal = this.$uibModal.open({
@@ -91,7 +95,7 @@ module ngApp.core.controllers {
                 animation: false,
                 size: "lg",
                 resolve: {
-                  warning: null,
+                  warning: 'The '+ this.config["site-wide"]["project-abbr"]+' Data Portal does not support the web browser you are using. This will prevent you from accessing certain features.',
                   header: null
                 }
               });
@@ -122,11 +126,11 @@ module ngApp.core.controllers {
         this.$rootScope.$broadcast("gdc-cancel-request");
       };
 
-      this.$rootScope.handleApplicationClick = (): void => {
+      this.$rootScope['handleApplicationClick'] = (): void => {
         $scope.$broadcast('application:click');
       }
-      this.$rootScope.closeWarning = () => {
-        this.$rootScope.showWarning = false;
+      this.$rootScope['closeWarning'] = () => {
+        this.$rootScope['showWarning'] = false;
         this.$cookies.put("NCI-Warning", "true");
       };
 

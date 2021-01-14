@@ -4,5 +4,8 @@ module ngApp.components.tables.models {
     name: string;
     sort: boolean;
     order: string;
+
+    sortValue: any;
+    sortMethod: any;
   }
 }

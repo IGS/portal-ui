@@ -5,11 +5,14 @@ module ngApp.search.services {
 
   export interface ITab {
     active: boolean;
+    hasLoadedOnce?: boolean;
   }
 
   export interface ITabs {
-    participants: ITab;
-    files: ITab;
+    summary?: ITab;
+    participants?: ITab;
+    files?: ITab;
+    items?: ITab; //NOTE Resolved TS error in cart.services. 'items' doesnt exist on 'ITabs'
   }
 
   export interface ISearchState {
@@ -45,7 +48,7 @@ module ngApp.search.services {
     setActive(section: string, tab: string, key: string) {
       if (section && tab) {
         if (key === "active") {
-          _.each(this[section], function (section: ITab) {
+          _.forEach(this[section], function (section: ITab) {
             section.active = false;
           });
 
@@ -62,17 +65,18 @@ module ngApp.search.services {
 
 
   export interface ISearchService {
-    getSummary(filters?: Object): ng.IPromise<any>;
+    getSummary(filters?: Object, ignoreUserProjects?: boolean): ng.IPromise<any>;
+    createChartPlaceholders(chartConfigs: Object): any;
   }
 
   class SearchService implements ISearchService {
 
     /* @ngInject */
-    constructor(private Restangular: restangular.IService, private LocationService: ILocationService,
+    constructor(private Restangular: Restangular.IService, private LocationService: ILocationService,
                 private UserService: IUserService) {
     }
 
-    getSummary(filters: Object = this.LocationService.filters(), ignoreUserProjects: boolean = false) {
+    getSummary(filters: Object = this.LocationService.filters(), ignoreUserProjects: boolean = false): ng.IPromise<any> {
       if (!ignoreUserProjects) {
         filters = this.UserService.addMyProjectsFilter(filters, "cases.project.project_id");
       }
@@ -83,158 +87,81 @@ module ngApp.search.services {
         return response;
       });
     }
+
+    createChartPlaceholders(chartConfigs: Object): any {
+      // Creates a placeholder for each piechart. Allows the spinners display until data is returned from getSummary() 
+      // This is used to: 
+      // 1) pass along the cart config instead of waiting for data to return
+      // 2) set buckets to an empty array
+      var chartSummaryPlacholders = [];
+      var chartNames = _.keys(chartConfigs);
+      chartNames.forEach((chart_name, idx) => {
+        var placeholder = {
+          'results-status': 'pending',
+          'buckets': [],
+          'id': idx,
+          'name': chart_name,
+          'piechart-config': chartConfigs[chart_name]
+        };
+        chartSummaryPlacholders.push(placeholder);
+      }, chartConfigs);
+
+      return chartSummaryPlacholders;
+    }
   }
 
   class SearchChartConfigs {
+    chart0: any;
+    chart1: any;
+    chart2: any;
+    chart3: any;
+    chart4: any;
+    chart5: any;
 
     /* @ngInject */
-    constructor($filter: ng.IFilterService) {
-      this.projectIdChartConfig = {
-        filterKey: "cases.Project.name",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "project",
-        pluralDefaultText: "projects",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "cases.project_name",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
+    constructor($filter: ngApp.components.ui.string.ICustomFilterService, config: ngApp.IGDCConfig) {
+      var chartConfigs = config['search']['piechart-configs'];
+      const chartsCount = chartConfigs.length;
+      for (var i=0; i<chartsCount; i++) {
+        var configName = "chart" + String(i);
+        const filterKey = chartConfigs[i]["filter-key"];
+        const defaultText = chartConfigs[i]["default-text"];
+        const pluralDefaultText = chartConfigs[i]["plural-default-text"];
+        const fieldFilter = chartConfigs[i]["field-filter"];
+        const chartTitle = chartConfigs[i]["chart-title"];
+        const groupingTitle = chartConfigs[i]["grouping-title"];
+        const hoverLabel = chartConfigs[i]["hover-count-label"];
+
+        this[configName] = {
+          'chart-title': chartTitle,
+          'grouping-title': groupingTitle,
+          'filter-key': filterKey,
+          'sort-key': "doc_count",
+          'display-key': "key",
+          'default-text': defaultText,
+          'plural-default-text': pluralDefaultText,
+          'hover-count-label': hoverLabel,
+          'sort-data': true,
+          'filters': {
+            "default": {
+              params: {
+                filters: function(value) {
+                  return $filter("makeFilter")([
+                    {
+                      field: fieldFilter,
+                      value: [
+                        value
+                      ]
+                    }
+                  ], true);
+                }
               }
             }
           }
-        }
-      };
-      this.primarySiteChartConfig = {
-        filterKey: "cases.project.primary_site",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "body site",
-        pluralDefaultText: "body sites",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "cases.sample_body_site",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
-              }
-            }
-          }
-        }
-      };
-      this.accessChartConfig = {
-        filterKey: "cases.study.name",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "study",
-        pluralDefaultText: "studies",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "cases.study_name",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
-              }
-            }
-          }
-        }
-      };
-      this.dataTypeChartConfig = {
-        filterKey: "cases.subject.gender",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "gender",
-        pluralDefaultText: "gender",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "cases.subject_gender",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
-              }
-            }
-          }
-        }
-      };
-      this.dataFormatChartConfig = {
-        filterKey: "cases.file.format",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "file format",
-        pluralDefaultText: "file formats",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "files.file_format",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
-              }
-            }
-          }
-        }
-      };
-      this.expStratChartConfig = {
-        filterKey: "cases.file.category",
-        sortKey: "doc_count",
-        displayKey: "key",
-        defaultText: "file type",
-        pluralDefaultText: "file types",
-        sortData: true,
-        filters: {
-          "default": {
-            params: {
-              filters: function(value) {
-                return $filter("makeFilter")([
-                  {
-                    field: "files.file_type",
-                    value: [
-                      value
-                    ]
-                  }
-                ], true);
-              }
-            }
-          }
-        }
-      };
-    }
-  }
+        };
+      } //end for
+    } //end constructor
+  } //end class
 
   angular
       .module("search.services", [])

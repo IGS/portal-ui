@@ -2,11 +2,16 @@ module ngApp.projects {
   "use strict";
 
   import IProjectsService = ngApp.projects.services.IProjectsService;
-  import IProject = ngApp.projects.models.IProject;
 
   /* ngInject */
-  function projectsConfig($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
+  function projectsConfig($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider, config: ngApp.IGDCConfig) {
     $urlRouterProvider.when("/projects", "/projects/t");
+
+    // Projects graph is disabled, so reroute /projects/g to .../t
+    var displayGraphTab: boolean = config['projects']['display-graph-tab'];
+    if (!displayGraphTab){
+      $urlRouterProvider.when("/projects/g", "/projects/t");
+    };
 
     $stateProvider.state("projects", {
       url: "/projects?filters",
@@ -31,13 +36,16 @@ module ngApp.projects {
       reloadOnSearch: false
     });
 
+    // DOLLEY: This note coincides with the one for ProjectController (projects.controller.ts)
+    // This is not currently implemented and no complement API route exists.
+    // Keeping for now in case someone wants the feature
     $stateProvider.state("project", {
       url: "/projects/:projectId",
       controller: "ProjectController as prc",
       templateUrl: "projects/templates/project.html",
       resolve: {
-        project: ($stateParams: ng.ui.IStateParamsService, ProjectsService: IProjectsService): ng.IPromise<IProject> => {
-          if (! $stateParams.projectId) {
+        project: ($stateParams: ng.ui.IStateParamsService, ProjectsService: IProjectsService): ng.IPromise<any> => {
+          if (! $stateParams['projectId']) {
             throw Error('Missing route parameter: projectId. Redirecting to 404 page.');
           }
           return ProjectsService.getProject($stateParams["projectId"], {
@@ -63,7 +71,6 @@ module ngApp.projects {
   angular
       .module("ngApp.projects", [
         "projects.controller",
-        "tables.services",
         "ui.router.state"
       ])
       .config(projectsConfig);
