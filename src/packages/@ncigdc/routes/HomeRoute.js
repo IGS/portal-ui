@@ -16,8 +16,7 @@ const Header = styled(Row, {
 
 const LeftColumn = styled(Column, {
   margin: '1rem',
-  width: '25vw',
-  padding: '3rem',
+  width: '25%',
   flexDirection: 'column',
   flexWrap: 'wrap',
   color: ({theme}) => theme.greyScale7 || 'silver',
@@ -27,14 +26,18 @@ const HomeRouteRow = styled(Row, {
   padding: '15px'
 });
 
-const HomeRouteCard = styled(Card, {
-  padding: '15px'
+const NavigationCard = styled(Card, {
+  padding: '15px',
+});
+
+const SummaryCard = styled(Card, {
+  padding: '15px',
+  width: '100%'
 });
 
 const RightColumn = styled(Column, {
   margin: '1rem',
-  width: '75vw',
-  padding: '3rem',
+  width: '75%',
   float: 'right',
   flexDirection: 'column',
   flexWrap: 'wrap',
@@ -50,11 +53,11 @@ const linkStyle = {
   color: 'white !important',
   display: 'inline-block',
   whiteSpace: 'nowrap',
-  padding: '0.5rem 1rem 0.5rem 0.5rem',
-  textAlign: 'left',
+  padding: '7px',
+  textAlign: 'center',
   fontSize: '1.5rem',
-  minWidth: '13.5rem',
-  margin: 0,
+  width: '100%',
+  marginTop: '1.5rem',
   height: '4rem',
   borderRadius: '6px',
   transition: '0.25s ease all',
@@ -74,46 +77,46 @@ const Home = () => (
   <HomeRouteContainer>
     <LeftColumn>
       <HomeRouteRow>
-        <HomeRouteCard>
+        <NavigationCard>
           KIDNEY PRECISION MEDICIN PROJECT
           <Header> Kidney Tissue Atlas</Header>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-        </HomeRouteCard>
+        </NavigationCard>
       </HomeRouteRow>
       <HomeRouteRow>
-        <HomeRouteCard>
+        <NavigationCard>
           <Header>Atlas Analyzer</Header>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           <Row>
             <Analysis backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Analysis</span></Analysis>
           </Row>
-        </HomeRouteCard>
+        </NavigationCard>
       </HomeRouteRow>
       <HomeRouteRow>
-        <HomeRouteCard>
+        <NavigationCard>
           <Header>Atlas Explorer</Header>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           <Row>
             <Explore backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Explorer</span></Explore>
           </Row>
-        </HomeRouteCard>
+        </NavigationCard>
       </HomeRouteRow>
       <HomeRouteRow>
-        <HomeRouteCard>
+        <NavigationCard>
           <Header>Atlas Repository</Header>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           <Row>
             <Repository backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Repository</span></Repository>
           </Row>
-        </HomeRouteCard>
+        </NavigationCard>
       </HomeRouteRow>
     </LeftColumn>
     <RightColumn>
       <HomeRouteRow>
-        <HomeRouteCard>
+        <SummaryCard>
           <Header>Atlas Data Summary</Header>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-        </HomeRouteCard>
+        </SummaryCard>
       </HomeRouteRow>
     </RightColumn>
   </HomeRouteContainer>
