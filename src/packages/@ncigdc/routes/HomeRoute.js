@@ -1,78 +1,123 @@
 // @flow
-
+import Color from 'color';
 import React from 'react';
 import { Row, Column } from '@ncigdc/uikit/Flex';
+import Card from '@ncigdc/uikit/Card';
 import styled from '@ncigdc/theme/styled';
-import GDCAppsRow from '@ncigdc/components/GDCApps/GDCAppsRow';
-import ExploringLinks from '@ncigdc/components/ExploringLinks';
-import HomeSearch from '@ncigdc/components/HomeSearch';
-import PortalSummary from '@ncigdc/modern_components/PortalSummary';
-import HumanBody from '@ncigdc/modern_components/HumanBody';
-import { zDepth1 } from '@ncigdc/theme/mixins';
+import RepositoryLink from '@ncigdc/components/Links/RepositoryLink';
+import ExploreLink from '@ncigdc/components/Links/ExploreLink';
+import AnalysisLink from '@ncigdc/components/Links/AnalysisLink';
 
-const Title = styled.div({
-  color: 'white',
-  fontSize: '3rem',
+
+const Header = styled(Row, {
+  fontSize: '2rem',
+  color: ({ theme }) => theme.greyScale7 || 'silver',
 });
 
-const SubTitle = styled.div({
-  color: 'white',
-});
-
-const GradientContainer = styled(Row, {
-  backgroundColor: '#000',
-  backgroundImage:
-    'radial-gradient(ellipse at center, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 48%, rgba(73,129,189,1) 100%)',
-});
-
-const containerStyle = {
-  flex: 1,
+const LeftColumn = styled(Column, {
+  margin: '1rem',
+  width: '25vw',
   padding: '3rem',
-  height: '50rem',
-  position: 'relative',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  color: ({theme}) => theme.greyScale7 || 'silver',
+});
+
+const HomeRouteRow = styled(Row, {
+  padding: '15px'
+});
+
+const HomeRouteCard = styled(Card, {
+  padding: '15px'
+});
+
+const RightColumn = styled(Column, {
+  margin: '1rem',
+  width: '75vw',
+  padding: '3rem',
+  float: 'right',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  color: ({theme}) => theme.greyScale7 || 'silver',
+});
+
+const HomeRouteContainer = styled(Row, {
+  display: 'inline-flex'
+});
+
+const linkStyle = {
+  textDecoration: 'none !important',
+  color: 'white !important',
+  display: 'inline-block',
+  whiteSpace: 'nowrap',
+  padding: '0.5rem 1rem 0.5rem 0.5rem',
+  textAlign: 'left',
+  fontSize: '1.5rem',
+  minWidth: '13.5rem',
+  margin: 0,
+  height: '4rem',
+  borderRadius: '6px',
+  transition: '0.25s ease all',
+  backgroundColor: props => props.backgroundColor || props.theme.primary,
+  ':hover': {
+    backgroundColor: props => Color(props.backgroundColor || props.theme.primary)
+      .lighten(0.2)
+      .rgbString(),
+  },
 };
 
-const Container = styled(Column, {
-  ...zDepth1,
-  marginTop: '2rem',
-  backgroundColor: 'white',
-  borderTop: '3px solid rgb(37, 208, 182)',
-});
-
-const InsideContainer = styled.div(containerStyle);
+const Repository = styled(RepositoryLink, linkStyle);
+const Explore = styled(ExploreLink, linkStyle);
+const Analysis = styled(AnalysisLink, linkStyle);
 
 const Home = () => (
-  <Column className="test-home">
-    <GradientContainer>
-      <InsideContainer flex="1">
-        <SubTitle style={{ fontSize: '2rem' }}>
-          Harmonized Cancer Datasets
-        </SubTitle>
-        <Title>Genomic Data Commons Data Portal</Title>
-        <SubTitle style={{ margin: '1rem 0' }}>
-          <em>Get Started by Exploring:</em>
-        </SubTitle>
-        <ExploringLinks />
-        <HomeSearch />
-        <Container className="test-portal-summary">
-          <PortalSummary />
-        </Container>
-      </InsideContainer>
-      <Row flex="1">
-        <HumanBody />
-      </Row>
-    </GradientContainer>
-    <Column style={{ paddingTop: '7rem', alignItems: 'center' }}>
-      <Row style={{ fontSize: '1.3em' }}>GDC Applications</Row>
-      <Row style={{ textAlign: 'center' }}>
-        The GDC Data Portal is a robust data-driven platform that allows cancer
-        <br />
-        researchers and bioinformaticians to search and download cancer data for
-        analysis. The GDC applications include:
-      </Row>
-      <GDCAppsRow />
-    </Column>
-  </Column>
+  <HomeRouteContainer>
+    <LeftColumn>
+      <HomeRouteRow>
+        <HomeRouteCard>
+          KIDNEY PRECISION MEDICIN PROJECT
+          <Header> Kidney Tissue Atlas</Header>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </HomeRouteCard>
+      </HomeRouteRow>
+      <HomeRouteRow>
+        <HomeRouteCard>
+          <Header>Atlas Analyzer</Header>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          <Row>
+            <Analysis backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Analysis</span></Analysis>
+          </Row>
+        </HomeRouteCard>
+      </HomeRouteRow>
+      <HomeRouteRow>
+        <HomeRouteCard>
+          <Header>Atlas Explorer</Header>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          <Row>
+            <Explore backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Explorer</span></Explore>
+          </Row>
+        </HomeRouteCard>
+      </HomeRouteRow>
+      <HomeRouteRow>
+        <HomeRouteCard>
+          <Header>Atlas Repository</Header>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          <Row>
+            <Repository backgroundColor="#0275d8"><span style={{ verticalAlign: 'middle' }}>Go to Repository</span></Repository>
+          </Row>
+        </HomeRouteCard>
+      </HomeRouteRow>
+    </LeftColumn>
+    <RightColumn>
+      <HomeRouteRow>
+        <HomeRouteCard>
+          <Header>Atlas Data Summary</Header>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </HomeRouteCard>
+      </HomeRouteRow>
+    </RightColumn>
+  </HomeRouteContainer>
+  
 );
 
 export default Home;
