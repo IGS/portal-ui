@@ -48,7 +48,7 @@ const Routes = () => (
       <Route component={HomeRoute} exact path="/" />
       <Route component={CartRoute} exact path="/cart" />
       <Route component={RepositoryRoute} exact path="/repository" />
-      <Route component={ExploreRoute} exact path="/exploration" />
+      <Route component={ExploreRoute} exact path="/explorer" />
       <Route component={ProjectsRoute} exact path="/projects" />
       <Route component={AnnotationsRoute} exact path="/annotations" />
       <Route component={SmartSearchRoute} exact path="/query" />
