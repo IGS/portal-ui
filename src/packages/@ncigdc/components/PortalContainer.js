@@ -11,7 +11,7 @@ import {
 } from 'recompose';
 import { isEqual } from 'lodash';
 
-import Header from '@ncigdc/components/Header';
+import NavBar from '@ncigdc/components/Nav/NavBar';
 import AWGHeader from '@ncigdc/components/AWGHeader';
 import Footer from '@ncigdc/components/Footer';
 import NotificationContainer from '@ncigdc/components/NotificationContainer';
@@ -57,14 +57,12 @@ const PortalContainer = ({
     >
     <SkipLink href="#skip">Skip to Main Content</SkipLink>
     <ProgressContainer />
-    {AWG ? <AWGHeader /> : <Header />}
+    <NavBar/>
     <div
       id="skip"
       role="main"
       style={{
         paddingBottom: '120px',
-        paddingTop: `calc(51px + ${notifications.filter(n => !n.dismissed)
-          .length * 40}px)`,
         transition: 'padding 0.25s ease',
       }}
       >

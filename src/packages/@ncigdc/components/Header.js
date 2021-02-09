@@ -36,10 +36,21 @@ import { AnalysisIcon } from '@ncigdc/theme/icons';
 import DatabaseIcon from '@ncigdc/theme/icons/Database';
 import ManageSetsLink from '@ncigdc/components/Links/ManageSetsLink';
 import { Row } from '@ncigdc/uikit/Flex';
-
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Container,
+  NavbarText
+} from 'reactstrap';
 import './Header.css';
 
 import features from '../../../features.json';
+import {Collapse, Container, Nav, Navbar, NavbarBrand, NavbarText, NavbarToggler, NavItem, NavLink} from "reactstrap";
 
 const styles = {
   activeNavLink: theme => ({
@@ -74,24 +85,31 @@ const Header = ({
         />
     ))}
 
-    <div className="container-fluid">
-      <div className="navbar-header">
-        <button
-          className="navbar-toggle"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          type="button"
-          >
-          <span className="sr-only test-toggle-navigation">
-              Toggle navigation
-          </span>
-          <span className="icon-bar" />
-          <span className="icon-bar" />
-          <span className="icon-bar" />
-        </button>
-        <div className="navbar-brand" style={{padding: 0}}>
-          <img alt="Kidney Precision Medicine Project Atlas" src="img/logo.svg" className="logo"/>
-        </div>
-      </div>
+    <Container>
+      <Navbar id="navbar" className="fixed-top px-1 py-1 container-fluid" expand="md" light>
+        <NavbarBrand href="/" className="ml-2 text-dark d-flex align-items-center">
+          <img src="img/logo.svg" alt="Kidney Tissue Atlas" className="logo" />
+          <span id="title-text" className="ml-2">Kidney Tissue Atlas</span>
+        </NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <NavItem className="px-1">
+              <NavLink href="/"><span className="nav-text px-1">Dashboard (Home)</span></NavLink>
+            </NavItem>
+            <NavItem className="px-1">
+              <NavbarText className="inactive"><span className="nav-text px-1">Analysis</span></NavbarText>
+            </NavItem>
+            <NavItem className="active px-1">
+              <NavLink href="/explorer"><span className="nav-text px-1">Explorer</span></NavLink>
+            </NavItem>
+            <NavItem className="px-1">
+              <NavLink href="/repository"><span className="nav-text px-1">Repository</span></NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </Container>
 
       <nav
         aria-label="Site Navigation"

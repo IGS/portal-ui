@@ -33,7 +33,8 @@ export function fetchNotifications() {
 //    });
 //    const res2 = (await fetchApi('login-notifications', {})) || { data: [] };
 	  
-	let res1 = {data:[{"components":["PORTAL"],"dismissible":true,"id":1,"level":"ERROR","message":"ATTENTION ATLAS REPOSITORY USERS: We have replaced the Participant IDs with a new format. Please <a href=\"mailto: kpmpCurators@umich.edu\">email us</a> if you need help mapping previously downloaded data to the new IDs."}]};
+	// let res1 = {data:[{"components":["PORTAL"],"dismissible":true,"id":1,"level":"ERROR","message":"ATTENTION ATLAS REPOSITORY USERS: We have replaced the Participant IDs with a new format. Please <a href=\"mailto: kpmpCurators@umich.edu\">email us</a> if you need help mapping previously downloaded data to the new IDs."}]};
+    let res1 = { data: [] };
 	let res2 = { data: [] };
     dispatch({
       type: NOTIFICATION_SUCCESS,
