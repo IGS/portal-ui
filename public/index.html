@@ -34,11 +34,6 @@
       NR = '%NODE_ENV%' === 'production';
     </script>
     <style type="text/css">
-      #front_page {
-        display: none;
-        height: 100%;
-        width: 100%;
-      }
       #ie {
         display: none;
         height: 100%;
@@ -51,9 +46,9 @@
         vertical-align: middle;
       }
       @media all and (-ms-high-contrast:none) {
-        #ie { display: block; } /* IE10 */
+        #ie { display: block; } /* IE10 */ 
         *::-ms-backdrop, #ie { display: table; } /* IE11 */
-      }
+      }  
     </style>
     <!-- IE9 and below -->
     <!--[if IE]><style type="text/css">#ie { display: block; }</style><![endif]-->
@@ -92,10 +87,5 @@
       type="text/javascript"
       src="https://static.cancer.gov/webanalytics/wa_gdc_pageload.js"
     ></script>
-    <script>
-      if (window.location.pathname === "/" || window.location.pathname === "") {
-        document.getElementById('ie').style.display = "none";
-      }
-    </script>
   </body>
 </html>
