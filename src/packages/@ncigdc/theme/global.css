@@ -5768,7 +5768,7 @@ td {
           align-items: center;
   background-color: #265986;
   color: white;
-  padding: 1rem;
+  height: 48px;
   transition: all 0.25s ease;
   border-bottom: 1px solid #ebebeb;
 }
