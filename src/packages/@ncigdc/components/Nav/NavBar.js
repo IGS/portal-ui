@@ -44,7 +44,7 @@ class NavBar extends Component {
           ))}
         <Container fluid={true}>
           <Navbar id="navbar" className="fixed-top px-1 py-1 container-fluid" expand="md" light>
-            <NavbarBrand href="/" className="mr-auto ml-2 text-dark d-flex align-items-center">
+            <NavbarBrand href="/" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
               <img src="img/logo.png" alt="Kidney Tissue Atlas" className="logo"/>
               <span id="title-text" className="ml-2">Kidney Tissue Atlas</span>
             </NavbarBrand>
