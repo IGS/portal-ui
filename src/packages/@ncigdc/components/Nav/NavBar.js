@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Banner from '@ncigdc/uikit/Banner';
 import {
   Collapse,
   Navbar,
@@ -9,12 +8,10 @@ import {
   NavItem,
   NavLink,
   Container,
-  NavbarText
 } from 'reactstrap';
 import {compose} from "recompose";
 import {connect} from "react-redux";
 import withRouter from '@ncigdc/utils/withRouter';
-import { dismissNotification, removeNotification } from '@ncigdc/dux/bannerNotification';
 
 
 class NavBar extends Component {
@@ -35,13 +32,6 @@ class NavBar extends Component {
   render() {
     return (
         <React.Fragment>
-        {this.props.notifications.map(n => (
-              <Banner
-                  {...n}
-                  handleOnDismiss={() => this.props.dispatch(dismissNotification(n.id))}
-                  key={n.id}
-              />
-          ))}
         <Container fluid={true}>
           <Navbar id="navbar" className="fixed-top px-1 py-1 container-fluid" expand="md" light>
             <NavbarBrand href="/" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
@@ -70,8 +60,5 @@ class NavBar extends Component {
 }
 
 export default compose(
-    withRouter,
-    connect(state => ({
-      notifications: state.bannerNotification,
-    }))
+    withRouter
 )(NavBar);

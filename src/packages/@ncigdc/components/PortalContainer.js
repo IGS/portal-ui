@@ -62,7 +62,9 @@ const PortalContainer = ({
       id="skip"
       role="main"
       style={{
-        paddingBottom: '120px',
+          paddingTop: `calc(51px + ${notifications.filter(n => !n.dismissed)
+              .length * 40}px)`,
+          paddingBottom: '120px',
         transition: 'padding 0.25s ease',
       }}
       >
