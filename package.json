@@ -6,7 +6,7 @@
     "name": "OICR",
     "url": "https://github.com/KPMP/"
   },
-  "homepage": "https://atlas.kpmp.org/",
+  "homepage": "https://atlas.kpmp.org/repository",
   "scripts": {
     "start": "concurrently --kill-others 'npm run start-ui' 'npm run relay -- --watch'",
     "start-ui": "BROWSER=none react-app-rewired start --scripts-version react-scripts-ts",
