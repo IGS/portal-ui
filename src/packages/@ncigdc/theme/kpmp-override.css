@@ -11,6 +11,11 @@
     border-bottom: 1px solid #e7e7e7;
 }
 
+#navbar .nav-item {
+    font-size: 16px;
+}
+
+
 #navbar .nav-item.active .nav-text {
     padding-bottom: 12px;
     border-bottom: 3px solid #007bff;
@@ -41,4 +46,13 @@
 #title-text {
     margin-bottom: 0;
     font-size: 20px;
+    font-weight: 400;
+}
+
+.css-1nkwxof {
+    height: 30px;
+}
+
+.bucket-link > label {
+    margin-top: 5px;
 }

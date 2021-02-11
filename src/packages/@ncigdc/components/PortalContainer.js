@@ -62,7 +62,8 @@ const PortalContainer = ({
       id="skip"
       role="main"
       style={{
-        paddingBottom: '120px',
+          paddingTop: '51px',
+          paddingBottom: '120px',
         transition: 'padding 0.25s ease',
       }}
       >
