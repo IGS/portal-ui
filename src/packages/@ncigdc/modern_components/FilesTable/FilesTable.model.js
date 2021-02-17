@@ -205,7 +205,7 @@ const filesTableModel = [
 	  th: () => <Th>Participant ID</Th>,
 	  td: ({ node }) => <Td>{node.cases.samples.participant_id ? 
 			  node.cases.samples.participant_id.join(", ") : '--'}</Td>,
-	  sortable: true,
+	  sortable: false,
 	  downloadable: true,
 	  hidden: false,
   },
