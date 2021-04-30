@@ -56,3 +56,31 @@
 .bucket-link > label {
     margin-top: 5px;
 }
+
+#not-found-page {
+    padding: 20px;
+}
+
+.not-found-image {
+    max-width: 90%;
+    margin-top: 30px;
+    margin-right: 40px;
+}
+
+.not-found-container {
+    max-width: 60%;
+    margin: auto;
+}
+
+.not-found-text {
+    padding-top: 30px;
+}
+
+.not-found-regular {
+    font-size: 32px;
+}
+
+.not-found-small {
+    font-size: 24px;
+}
+
