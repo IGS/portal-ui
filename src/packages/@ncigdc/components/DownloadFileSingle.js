@@ -63,7 +63,7 @@ function DownloadFile({
       onClick={() =>
         dispatch(
           setModal(
-                <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button onClick={() => window.open("https://forms.gle/sAQaiNiUcAoC3Ndx8", "_blank")}>Request Access</Button>]}>
+                <BaseModal title="Access Alert" closeText={'Cancel'} extraButtons={[<Button onClick={() => window.open("https://app.smartsheet.com/b/form/9f20e0eb3f334b388f78a539e3396fd5", "_blank")}>Request Access</Button>]}>
                     <p> You are attempting to download files that are considered controlled access. To protect the privacy of our study participants, a signed Data Use Agreement is required to gain access to this data.
                     </p>
                     <p>
