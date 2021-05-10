@@ -33,8 +33,9 @@ class NavBar extends Component {
     return (
         <React.Fragment>
         <Container fluid={true}>
-          <Navbar id="navbar" className="fixed-top px-1 py-2 container-fluid" expand="md" light>
-            <NavbarBrand href="/" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
+          fixed-top px-1 py-1 mb-3 container-fluid navbar navbar-expand-md navbar-light
+          <Navbar id="navbar" className="fixed-top px-1 py-1 mb-3 container-fluid navbar navbar-expand-md navbar-light" expand="md" light>
+            <NavbarBrand href="/" id="logo-contianer" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
               <img src="img/logo.png" alt="Kidney Tissue Atlas" className="logo"/>
               <span id="title-text" className="ml-2">Kidney Tissue Atlas</span>
             </NavbarBrand>
@@ -44,11 +45,18 @@ class NavBar extends Component {
                 <NavItem className="px-1">
                   <NavLink href="/"><span className="nav-text px-1">Dashboard (Home)</span></NavLink>
                 </NavItem>
-                <NavItem className="px-1">
+                <NavItem id="explorer-link" className="px-3">
                   <NavLink href="/explorer"><span className="nav-text px-1">Explorer</span></NavLink>
                 </NavItem>
                 <NavItem className="active px-1">
                   <NavLink href="/repository"><span className="nav-text px-1">Repository</span></NavLink>
+                </NavItem>
+              </Nav>
+              <Nav>
+                <NavItem id="question-icon" className="px-1">
+                  <NavLink href="https://www.kpmp.org/help-docs/data">
+                    <i className="far fa-question-circle"></i>
+                  </NavLink>
                 </NavItem>
               </Nav>
             </Collapse>
