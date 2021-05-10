@@ -7,14 +7,68 @@
   min-height: 51px;
   background-color: white;
   -webkit-transform: translateY(0%);
-          transform: translateY(0%);
+  transform: translateY(0%);
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
 }
+.fa-question-circle {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 25px;
+  font-style: normal;
+  color: #0082f3 !important;
+}
 
 .navbar-brand .logo {
-	width: 200px;
-	min-width: 200px;
+  width: 200px;
+  min-width: 200px;
+}
+
+#navbar .nav-link {
+  color: rgba(0, 0, 0, 0.5);
+  /* font-weight: 600; */
+}
+
+#navbar .active .nav-link {
+  color: #0082f3 !important;
+  font-weight: 600;
+}
+
+#navbar .nav-link:hover {
+  color: #0275d8 !important;
+}
+
+#navbar .nav-item.active .nav-text {
+  border-bottom: 0px;
+}
+
+#navbar {
+  padding: 0.7rem !important;
+  border-bottom: 1px solid #d8d8d8;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+#navbar .nav-item {
+  min-width: 25px;
+  font-size: 16px;
+}
+
+#navbar #title-text {
+  margin-left: 0.75rem !important;
+}
+
+#navbar #logo-contianer {
+  padding-right: 2.25rem !important;
+}
+
+#navbar #explorer-link {
+  padding-left: 1.45rem !important;
+  padding-right: 1.5rem !important;
+}
+
+#navbar #question-icon {
+  margin-left: -10%;
 }
 
 @media (max-width: 859px) {
