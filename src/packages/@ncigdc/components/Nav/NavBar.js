@@ -33,7 +33,6 @@ class NavBar extends Component {
     return (
         <React.Fragment>
         <Container fluid={true}>
-          fixed-top px-1 py-1 mb-3 container-fluid navbar navbar-expand-md navbar-light
           <Navbar id="navbar" className="fixed-top px-1 py-1 mb-3 container-fluid navbar navbar-expand-md navbar-light" expand="md" light>
             <NavbarBrand href="/" id="logo-contianer" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
               <img src="img/logo.png" alt="Kidney Tissue Atlas" className="logo"/>
