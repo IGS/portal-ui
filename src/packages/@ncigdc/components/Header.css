@@ -12,8 +12,6 @@
   transition: transform 0.3s ease;
 }
 .fa-question-circle {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
   font-size: 25px;
   font-style: normal;
   color: #0082f3 !important;
