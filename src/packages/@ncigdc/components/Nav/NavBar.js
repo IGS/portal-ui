@@ -9,8 +9,8 @@ import {
   NavLink,
   Container,
 } from 'reactstrap';
-import {compose} from "recompose";
-import {connect} from "react-redux";
+import { compose } from "recompose";
+import { connect } from "react-redux";
 import withRouter from '@ncigdc/utils/withRouter';
 
 
@@ -31,11 +31,11 @@ class NavBar extends Component {
 
   render() {
     return (
-        <React.Fragment>
+      <React.Fragment>
         <Container fluid={true}>
           <Navbar id="navbar" className="fixed-top px-1 py-1 mb-3 container-fluid navbar navbar-expand-md navbar-light" expand="md" light>
             <NavbarBrand href="/" id="logo-contianer" className="pr-5 mr-auto ml-2 text-dark d-flex align-items-center">
-              <img src="img/logo.png" alt="Kidney Tissue Atlas" className="logo"/>
+              <img src="img/logo.png" alt="Kidney Tissue Atlas" className="logo" />
               <span id="title-text" className="ml-2">Kidney Tissue Atlas</span>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
@@ -53,7 +53,7 @@ class NavBar extends Component {
               </Nav>
               <Nav>
                 <NavItem id="question-icon" className="px-1">
-                  <NavLink href="https://www.kpmp.org/help-docs/data">
+                  <NavLink rel="noreferrer" target="_blank" href="https://www.kpmp.org/help-docs/data">
                     <i className="far fa-question-circle"></i>
                   </NavLink>
                 </NavItem>
@@ -61,11 +61,11 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
         </Container>
-        </React.Fragment>
+      </React.Fragment>
     );
   }
 }
 
 export default compose(
-    withRouter
+  withRouter
 )(NavBar);
