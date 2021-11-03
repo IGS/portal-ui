@@ -99,6 +99,12 @@ export default (Component: ReactClass<*>) =>
                         key
                       }
                     }
+                    DOIs {
+                      buckets {
+                        doc_count
+                        key
+                      }
+                    }
                   }
               }
             }

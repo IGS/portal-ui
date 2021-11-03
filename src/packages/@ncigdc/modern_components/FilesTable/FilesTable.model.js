@@ -209,6 +209,15 @@ const filesTableModel = [
 	  downloadable: true,
 	  hidden: false,
   },
+  {
+    name: 'DOIs',
+    id: 'dois',
+    th: () => <Th>DOIs</Th>,
+    td: ({ node }) => <Td>{node.dois || '--'}</Td>,
+    sortable: true,
+    downloadable: true,
+    hidden: false,
+  },
 ];
 
 export default filesTableModel;

@@ -78,6 +78,13 @@ const presetFacets = [
     type: 'keyword',
     hover: '"Open" access data can be freely downloaded. "Controlled" access data can only be downloaded after signing the KPMP Data Use Agreement.',
   },
+  {
+    field: 'DOIs',
+    full 'DOIs',
+    type: 'keyword',
+    hover: '',
+  }
+
 ];
 
 const presetFacetFields = presetFacets.map(x => x.field);
@@ -120,6 +127,7 @@ export type TProps = {
     experimental_strategy: { buckets: [IBucket] },
     workflow_type: { buckets: [IBucket] },
     platform: { buckets: [IBucket] },
+    DOIs: { buckets: [IBucket] },
   },
   theme: Object,
   suggestions: Array<Object>,
