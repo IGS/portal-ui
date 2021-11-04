@@ -68,7 +68,7 @@ export default (Component: ReactClass<*>) =>
                         experimental_strategy
                         platform
                         package_id
-                        DOIs
+                        dois
                         cases {
                           samples {
                             participant_id

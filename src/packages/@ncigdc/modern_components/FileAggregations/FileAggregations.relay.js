@@ -99,7 +99,7 @@ export default (Component: ReactClass<*>) =>
                         key
                       }
                     }
-                    DOIs {
+                    dois {
                       buckets {
                         doc_count
                         key
