@@ -5394,6 +5394,7 @@ type FileNode implements Node {
   index_files: IndexFiles
   metadata_files: MetadataFiles
   score: Int
+  dois: [String]
 }
 
 type FileAggregations {
@@ -6364,6 +6365,7 @@ type FileAggregations {
   sample_id: Aggregations
   workflow_type: Aggregations
   protocol: Aggregations
+  dois: Aggregations
 }
 
 type FileCasesDemographics {

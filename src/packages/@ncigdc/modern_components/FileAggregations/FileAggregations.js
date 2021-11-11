@@ -80,7 +80,7 @@ const presetFacets = [
   },
   {
     field: 'dois',
-    full 'dois',
+    full: 'dois',
     type: 'keyword',
     hover: '',
   }
