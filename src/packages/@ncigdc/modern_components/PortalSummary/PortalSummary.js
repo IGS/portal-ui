@@ -54,7 +54,7 @@ const PortalSummary = compose(
           className="test-release"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://docs.gdc.cancer.gov/Data/Release_Notes/Data_Release_Notes/"
+          href=""
         >
           {props.dataRelease}
         </a>

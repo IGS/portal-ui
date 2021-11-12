@@ -61,7 +61,7 @@ const CheckBoxModal = ({
           />{' '}
           I agree to abide by the GDC{' '}
           <a
-            href="https://gdc.cancer.gov/about-data/data-analysis-policies"
+            href=""
             target="_blank"
             rel="noopener noreferrer"
           >

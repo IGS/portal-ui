@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="https://portal.gdc.cancer.gov/">
+	<a href="">
 		<img src="http://i.imgur.com/b6arSwT.png" width="456" alt="GDC Data Portal">
 	</a>
 </p>
@@ -61,10 +61,10 @@ By default the portal will attempt to connect to an api instance running on `loc
 npm start
 
 # start ui connected to UChicago api server
-REACT_APP_API=https://api.gdc.cancer.gov/v0/ npm start
+REACT_APP_API=/endpoint/ npm start
 
 // change api url during runtime in browser
-localStorage.REACT_APP_API = 'https://api.gdc.cancer.gov/v0/'
+localStorage.REACT_APP_API = '/endpoint/'
 ```
 
 <img src="http://i.imgur.com/5dQYvoW.png" />

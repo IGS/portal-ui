@@ -102,7 +102,7 @@ const progressChecker = (
       <div>
         We recommend that you use the{' '}
         <a
-          href="https://gdc.cancer.gov/access-data/gdc-data-transfer-tool"
+          href=""
           target="_blank"
           rel="noopener noreferrer"
         >

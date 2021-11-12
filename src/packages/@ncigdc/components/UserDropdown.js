@@ -46,7 +46,7 @@ const logout = async dispatch => {
       console.warn('There was an error: ', err);
     }
     return window.location.assign(
-      urlJoin(AUTH, `logout?next=https://portal.awg.gdc.cancer.gov/login`)
+      urlJoin(AUTH, ``)
     );
   } else {
     dispatch(forceLogout());
@@ -103,7 +103,7 @@ const UserDropdown = connect(state => ({
                   <span>
                     {user.username} does not have access to any protected data
                     within the GDC. Click{' '}
-                    <a href="https://gdc.cancer.gov/access-data/obtaining-access-controlled-data">
+                    <a href="">
                       here
                     </a>{' '}
                     to learn more about obtaining access to protected data.

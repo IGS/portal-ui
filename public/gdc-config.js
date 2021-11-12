@@ -6,7 +6,7 @@ angular.module("ngApp.config", [])
     "commitHash": "1416c89",
     "api": "/endpoint/",
     "auth":"/auth/",
-    "auth_api": "https://portal.gdc.cancer.gov/auth/api",
+    "auth_api": "",
     "supportedAPI": "1",
     "tag": "https://github.com/NCI-GDC/portal-ui/releases/tag/1.4.1",
     "production": false,

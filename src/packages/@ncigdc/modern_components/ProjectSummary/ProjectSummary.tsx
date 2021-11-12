@@ -174,7 +174,7 @@ export default compose<IProjectProps, React.Component>(
             The project has controlled access data which requires dbGaP Access.
             See instructions for{' '}
             <a
-              href="https://gdc.cancer.gov/access-data/obtaining-access-controlled-data"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -75,7 +75,7 @@ function DownloadFile({
                     authorized to access. Please request dbGaP Access to the
                     project (<a
                       target={'_blank'}
-                      href="https://gdc.cancer.gov/access-data/obtaining-access-controlled-data"
+                      href=""
                     >
                       click here for more information
                     </a>).

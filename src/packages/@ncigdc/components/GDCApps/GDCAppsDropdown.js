@@ -68,7 +68,7 @@ const GDCAppsDropdown = () => (
         <AppLink
           appName="portal home"
           description="Data Portal"
-          href="https://portal.gdc.cancer.gov"
+          href=""
           imgSrc={dataPortalImg}
           imgWidth={BUTTON_WIDTH}
           title="GDC Data Portal"
@@ -78,7 +78,7 @@ const GDCAppsDropdown = () => (
         <AppLink
           appName="portal home"
           description="Website"
-          href="https://gdc.cancer.gov"
+          href=""
           imgSrc={websiteImg}
           imgWidth={BUTTON_WIDTH}
           title="GDC Website"
@@ -89,7 +89,7 @@ const GDCAppsDropdown = () => (
           appName="portal-api"
           description="API"
           drawnRange={11}
-          href="https://gdc.cancer.gov/developers/gdc-application-programming-interface-api"
+          href=""
           imgWidth={BUTTON_WIDTH}
           title="API"
           width="40%"
@@ -99,7 +99,7 @@ const GDCAppsDropdown = () => (
           appName="data-transfer-tool"
           description="Data Transfer Tool"
           drawnRange={9}
-          href="https://docs.gdc.cancer.gov/Data_Transfer_Tool/Users_Guide/Getting_Started/"
+          href=""
           imgWidth={BUTTON_WIDTH}
           title="GDC Data Transfer Tool"
           width="55%"
@@ -109,7 +109,7 @@ const GDCAppsDropdown = () => (
           appName="docs"
           description="Documentation"
           drawnRange={15}
-          href="https://docs.gdc.cancer.gov"
+          href=""
           imgWidth={BUTTON_WIDTH}
           title="GDC Docs"
           width="40%"
@@ -119,7 +119,7 @@ const GDCAppsDropdown = () => (
           appName="submission-portal"
           description="Data Submission Portal"
           drawnRange={11}
-          href="https://portal.gdc.cancer.gov/submission"
+          href=""
           imgWidth={BUTTON_WIDTH}
           title="GDC Data Submission Portal"
           width="55%"
@@ -129,7 +129,7 @@ const GDCAppsDropdown = () => (
           appName="legacy-archive"
           description="Legacy Archive"
           drawnRange={11}
-          href="https://portal.gdc.cancer.gov/legacy-archive"
+          href=""
           imgWidth={BUTTON_WIDTH}
           title="GDC Legacy Archive"
           width="40%"
@@ -138,7 +138,7 @@ const GDCAppsDropdown = () => (
         <AppLink
           appName="publications"
           description="Publications"
-          href="https://gdc.cancer.gov/about-data/publications"
+          href=""
           imgSrc={publicationsImg}
           imgWidth={BUTTON_WIDTH}
           title="GDC Publications"
