@@ -25,12 +25,12 @@ const DismissibleBanner = ({ dispatch }) => (
                 Some data is still in the process of submission including many
                 TARGET data files. For the complete and latest TARGET data,
                 please see the{' '}
-                <ExternalLink href="https://ocg.cancer.gov/programs/target/data-matrix">
+                <ExternalLink href="">
                   TARGET Data Matrix
                 </ExternalLink>.<br />
                 <br />
                 Other data may be in the{' '}
-                <ExternalLink href="https://portal.gdc.cancer.gov/legacy-archive/search/f">
+                <ExternalLink href="">
                   GDC Legacy Archive
                 </ExternalLink>. Data in the GDC Data Portal has been harmonized
                 using GDC Bioinformatics Pipelines whereas data in the GDC
@@ -48,7 +48,7 @@ const DismissibleBanner = ({ dispatch }) => (
               >
                 <p style={{ marginBottom: '0' }}>
                   Check the{' '}
-                  <ExternalLink href="https://docs.gdc.cancer.gov/Data/Release_Notes/Data_Release_Notes/">
+                  <ExternalLink href="">
                     Data Release Notes
                   </ExternalLink>{' '}
                   for additional details.

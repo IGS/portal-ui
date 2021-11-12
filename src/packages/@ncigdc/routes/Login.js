@@ -80,7 +80,7 @@ export default connect(state => ({
           <br />You do not have access to any AWG projects in dbGaP. More
           information about obtaining access to controlled-access data can be
           found{' '}
-          <a href="https://gdc.cancer.gov/access-data/obtaining-access-controlled-data">
+          <a href="">
             here
           </a>.
         </div>

@@ -489,7 +489,7 @@ const RangeFacet = ({
                     {`For health information privacy concerns, individuals over 89
                     will all appear as 90 years old. For more information, click `}
                     <a
-                      href="https://gdc.cancer.gov/about-gdc/gdc-faqs#collapsible-item-618-question"
+                      href=""
                       rel="noopener noreferrer"
                       target="_blank"
                       >

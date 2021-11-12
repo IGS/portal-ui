@@ -21,7 +21,7 @@ const GDCAppsRow = () => (
     <AppLink
       appName="portal home"
       description="Data Portal"
-      href="https://portal.gdc.cancer.gov"
+      href=""
       imgSrc={dataPortalImg}
       imgWidth={35}
       title="GDC Data Portal"
@@ -30,7 +30,7 @@ const GDCAppsRow = () => (
     <AppLink
       appName="portal home"
       description="Website"
-      href="https://gdc.cancer.gov"
+      href=""
       imgSrc={websiteImg}
       imgWidth={35}
       title="GDC Website"
@@ -40,7 +40,7 @@ const GDCAppsRow = () => (
       appName="portal-api"
       description="API"
       drawnRange={11}
-      href="https://gdc.cancer.gov/developers/gdc-application-programming-interface-api"
+      href=""
       imgWidth={29}
       title="API"
       />
@@ -49,7 +49,7 @@ const GDCAppsRow = () => (
       appName="data-transfer-tool"
       description="Data Transfer Tool"
       drawnRange={9}
-      href="https://docs.gdc.cancer.gov"
+      href=""
       imgWidth={29}
       title="GDC Data Transfer Tool"
       />
@@ -58,7 +58,7 @@ const GDCAppsRow = () => (
       appName="docs"
       description="Documentation"
       drawnRange={15}
-      href="https://docs.gdc.cancer.gov"
+      href=""
       imgWidth={29}
       title="GDC Docs"
       />
@@ -67,7 +67,7 @@ const GDCAppsRow = () => (
       appName="submission-portal"
       description="Data Submission Portal"
       drawnRange={11}
-      href="https://portal.gdc.cancer.gov/submission"
+      href=""
       imgWidth={29}
       title="GDC Data Submission Portal"
       />
@@ -76,7 +76,7 @@ const GDCAppsRow = () => (
       appName="legacy-archive"
       description="Legacy Archive"
       drawnRange={11}
-      href="https://portal.gdc.cancer.gov/legacy-archive"
+      href=""
       imgWidth={29}
       title="GDC Legacy Archive"
       />
@@ -84,7 +84,7 @@ const GDCAppsRow = () => (
     <AppLink
       appName="publications"
       description="Publications"
-      href="https://gdc.cancer.gov/about-data/publications"
+      href=""
       imgSrc={publicationsImg}
       imgWidth={29}
       title="GDC Publications"

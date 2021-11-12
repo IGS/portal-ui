@@ -17,7 +17,7 @@ const HowToDownload = ({ style = {} }) => (
       Download a manifest for use with the
       <a
         style={{ marginLeft: '0.4rem' }}
-        href="https://gdc.cancer.gov/access-data/gdc-data-transfer-tool"
+        href=""
       >
         GDC Data Transfer Tool
       </a>. The GDC Data Transfer Tool is recommended for transferring large

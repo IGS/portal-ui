@@ -98,7 +98,7 @@ const downloadCart = ({
             <ExternalLink
               hasExternalIcon={false}
               title="GDC Data Transfer Tool"
-              href="https://gdc.cancer.gov/access-data/gdc-data-transfer-tool"
+              href=""
             >
               Data Transfer Tool
             </ExternalLink>{' '}
@@ -156,7 +156,7 @@ const downloadCart = ({
             <p>
               Please request dbGaP Access to the project (<a
                 target={'_blank'}
-                href="https://gdc.cancer.gov/access-data/obtaining-access-controlled-data"
+                href=""
               >
                 click here for more information
               </a>).
