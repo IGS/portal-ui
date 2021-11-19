@@ -106,7 +106,7 @@ const presetFacets = [
 	  field: 'protocol',
 	  full: 'protocol',
 	  type: 'keyword',
-	  hover: 'The protocol followed to obtain and process the sample. "KPMP Main Protocol" signifies that the sample was procured following the steps in the KPMP Clinical Protocol used for obtaining study participant biopsies. "KPMP Pilot 1 Protocol" signifies that the sample was procured following the steps of an internal pilot protocol developed for validating data processing pipelines.'
+	  hover: 'The protocol followed to obtain and process the sample. "KPMP Main Protocol" signifies that the sample was procured following the steps in the KPMP Clinical Protocol used for obtaining study participant biopsies. "KPMP Pilot 1 Protocol" signifies that the sample was procured following the steps of an internal pilot protocol developed for validating data processing pipelines. "Other (non-KPMP) Protocol" signifies that the sample was procured using a protocol outside of KPMP.',
   }
 
 ];
