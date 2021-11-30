@@ -213,7 +213,16 @@ const filesTableModel = [
     name: 'DOIs',
     id: 'dois',
     th: () => <Th>DOIs</Th>,
-    td: ({ node }) => <Td>{node.dois || '--'}</Td>,
+    td: ({ node }) => {
+      const dois = (node.dois).filter(item => !(item === null));
+        return (
+          <Td>{(
+            dois.join(", ") !== '') ?
+            dois.join(", ") :
+            '--'}
+          </Td>
+        )
+      },
     sortable: true,
     downloadable: true,
     hidden: false,
