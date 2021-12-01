@@ -209,6 +209,24 @@ const filesTableModel = [
 	  downloadable: true,
 	  hidden: false,
   },
+  {
+    name: 'DOIs',
+    id: 'dois',
+    th: () => <Th>DOIs</Th>,
+    td: ({ node }) => {
+      const dois = (node.dois).filter(item => !(item === null));
+        return (
+          <Td>{(
+            dois.join(", ") !== '') ?
+            dois.join(", ") :
+            '--'}
+          </Td>
+        )
+      },
+    sortable: true,
+    downloadable: true,
+    hidden: false,
+  },
 ];
 
 export default filesTableModel;

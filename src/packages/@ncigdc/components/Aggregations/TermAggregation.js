@@ -123,76 +123,79 @@ const TermAggregation = (props: TProps) => {
                     ...b,
                     name: b.key_as_string || b.key,
                   }))
-                  .map(bucket => (
-                    <BucketRow key={bucket.name}>
-                      <BucketLink
-                        className="bucket-link"
-                        merge="toggle"
-                        query={{
-                          offset: 0,
-                          filters: {
-                            op: 'and',
-                            content: [
-                              {
-                                op: 'in',
-                                content: {
-                                  field: dotField,
-                                  value: [bucket.name],
+                  .map(bucket => {
+                    if (bucket.name !== '__missing__') {
+                      return (<BucketRow key={bucket.name}>
+                        <BucketLink
+                          className="bucket-link"
+                          merge="toggle"
+                          query={{
+                            offset: 0,
+                            filters: {
+                              op: 'and',
+                              content: [
+                                {
+                                  op: 'in',
+                                  content: {
+                                    field: dotField,
+                                    value: [bucket.name],
+                                  },
                                 },
-                              },
-                            ],
-                          },
-                        }}
-                        >
-                        <input
-                          checked={inCurrentFilters({
-                            key: bucket.name.toLowerCase(),
-                            dotField,
-                            currentFilters,
-                          })}
-                          id={`input-${props.title}-${bucket.name.replace(
-                            /\s/g,
-                            '-'
-                          )}`}
-                          name={`input-${props.title}-${bucket.name.replace(
-                            /\s/g,
-                            '-'
-                          )}`}
-                          readOnly
-                          style={{
-                            pointerEvents: 'none',
-                            marginRight: '5px',
-                            flexShrink: 0,
-                            verticalAlign: 'middle',
-                          }}
-                          type="checkbox"
-                          />
-                        <OverflowTooltippedLabel
-                          htmlFor={`input-${props.title}-${bucket.name.replace(
-                            /\s/g,
-                            '-'
-                          )}`}
-                          style={{
-                            marginLeft: '0.3rem',
-                            verticalAlign: 'middle',
+                              ],
+                            },
                           }}
                           >
-                          {props.searchValue
-                            ? internalHighlight(
-                              props.searchValue,
-                              bucket.name,
-                              {
-                                backgroundColor: '#FFFF00',
-                              },
-                            )
-                            : bucket.name}
-                        </OverflowTooltippedLabel>
-                      </BucketLink>
-                      <CountBubble className="bucket-count">
-                        {bucket.doc_count.toLocaleString()}
-                      </CountBubble>
-                    </BucketRow>
-                  ))}
+                          <input
+                            checked={inCurrentFilters({
+                              key: bucket.name.toLowerCase(),
+                              dotField,
+                              currentFilters,
+                            })}
+                            id={`input-${props.title}-${bucket.name.replace(
+                              /\s/g,
+                              '-'
+                            )}`}
+                            name={`input-${props.title}-${bucket.name.replace(
+                              /\s/g,
+                              '-'
+                            )}`}
+                            readOnly
+                            style={{
+                              pointerEvents: 'none',
+                              marginRight: '5px',
+                              flexShrink: 0,
+                              verticalAlign: 'middle',
+                            }}
+                            type="checkbox"
+                            />
+                          <OverflowTooltippedLabel
+                            htmlFor={`input-${props.title}-${bucket.name.replace(
+                              /\s/g,
+                              '-'
+                            )}`}
+                            style={{
+                              marginLeft: '0.3rem',
+                              verticalAlign: 'middle',
+                            }}
+                            >
+                            {props.searchValue
+                              ? internalHighlight(
+                                props.searchValue,
+                                bucket.name,
+                                {
+                                  backgroundColor: '#FFFF00',
+                                },
+                              )
+                              : bucket.name}
+                          </OverflowTooltippedLabel>
+                        </BucketLink>
+                        <CountBubble className="bucket-count">
+                          {bucket.doc_count.toLocaleString()}
+                        </CountBubble>
+                      </BucketRow>
+                      )
+                    }
+                  })}
                 {filteredBuckets.length > maxShowing && (
                   <BottomRow>
                     <ToggleMoreLink
