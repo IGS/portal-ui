@@ -41,8 +41,6 @@
 }
 
 #navbar {
-  padding: 0.7rem !important;
-  border-bottom: 1px solid #d8d8d8;
   background-color: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }

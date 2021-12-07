@@ -63,7 +63,6 @@ const PortalContainer = ({
       role="main"
       style={{
           paddingTop: '51px',
-          paddingBottom: '120px',
         transition: 'padding 0.25s ease',
       }}
       >
