@@ -79,6 +79,7 @@ const presetFacets = [
     hover: '"Open" access data can be freely downloaded. "Controlled" access data can only be downloaded after signing the KPMP Data Use Agreement.',
   },
   {
+    title: 'DOIs',
     field: 'dois',
     full: 'dois',
     type: 'keyword',
