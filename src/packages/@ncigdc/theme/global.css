@@ -8265,9 +8265,9 @@ pre code {
 /* Page Top & Bottom Regions STYLE
 /-------------------------------------------------------------- */
 #footer {
-  background-color: #123e57;
-  border-top: 6px solid #8c8686;
+  background-color: #283c5e;
   border-bottom: none;
+  font-size: 16px;
 }
 #footer .container {
   color: #97abb6;

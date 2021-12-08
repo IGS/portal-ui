@@ -49,18 +49,17 @@ export default compose(
     apiCommitHash,
     dataRelease,
   }) => (
-    <footer
-      style={styles.footer(theme)}
-      className="test-footer"
-      role="contentinfo"
-    >
-      <div style={styles.outerContainer}>
-        <div style={styles.innerContainer}>
-        	<div>The Kidney Precision Medicine Project is an initiative of the National Institute of Diabetes and Digestive and Kidney Disease (NIDDK).</div>
-        	<div>© Kidney Precision Medicine Project</div>
-        </div>
+  
+      <div id='footer' className="fixed-bottom px-3 py-1">
+          <a
+            className="text-light small"
+            href="https://kpmp.org"
+            target="_blank"
+            rel="noopener noreferrer">
+              &copy; Kidney Precision Medicine Project</a>
         
       </div>
-    </footer>
+
+    
   ),
 );
