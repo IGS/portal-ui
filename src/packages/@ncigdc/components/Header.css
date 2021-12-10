@@ -59,6 +59,10 @@
 }
 
 #navbar a {
+  color: rgba(0,0,0,.5);
+}
+
+#navbar #question-icon a {
   color: #0275d8;
 }
 
