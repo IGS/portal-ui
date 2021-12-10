@@ -22,11 +22,6 @@
   min-width: 200px;
 }
 
-#navbar .nav-link {
-  color: rgba(0, 0, 0, 0.5);
-  /* font-weight: 600; */
-}
-
 #navbar .active .nav-link {
   color: #0082f3 !important;
   font-weight: 600;
@@ -63,8 +58,8 @@
   padding-right: 1.5rem !important;
 }
 
-#navbar #question-icon {
-  margin-left: -10%;
+#navbar a {
+  color: #0275d8;
 }
 
 @media (max-width: 859px) {
