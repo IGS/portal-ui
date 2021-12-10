@@ -2,7 +2,6 @@
 
 import '@ncigdc/theme/global.css';
 import '@ncigdc/theme/kpmp-override.css';
-import 'kpmp-common-styles/index.css';
 
 import React from 'react';
 import Relay from 'react-relay/classic';
