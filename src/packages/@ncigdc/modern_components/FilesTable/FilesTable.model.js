@@ -214,7 +214,8 @@ const filesTableModel = [
     id: 'dois',
     th: () => <Th>DOIs</Th>,
     td: ({ node }) => {
-      const dois = (node.dois).filter(item => !(item === null));
+      let joinedDois = (node.dois).filter(item => !(item === null));
+      let dois = [...new Set(joinedDois)];
         return (
           <Td>{(
             dois.join(", ") !== '') ?
