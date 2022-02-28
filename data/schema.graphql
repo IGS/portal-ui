@@ -6364,7 +6364,7 @@ type FileAggregations {
   average_insert_size: NumericAggregations
   sample_id: Aggregations
   workflow_type: Aggregations
-  protocol: Aggregations
+  cases__samples__protocol: Aggregations
   dois: Aggregations
 }
 
@@ -6377,6 +6377,7 @@ type FileCasesSamples {
   participant_id: [String]
   sample_type: [String]
   tissue_type: [String]
+  protocol: [String]
 }
 
 type FileAnalysis {
