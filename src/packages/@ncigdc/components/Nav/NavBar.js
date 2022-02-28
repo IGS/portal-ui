@@ -50,7 +50,7 @@ class NavBar extends Component {
                 <NavItem className="active px-1">
                   <NavLink href="/repository"><span className="nav-text px-1">Repository</span></NavLink>
                 </NavItem>
-                <NavItem className="active px-1">
+                <NavItem className="px-1">
                   <NavLink href="/spatial-viewer"><span className="nav-text px-1">Spatial Viewer</span></NavLink>
                 </NavItem>
               </Nav>
