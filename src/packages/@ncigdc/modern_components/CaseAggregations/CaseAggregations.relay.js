@@ -56,12 +56,6 @@ export default (Component: ReactClass<*>) =>
                     filters: $filters
                     aggregations_filter_themselves: false
                   ) {
-                    protocol {
-                      buckets {
-                        doc_count
-                        key
-                      }
-                    }
                     cases__tissue_source {
                     	buckets {
                     		doc_count
@@ -80,6 +74,13 @@ export default (Component: ReactClass<*>) =>
     		  				key
     		  			}
     		  		}
+              cases__samples__protocol {
+                      buckets {
+                        doc_count
+                        key
+                      }
+                    }
+            
                     cases__samples__tissue_type {
                     	buckets {
                     		doc_count
