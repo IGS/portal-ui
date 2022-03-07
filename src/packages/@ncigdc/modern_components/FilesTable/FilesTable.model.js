@@ -201,7 +201,7 @@ const filesTableModel = [
   },
   {
 	  name: 'Participant ID',
-	  id: 'participant_id',
+	  id: 'cases.samples.participant_id',
 	  th: () => <Th>Participant ID</Th>,
 	  td: ({ node }) => <Td>{node.cases.samples.participant_id ? 
 			  node.cases.samples.participant_id.join(", ") : '--'}</Td>,
