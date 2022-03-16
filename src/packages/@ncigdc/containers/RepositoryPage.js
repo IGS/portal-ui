@@ -91,12 +91,12 @@ export const RepositoryPageComponent = (props: TProps) => {
   const facetTabs=[
 	{
 	    id: 'participants',
-	    text: 'Participants',
+      text: 'PARTICIPANT',
 	    component: <CaseAggregations relay={props.relay} />,
 	},
     {
       id: 'files',
-      text: 'Files',
+      text: 'FILE',
       component: <FileAggregations relay={props.relay} />,
     }
    
