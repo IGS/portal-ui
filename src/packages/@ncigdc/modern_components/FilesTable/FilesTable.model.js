@@ -203,8 +203,18 @@ const filesTableModel = [
 	  name: 'Participant ID',
 	  id: 'cases.samples.participant_id',
 	  th: () => <Th>Participant ID</Th>,
-	  td: ({ node }) => <Td>{node.cases.samples.participant_id ? 
-			  node.cases.samples.participant_id.join(", ") : '--'}</Td>,
+	  td: ({ node }) => {
+      if (node.cases.samples.participant_id) {
+        if (node.cases.samples.participant_id.length > 1) {
+          return 'Multiple participants';
+        }
+        else {
+          return node.cases.samples.participant_id[0];
+        }
+      } else {
+        return '--';
+      }
+    },
 	  sortable: true,
 	  downloadable: true,
 	  hidden: false,
