@@ -206,10 +206,10 @@ const filesTableModel = [
 	  td: ({ node }) => {
       if (node.cases.samples.participant_id) {
         if (node.cases.samples.participant_id.length > 1) {
-          return 'Multiple participants';
+          return <Td>Multiple participants</Td>;
         }
         else {
-          return node.cases.samples.participant_id[0];
+          return <Td>{node.cases.samples.participant_id[0]}</Td>;
         }
       } else {
         return '--';
