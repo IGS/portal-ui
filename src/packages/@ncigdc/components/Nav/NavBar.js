@@ -56,7 +56,7 @@ class NavBar extends Component {
               </Nav>
               <Nav>
                 <NavItem id="question-icon" className="px-1">
-                  <NavLink rel="noreferrer" target="_blank" href="https://www.kpmp.org/help-docs/data">
+                  <NavLink rel="noreferrer" target="_blank" href="https://www.kpmp.org/help">
                     Help
                   </NavLink>
                 </NavItem>
