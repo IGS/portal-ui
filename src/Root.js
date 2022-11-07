@@ -36,7 +36,7 @@ import features from './features.json';
 //   whyDidYouUpdate(React);
 // }
 
-const GA_TRACKING_ID = 'UA-124331187-10';
+const GA_TRACKING_ID = 'G-64W6E37TQB';
 ReactGA4.initialize(GA_TRACKING_ID, { testMode: process.env.NODE_ENV === 'test' });
 ReactGA4.pageview(window.location.pathname + window.location.search);
 
