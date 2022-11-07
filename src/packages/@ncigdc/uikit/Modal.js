@@ -14,7 +14,7 @@ const modalStyles = {
     border: '1px solid rgb(204, 204, 204)',
     borderRadius: '4px',
     boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 15px',
-    margin: '30px auto',
+    margin: '100px auto',
     maxWidth: '800px',
     padding: '0px',
     position: 'initial',
