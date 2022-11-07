@@ -28,7 +28,7 @@ import consoleDebug from '@ncigdc/utils/consoleDebug';
 import { fetchNotifications } from '@ncigdc/dux/bannerNotification';
 import Loader from '@ncigdc/uikit/Loaders/Loader';
 import Portal from './Portal';
-import ReactGA from 'react-ga';
+import { default as ReactGA4 } from 'react-ga4';
 import features from './features.json';
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -36,8 +36,9 @@ import features from './features.json';
 //   whyDidYouUpdate(React);
 // }
 
-ReactGA.initialize('UA-124331187-10');
-ReactGA.pageview(window.location.pathname + window.location.search);
+const GA_TRACKING_ID = 'UA-124331187-10';
+ReactGA4.initialize(GA_TRACKING_ID, { testMode: process.env.NODE_ENV === 'test' });
+ReactGA4.pageview(window.location.pathname + window.location.search);
 
 const retryStatusCodes = [
   500,
