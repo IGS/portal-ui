@@ -6,7 +6,7 @@ import { withTheme } from '@ncigdc/theme';
 import DownloadIcon from '@ncigdc/theme/icons/Download';
 import Hidden from '@ncigdc/components/Hidden';
 import Color from 'color';
-import ReactGA from 'react-ga';
+import { default as ReactGA4 } from 'react-ga4';
 import BaseModal from '@ncigdc/components/Modals/BaseModal';
 
 const styles = {
@@ -68,9 +68,9 @@ class DownloadButtonSingle extends Component {
 			      ...styles.button(theme)
 			    }}
 			    onClick={() => {
-					ReactGA.event({
-						category: 'Download',
-						action: 'File',
+					ReactGA4.event({
+						category: 'Repository',
+						action: 'Download',
 						label: file.file_name
 					});
 					this.downloadFile(file);

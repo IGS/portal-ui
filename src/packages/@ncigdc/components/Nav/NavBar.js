@@ -12,6 +12,7 @@ import {
 import { compose } from "recompose";
 import { connect } from "react-redux";
 import withRouter from '@ncigdc/utils/withRouter';
+import { default as ReactGA4 } from 'react-ga4';
 
 
 class NavBar extends Component {
@@ -56,7 +57,13 @@ class NavBar extends Component {
               </Nav>
               <Nav>
                 <NavItem id="question-icon" className="px-1">
-                  <NavLink rel="noreferrer" target="_blank" href="https://www.kpmp.org/help">
+                  <NavLink onClick={() => {
+                      ReactGA4.event({
+                        category: 'Repository',
+                        action: 'Navigation',
+                        label: 'Help'
+                      });
+                    }} rel="noreferrer" target="_blank" href="https://www.kpmp.org/help">
                     Help
                   </NavLink>
                 </NavItem>
